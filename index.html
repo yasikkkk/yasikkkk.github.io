@@ -2,7 +2,7 @@
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Расписание БИ-02</title>
+<title>YASIK · Учеба</title>
 <style>
 :root{--bg:#eef0f3;--fg:#16202e;--card:#fff;--muted:#5d6b7c;--line:#d9dee5;--head:#14243b;--headfg:#fff;--accent:#14243b;--now:#0f7a4d;--nowbg:#e7f4ee;--tag:#e8ebf0;--badgefg:#ffffff;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -10,7 +10,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 :root[data-theme="dark"]{--bg:#0e1420;--fg:#e6eaf0;--card:#17202f;--muted:#9aa6b6;--line:#26334a;--head:#0a101a;--accent:#8fb0e6;--now:#4cd08e;--nowbg:#10281e;--tag:#26334a;--badgefg:#0a101a}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.4}
-header{background:var(--head);color:var(--headfg);padding:18px 16px 14px}
+header{background:var(--card);color:var(--fg);border-bottom:1px solid var(--line);padding:12px 16px}
 .hw{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:680px;margin:0 auto}
 h1{font-size:1.15rem;font-weight:600;letter-spacing:.02em;margin:0}
 .sub{font-size:.8rem;opacity:.7;margin-top:2px}
@@ -43,13 +43,9 @@ button:hover{border-color:var(--accent)}
 .pop button{display:block;width:100%;text-align:left;border:0;border-radius:6px;padding:10px 12px;background:transparent}
 .pop button:hover{background:var(--tag)}
 .dp{position:absolute;right:0;top:100%;width:0;height:0;opacity:0;border:0;padding:0}
-.sw{position:relative;width:56px;height:30px;padding:0;border-radius:99px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);flex:none}
-.sw i{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-style:normal;transition:transform .2s}
+.sw{position:relative;width:56px;height:30px;padding:0;border-radius:99px;border:1px solid var(--line);background:var(--tag);flex:none}
+.sw i{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:14px;font-style:normal;transition:transform .2s}
 .sw[aria-checked="true"] i{transform:translateX(26px)}
-.tabs{background:var(--card);border-bottom:1px solid var(--line)}
-.tw{max-width:680px;margin:0 auto;display:flex;padding:0 8px}
-.tabs button{border:0;border-radius:0;background:transparent;padding:12px 16px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent}
-.tabs button.on{color:var(--fg);border-bottom-color:var(--accent)}
 .wh{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
 .wc{font-size:1.2rem;font-weight:700}
 .w{display:grid;grid-template-columns:64px 40px 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
@@ -60,17 +56,33 @@ button:hover{border-color:var(--accent)}
 .wtemp{text-align:right;font-variant-numeric:tabular-nums}
 .wtemp b{display:block;font-size:1.05rem}
 .wtemp span{color:var(--muted);font-size:.9rem}
-.cp{min-width:260px;padding:8px}
-.cp input{width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font-size:1rem;margin-bottom:4px}
+.srch{position:relative;display:flex;gap:8px;margin-bottom:14px}
+.srch input{flex:1;min-width:0;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font-size:1rem}
+.sres{left:0;right:0;top:calc(100% + 4px);min-width:0}
 .src{color:var(--muted);font-size:.8rem;text-align:center;margin-top:16px}
 .src a{color:var(--accent)}
-@media (max-width:480px){.item{grid-template-columns:1fr;gap:6px}.w{grid-template-columns:52px 34px 1fr auto;gap:8px;padding:10px}}
+.logo{font-size:1.9rem;font-weight:800;letter-spacing:.04em;color:var(--fg);text-decoration:none;line-height:1}
+.nv{display:flex;align-items:center;gap:2px;margin:0 auto 0 14px}
+.nl{position:relative;border:0;background:transparent;border-radius:6px;padding:8px 12px;font-size:1rem;font-weight:500;color:var(--fg)}
+.nl:hover{background:var(--tag)}
+.nl.on{font-weight:700}
+.nl.on::after{content:"";position:absolute;left:12px;right:12px;bottom:1px;height:3px;border-radius:2px;background:var(--accent)}
+.sp{left:0;right:auto;min-width:180px}
+.pt{font-size:1.25rem;margin:0 0 14px}
+@media (max-width:480px){.logo{font-size:1.45rem}.nv{margin-left:6px}.nl{padding:8px 8px}.nl.on::after{left:8px;right:8px}.hw{gap:8px}.item{grid-template-columns:1fr;gap:6px}.w{grid-template-columns:52px 34px 1fr auto;gap:8px;padding:10px}}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
-<header><div class="hw"><div><h1>Расписание занятий · БИ-02</h1><div class="sub">Бизнес-информатика</div></div>
-<button class="sw" id="theme" role="switch" aria-checked="false" aria-label="Тёмная тема"><i id="knob">☀️</i></button></div></header>
-<div class="tabs"><div class="tw"><button data-tab="schedule" class="on">Расписание</button><button data-tab="weather">Погода</button></div></div>
+<header><div class="hw">
+<a class="logo" id="logo" href="#schedule">YASIK</a>
+<nav class="nv">
+<div class="menu"><button class="nl" id="study" aria-haspopup="true" aria-expanded="false">Учеба ▾</button>
+<div class="pop sp" id="spop" hidden><button data-tab="schedule">Расписание</button></div></div>
+<button class="nl" id="wnav">Погода</button>
+</nav>
+<button class="sw" id="theme" role="switch" aria-checked="false" aria-label="Тёмная тема"><i id="knob">☀️</i></button>
+</div></header>
 <main>
 <div id="tab-schedule">
+<h2 class="pt">Расписание занятий · БИ-02</h2>
 <div class="nav"><button id="prev">‹</button><span class="r" id="range"></span><button id="next">›</button><div class="menu"><button id="now" aria-haspopup="true" aria-expanded="false">Сегодня ▾</button>
 <div class="pop" id="pop" hidden>
 <button data-a="today">Сегодня</button>
@@ -81,8 +93,8 @@ button:hover{border-color:var(--accent)}
 <div id="list"></div>
 </div>
 <div id="tab-weather" hidden>
-<div class="wh"><div><div class="wc" id="wcity">Москва</div><div class="m" id="wsub">Прогноз на 14 дней</div></div>
-<div class="menu"><button id="cbtn">Город ▾</button><div class="pop cp" id="cpop" hidden><input id="cq" placeholder="Название города" autocomplete="off"><div id="cres"></div></div></div></div>
+<div class="srch"><input id="cq" type="search" placeholder="Введите любой город…" autocomplete="off" enterkeyhint="search"><button id="cgo">Найти</button><div class="pop sres" id="cres" hidden></div></div>
+<div class="wh"><div><div class="wc" id="wcity">Москва</div><div class="m" id="wsub">Прогноз на 14 дней</div></div></div>
 <div id="wlist"></div>
 <p class="src">Данные: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></p>
 </div>
@@ -163,13 +175,21 @@ mq.addEventListener("change",paintTheme);paintTheme();
 /* ---- вкладки ---- */
 let wTime=0;
 function showTab(t){
-  for(const b of document.querySelectorAll(".tabs button"))b.classList.toggle("on",b.dataset.tab===t);
+  document.getElementById("study").classList.toggle("on",t==="schedule");
+  document.getElementById("wnav").classList.toggle("on",t==="weather");
   document.getElementById("tab-schedule").hidden=t!=="schedule";
   document.getElementById("tab-weather").hidden=t!=="weather";
   if(t==="weather"&&Date.now()-wTime>1800000)loadWeather();
   try{history.replaceState(null,"","#"+t)}catch(e){}
 }
-for(const b of document.querySelectorAll(".tabs button"))b.onclick=()=>showTab(b.dataset.tab);
+const spop=document.getElementById("spop"),study=document.getElementById("study");
+const closeStudy=()=>{spop.hidden=true;study.setAttribute("aria-expanded","false")};
+study.onclick=e=>{e.stopPropagation();closeMenu();cres.hidden=true;spop.hidden=!spop.hidden;study.setAttribute("aria-expanded",String(!spop.hidden))};
+spop.onclick=e=>{const b=e.target.closest("button");if(!b)return;closeStudy();showTab(b.dataset.tab)};
+document.getElementById("wnav").onclick=()=>{closeStudy();showTab("weather")};
+document.getElementById("logo").onclick=e=>{e.preventDefault();closeStudy();showTab("schedule")};
+document.addEventListener("click",closeStudy);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeStudy()});
 
 /* ---- погода (Open-Meteo, до 14 дней) ---- */
 let CITY={name:"Москва",lat:55.7558,lon:37.6173};
@@ -206,30 +226,42 @@ async function loadWeather(){
   }
 }
 
-/* ---- выбор города ---- */
-const cpop=document.getElementById("cpop"),cq=document.getElementById("cq"),cres=document.getElementById("cres");
-let found=[],timer;
-document.getElementById("cbtn").onclick=e=>{e.stopPropagation();cpop.hidden=!cpop.hidden;if(!cpop.hidden){cq.value="";cres.innerHTML="";cq.focus()}};
-cpop.onclick=e=>e.stopPropagation();
-cq.oninput=()=>{
-  clearTimeout(timer); const q=cq.value.trim();
-  if(q.length<2){cres.innerHTML="";return}
-  timer=setTimeout(async()=>{
-    try{
-      const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language=ru&format=json&name="+encodeURIComponent(q));
-      found=(await r.json()).results||[];
-      cres.innerHTML=found.length?found.map((c,i)=>'<button data-i="'+i+'">'+esc(c.name)+'<div class="m">'+esc([c.admin1,c.country].filter(Boolean).join(", "))+'</div></button>').join(""):'<div class="empty" style="padding:8px">Ничего не найдено</div>';
-    }catch(e){cres.innerHTML='<div class="empty" style="padding:8px">Ошибка поиска</div>'}
-  },350);
-};
-cres.onclick=e=>{
-  const b=e.target.closest("button"); if(!b)return; const c=found[+b.dataset.i];
-  CITY={name:c.name,lat:c.latitude,lon:c.longitude};
-  try{localStorage.setItem("city",JSON.stringify(CITY))}catch(err){}
-  cpop.hidden=true; loadWeather();
-};
-document.addEventListener("click",()=>{cpop.hidden=true});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")cpop.hidden=true});
+/* ---- поиск города ---- */
+const cq=document.getElementById("cq"),cres=document.getElementById("cres");
+let found=[],timer,seq=0;
+async function geocode(q){
+  try{
+    const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language=ru&format=json&name="+encodeURIComponent(q));
+    if(!r.ok)throw new Error(r.status);
+    return((await r.json()).results||[]).map(c=>({name:c.name,sub:[c.admin1,c.country].filter(Boolean).join(", "),lat:c.latitude,lon:c.longitude}));
+  }catch(e){ // запасной источник, если первый недоступен
+    const r=await fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=ru&q="+encodeURIComponent(q));
+    if(!r.ok)throw new Error(r.status);
+    return(await r.json()).map(c=>({name:c.name||c.display_name.split(",")[0],sub:c.display_name,lat:+c.lat,lon:+c.lon}));
+  }
+}
+async function search(){
+  const q=cq.value.trim(); if(q.length<2){cres.hidden=true;found=[];return}
+  const my=++seq; cres.hidden=false; cres.innerHTML='<div class="empty" style="padding:8px">Ищу…</div>';
+  try{
+    const res=await geocode(q); if(my!==seq)return; found=res;
+    cres.innerHTML=res.length?res.map((c,i)=>'<button data-i="'+i+'">'+esc(c.name)+'<div class="m">'+esc(c.sub)+'</div></button>').join(""):'<div class="empty" style="padding:8px">Город не найден. Попробуйте другое название.</div>';
+  }catch(e){
+    if(my===seq){found=[];cres.innerHTML='<div class="empty" style="padding:8px">Не удалось выполнить поиск. Проверьте интернет и попробуйте позже.</div>'}
+  }
+}
+function pick(c){
+  CITY={name:c.name,lat:c.lat,lon:c.lon};
+  try{localStorage.setItem("city",JSON.stringify(CITY))}catch(e){}
+  cres.hidden=true; cq.value=""; loadWeather();
+}
+async function go(){clearTimeout(timer);await search();if(found.length&&cres.querySelector("button"))pick(found[0])}
+cq.oninput=()=>{clearTimeout(timer);timer=setTimeout(search,300)};
+cq.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();go()}};
+document.getElementById("cgo").onclick=go;
+cres.onclick=e=>{const b=e.target.closest("button");if(b)pick(found[+b.dataset.i])};
+document.addEventListener("click",e=>{if(!e.target.closest(".srch"))cres.hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")cres.hidden=true});
 
 render(); setInterval(render,60000); load(); setInterval(load,600000);
 showTab(location.hash==="#weather"?"weather":"schedule");
