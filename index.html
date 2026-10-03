@@ -9,12 +9,88 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1420;--fg:#e6eaf0;--card:#17202f;--muted:#9aa6b6;--line:#26334a;--head:#0a101a;--accent:#8fb0e6;--now:#4cd08e;--nowbg:#10281e;--tag:#26334a;--badgefg:#0a101a}}
 :root[data-theme="dark"]{--bg:#0e1420;--fg:#e6eaf0;--card:#17202f;--muted:#9aa6b6;--line:#26334a;--head:#0a101a;--accent:#8fb0e6;--now:#4cd08e;--nowbg:#10281e;--tag:#26334a;--badgefg:#0a101a}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.4}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.4;min-height:100vh;display:flex;flex-direction:column}
 header{background:var(--card);color:var(--fg);border-bottom:1px solid var(--line);padding:12px 16px}
-.hw{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:680px;margin:0 auto}
+.hw{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%}
+header{padding:12px clamp(16px,3vw,48px)}
 h1{font-size:1.15rem;font-weight:600;letter-spacing:.02em;margin:0}
 .sub{font-size:.8rem;opacity:.7;margin-top:2px}
-main{max-width:680px;margin:0 auto;padding:16px 16px 40px}
+main{flex:1;width:100%;box-sizing:border-box;margin:0;padding:16px clamp(16px,3vw,48px) 32px}
+#list,#wlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;align-items:start}
+#list .day{margin-bottom:0}
+#wlist .w{margin-bottom:0}
+#wlist .empty,#list .empty{grid-column:1/-1}
+footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));text-align:center}
+.soc{display:flex;justify-content:center;gap:14px}
+.soc a{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--fg);background:var(--tag);transition:transform .15s,border-color .15s,color .15s}
+.soc a:hover{transform:translateY(-2px);border-color:var(--accent);color:var(--accent)}
+.soc svg{width:20px;height:20px;fill:currentColor}
+.uni{color:var(--muted);font-size:.9rem;margin:0 0 14px}
+.fnote{margin-top:12px;font-size:.85rem;color:var(--muted)}
+.fnote a{color:var(--accent);text-decoration:none}
+.fnote a:hover{text-decoration:underline}
+.fnote button{border:0;background:transparent;padding:0;color:var(--muted);font-size:.85rem;text-decoration:underline;cursor:pointer}
+.ck{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:50;width:min(340px,calc(100vw - 32px));box-sizing:border-box;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.28);padding:14px 16px;animation:ckin .35s ease-out}
+.ck[hidden]{display:none}
+@keyframes ckin{from{opacity:0;transform:translateY(16px)}}
+.ck b{display:block;margin-bottom:4px}
+.ck p{margin:0 0 12px;font-size:.85rem;color:var(--muted)}
+.ckb{display:flex;gap:8px;flex-wrap:wrap}
+.ckb button{flex:1;padding:8px 10px;font-size:.88rem;white-space:nowrap}
+.ckb .pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
+.w{cursor:pointer;transition:border-color .15s}
+.w:hover{border-color:var(--accent)}
+.wx.open{grid-column:1/-1}
+.wx.open .w{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.wdet{margin-top:8px;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;animation:fadein .25s}
+.wdet[hidden]{display:none}
+@keyframes fadein{from{opacity:0;transform:translateY(-6px)}}
+.hero{position:relative;overflow:hidden;color:#fff;padding:18px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hero>*{position:relative;z-index:1}
+.hero .big{font-size:3.6rem;line-height:1;animation:flt 4s ease-in-out infinite}
+@keyframes flt{50%{transform:translateY(-6px)}}
+.hero .ht{flex:1;min-width:180px}
+.hero .hd{font-size:.85rem;opacity:.9;text-transform:capitalize}
+.hero .hc{font-size:1.25rem;font-weight:700}
+.hero .hs{opacity:.9;font-size:.9rem}
+.hero .hT{font-size:2.4rem;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.hero .hT small{display:block;font-size:1rem;font-weight:500;opacity:.85}
+.fx{position:absolute;inset:0;z-index:0;opacity:.55;pointer-events:none}
+.g-clear{background:linear-gradient(135deg,#1f6fd6,#5fb8ff)}
+.g-part{background:linear-gradient(135deg,#3b78c4,#8fb8de)}
+.g-cloud{background:linear-gradient(135deg,#566b82,#8c9db0)}
+.g-fog{background:linear-gradient(135deg,#6f7c88,#a7b1ba)}
+.g-rain{background:linear-gradient(135deg,#2c3e55,#4f6d8e)}
+.g-snow{background:linear-gradient(135deg,#4d6e96,#9db8d4)}
+.g-storm{background:linear-gradient(135deg,#2a2440,#55497a)}
+.g-clear .fx{background:radial-gradient(circle at 88% 20%,rgba(255,235,150,.9),transparent 42%);animation:glow 5s ease-in-out infinite}
+@keyframes glow{50%{opacity:.25}}
+.g-rain .fx,.g-storm .fx{background-image:linear-gradient(105deg,transparent 45%,rgba(255,255,255,.55) 50%,transparent 55%);background-size:14px 34px;animation:rain .7s linear infinite}
+@keyframes rain{to{background-position:-14px 34px}}
+.g-snow .fx{background-image:radial-gradient(circle,#fff 1.6px,transparent 2.2px);background-size:26px 26px;animation:snow 6s linear infinite}
+@keyframes snow{to{background-position:13px 26px}}
+.g-cloud .fx,.g-part .fx,.g-fog .fx{background:radial-gradient(ellipse at 20% 120%,rgba(255,255,255,.35),transparent 55%),radial-gradient(ellipse at 85% 0%,rgba(255,255,255,.25),transparent 50%)}
+@media (prefers-reduced-motion:reduce){.fx,.hero .big{animation:none!important}}
+.dbody{padding:14px 16px 16px}
+.tips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tp{background:var(--tag);border-radius:99px;padding:6px 12px;font-size:.88rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:14px}
+.st{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.st .k{color:var(--muted);font-size:.78rem}
+.st .v{font-weight:700;font-size:1.05rem;font-variant-numeric:tabular-nums}
+.st .s{color:var(--muted);font-size:.8rem}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-bottom:14px}
+.box{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.box h4{margin:0 0 6px;font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.box svg{display:block;width:100%;height:auto}
+.hr{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.hh{flex:none;width:54px;text-align:center;border:1px solid var(--line);border-radius:8px;padding:6px 2px;font-variant-numeric:tabular-nums}
+.hh.cur{border-color:var(--now);background:var(--nowbg)}
+.hh .h1{font-size:.75rem;color:var(--muted)}
+.hh .h2{font-size:1.25rem}
+.hh .h3{font-weight:600;font-size:.9rem}
+.hh .h4{font-size:.7rem;color:var(--muted)}
+.tx{fill:var(--muted);font-size:10px}
 .nav{display:flex;gap:8px;align-items:center;margin-bottom:14px}
 .nav .r{flex:1;text-align:center;font-weight:600}
 button{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:7px 14px;font-size:.95rem;cursor:pointer}
@@ -43,9 +119,10 @@ button:hover{border-color:var(--accent)}
 .pop button{display:block;width:100%;text-align:left;border:0;border-radius:6px;padding:10px 12px;background:transparent}
 .pop button:hover{background:var(--tag)}
 .dp{position:absolute;right:0;top:100%;width:0;height:0;opacity:0;border:0;padding:0}
-.sw{position:relative;width:56px;height:30px;padding:0;border-radius:99px;border:1px solid var(--line);background:var(--tag);flex:none}
-.sw i{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-size:14px;font-style:normal;transition:transform .2s}
-.sw[aria-checked="true"] i{transform:translateX(26px)}
+.sw{position:relative;width:34px;height:18px;padding:0;border-radius:99px;border:1px solid var(--line);background:var(--tag);flex:none;opacity:.8}
+.sw:hover{opacity:1}
+.sw i{position:absolute;top:1px;left:1px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:8px;font-style:normal;transition:transform .2s}
+.sw[aria-checked="true"] i{transform:translateX(16px)}
 .wh{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
 .wc{font-size:1.2rem;font-weight:700}
 .w{display:grid;grid-template-columns:64px 40px 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
@@ -82,7 +159,8 @@ button:hover{border-color:var(--accent)}
 </div></header>
 <main>
 <div id="tab-schedule">
-<h2 class="pt">Расписание занятий · БИ-02</h2>
+<h2 class="pt" style="margin-bottom:4px">Расписание занятий · БИ-02</h2>
+<div class="uni">🎓 МГУ им. М.В. Ломоносова (ВШГА)</div>
 <div class="nav"><button id="prev">‹</button><span class="r" id="range"></span><button id="next">›</button><div class="menu"><button id="now" aria-haspopup="true" aria-expanded="false">Сегодня ▾</button>
 <div class="pop" id="pop" hidden>
 <button data-a="today">Сегодня</button>
@@ -99,6 +177,16 @@ button:hover{border-color:var(--accent)}
 <p class="src">Данные: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></p>
 </div>
 </main>
+<footer>
+<div class="soc">
+<a href="https://www.instagram.com/kulikov_yar/" id="s-ig" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.3-3.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></a>
+<a href="https://t.me/iz_yarika" id="s-tg" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram"><svg viewBox="0 0 24 24"><path d="M21.5 3.5 2.8 10.7c-.9.4-.9 1.1-.2 1.3l4.7 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8l3-14.4c.3-1.3-.5-1.9-1.6-1.4z"/></svg></a>
+<a href="https://vk.ru/id235586983" id="s-vk" target="_blank" rel="noopener" aria-label="ВКонтакте" title="ВКонтакте"><svg viewBox="0 0 24 24"><text x="12" y="16.5" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="12.5">VK</text></svg></a>
+<a href="https://www.facebook.com/share/19PTfoTcHF/?mibextid=wwXIfr" id="s-fb" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.5V11H7v4h2.5v6h4v-6H16l.5-4h-3V9c0-.6.4-1 1-1z"/></svg></a>
+</div>
+<div class="fnote">Контакты: <a href="mailto:yarik_2004_kulikov@mail.ru">yarik_2004_kulikov@mail.ru</a> · <button id="ck-set" type="button">Настройки cookie</button></div>
+</footer>
+<div class="ck" id="ck" role="dialog" aria-label="Согласие на cookie" hidden><b>🍪 Мы используем cookie</b><p>Сайт может сохранять в браузере выбранную тему и город для погоды, чтобы не настраивать их заново. Вы можете согласиться или оставить только необходимое.</p><div class="ckb"><button class="pri" id="ck-yes" type="button">Принять</button><button id="ck-no" type="button">Только необходимые</button></div></div>
 <script>
 let DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-09-29": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 405"}], "2026-10-01": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-02": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 415"}], "2026-10-03": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 316"}, {"time": "12:45–15:55", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 309"}], "2026-10-04": [], "2026-10-05": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-10-06": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 416"}], "2026-10-08": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-09": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 316"}], "2026-10-10": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 416"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 405"}], "2026-10-11": [], "2026-10-12": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-13": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-15": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-16": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-17": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-18": [], "2026-10-19": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-20": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-22": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-23": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-24": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-25": [], "2026-10-26": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "note": "зачет"}], "2026-10-27": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "note": "ИЗ"}], "2026-10-29": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "note": "ИЗ"}], "2026-10-30": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "note": "зачет"}], "2026-10-31": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "note": "ИЗ"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-11-01": [], "_weekly": {"2": [{"time": "15:10–16:40", "title": "Язык программирования SQL", "teacher": "Барашкин И.С.", "place": "Второй учебный корпус, ауд. П-6"}, {"time": "17:00–18:30", "title": "Основы программирования и анализа данных на Python", "teacher": "Горохов О.Е.", "place": "ЯндексТелемост"}, {"time": "19:00–22:10", "title": "Теория принятия решений", "teacher": "Дивина Т.В.", "place": "ауд. 309"}]}};
 const DN=["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"];
@@ -169,7 +257,7 @@ const root=document.documentElement, tbtn=document.getElementById("theme");
 const mq=matchMedia("(prefers-color-scheme: dark)");
 const isDark=()=>root.dataset.theme?root.dataset.theme==="dark":mq.matches;
 function paintTheme(){const d=isDark();tbtn.setAttribute("aria-checked",String(d));tbtn.title=d?"Включить светлую тему":"Включить тёмную тему";document.getElementById("knob").textContent=d?"🌙":"☀️"}
-tbtn.onclick=()=>{const n=isDark()?"light":"dark";root.dataset.theme=n;try{localStorage.setItem("theme",n)}catch(e){}paintTheme()};
+tbtn.onclick=()=>{const n=isDark()?"light":"dark";root.dataset.theme=n;if(canSave())try{localStorage.setItem("theme",n)}catch(e){}paintTheme()};
 mq.addEventListener("change",paintTheme);paintTheme();
 
 /* ---- вкладки ---- */
@@ -206,25 +294,121 @@ async function loadWeather(){
   box.innerHTML='<div class="empty">Загружаю прогноз…</div>';
   try{
     const url="https://api.open-meteo.com/v1/forecast?latitude="+CITY.lat+"&longitude="+CITY.lon+
-      "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max"+
+      "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max,apparent_temperature_max,apparent_temperature_min,sunrise,sunset,uv_index_max,precipitation_hours,wind_gusts_10m_max,wind_direction_10m_dominant,daylight_duration"+
+      "&hourly=temperature_2m,weather_code,precipitation_probability,relative_humidity_2m,pressure_msl"+
       "&timezone=auto&forecast_days=14&wind_speed_unit=ms";
     const r=await fetch(url); if(!r.ok)throw new Error(r.status);
-    const d=(await r.json()).daily;
+    const J=await r.json(); const d=J.daily; DW=d; HW=J.hourly; UO=J.utc_offset_seconds||0;
     box.innerHTML=d.time.map((s,i)=>{
       const dt=new Date(s+"T00:00:00"), [ic,tx]=wmo(d.weather_code[i]);
       const wd=dt.toLocaleDateString("ru-RU",{weekday:"short"});
       const p=d.precipitation_probability_max[i], mm=d.precipitation_sum[i];
       const info=[p!=null?"💧 "+p+"%":"", mm>0?mm.toFixed(1)+" мм":"", "💨 "+Math.round(d.wind_speed_10m_max[i])+" м/с"].filter(Boolean).join(" · ");
-      return '<div class="w'+(i?'':' today')+'"><div class="wd"><b>'+wd[0].toUpperCase()+wd.slice(1)+'</b><span>'+dt.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})+'</span></div>'+
+      return '<div class="wx"><div class="w'+(i?'':' today')+'" data-i="'+i+'" tabindex="0" role="button" aria-expanded="false"><div class="wd"><b>'+wd[0].toUpperCase()+wd.slice(1)+'</b><span>'+dt.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})+'</span></div>'+
         '<div class="wi">'+ic+'</div><div><div class="ti">'+tx+'</div><div class="m">'+info+'</div></div>'+
-        '<div class="wtemp"><b>'+tt(d.temperature_2m_max[i])+'</b><span>'+tt(d.temperature_2m_min[i])+'</span></div></div>';
+        '<div class="wtemp"><b>'+tt(d.temperature_2m_max[i])+'</b><span>'+tt(d.temperature_2m_min[i])+'</span></div></div><div class="wdet" hidden></div></div>';
     }).join("");
     wTime=Date.now();
-    document.getElementById("wsub").textContent="Прогноз на "+d.time.length+" дн. · обновлено в "+new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
+    document.getElementById("wsub").textContent="Прогноз на "+d.time.length+" дн. · нажмите на день, чтобы увидеть подробности · обновлено в "+new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
   }catch(e){
     box.innerHTML='<div class="empty">Не удалось загрузить прогноз. Проверьте интернет и попробуйте позже.</div>';
   }
 }
+
+/* ---- подробности дня ---- */
+let HW=null,DW=null,UO=0;
+const DIRS=["С","СВ","В","ЮВ","Ю","ЮЗ","З","СЗ"];
+const dirName=a=>DIRS[Math.round(a/45)%8];
+const mins=s=>(+s.slice(11,13))*60+(+s.slice(14,16));
+const hm=s=>s.slice(11,16);
+const nowMin=()=>{const x=new Date(Date.now()+UO*1000);return x.getUTCHours()*60+x.getUTCMinutes()};
+const uvInfo=u=>u<3?"низкий":u<6?"умеренный":u<8?"высокий":u<11?"очень высокий":"экстремальный";
+function grad(c){return c===0?"g-clear":c<=2?"g-part":c===3?"g-cloud":c<=48?"g-fog":c<=67?"g-rain":c<=77?"g-snow":c<=82?"g-rain":c<=86?"g-snow":"g-storm"}
+function tips(i){
+  const d=DW,mx=d.temperature_2m_max[i],mn=d.temperature_2m_min[i],p=d.precipitation_probability_max[i]||0,mm=d.precipitation_sum[i]||0,w=d.wind_speed_10m_max[i]||0,uv=d.uv_index_max[i]||0,c=d.weather_code[i],t=[];
+  t.push(mx>=25?["🩳","Жарко — лёгкая одежда и вода с собой"]:mx>=18?["👕","Тепло — хватит футболки, на вечер кофта"]:mx>=10?["🧥","Прохладно — возьмите куртку"]:mx>=0?["🧣","Холодно — шапка, шарф и тёплая куртка"]:["🥶","Мороз — одевайтесь по-зимнему"]);
+  if(c>=95)t.push(["⚡","Возможна гроза — лучше переждать в помещении"]);
+  else if(p>=50||mm>=1)t.push(["☂️","Вероятны осадки — зонт пригодится"]);
+  if((c>=71&&c<=77)||c===85||c===86)t.push(["⛄","Идёт снег — обувь потеплее"]);
+  if(w>=10)t.push(["💨","Сильный ветер — капюшон не помешает"]);
+  if(uv>=6)t.push(["🕶️","Высокий УФ — очки и крем от солнца"]);
+  if(mn<=0&&mx>0)t.push(["🧊","Ночью возможен гололёд"]);
+  if(c<=1&&p<30&&mx>=8&&mx<27)t.push(["🚶","Отличный день для прогулки"]);
+  return t.map(x=>'<span class="tp">'+x[0]+' '+x[1]+'</span>').join("");
+}
+function chart(ts){
+  const W=600,Ht=150,pl=22,pr=22,pt=24,pb=30,n=ts.length;
+  const mn=Math.min(...ts),mx=Math.max(...ts),rg=(mx-mn)||1;
+  const X=i=>pl+i*(W-pl-pr)/(n-1),Y=v=>pt+(mx-v)*(Ht-pt-pb)/rg;
+  const P=ts.map((v,i)=>X(i).toFixed(1)+","+Y(v).toFixed(1));
+  let s='<svg viewBox="0 0 '+W+' '+Ht+'" role="img" aria-label="График температуры по часам">';
+  s+='<path d="M'+P.join(" L")+' L'+X(n-1).toFixed(1)+','+(Ht-pb)+' L'+X(0).toFixed(1)+','+(Ht-pb)+' Z" style="fill:var(--accent);fill-opacity:.14"/>';
+  s+='<polyline points="'+P.join(" ")+'" fill="none" style="stroke:var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+  for(let i=0;i<n;i+=3)s+='<text class="tx" x="'+X(i).toFixed(1)+'" y="'+(Ht-8)+'" text-anchor="middle">'+pad(i)+'</text>';
+  [[ts.indexOf(mx),mx,-9],[ts.indexOf(mn),mn,16]].forEach(a=>{s+='<circle cx="'+X(a[0]).toFixed(1)+'" cy="'+Y(a[1]).toFixed(1)+'" r="4" style="fill:var(--accent)"/><text x="'+X(a[0]).toFixed(1)+'" y="'+(Y(a[1])+a[2]).toFixed(1)+'" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--fg)">'+tt(a[1])+'</text>'});
+  return s+'</svg>';
+}
+function sunArc(i){
+  const d=DW,rise=mins(d.sunrise[i]),set=mins(d.sunset[i]),f=(nowMin()-rise)/(set-rise),arc='M20 90 A100 70 0 0 1 220 90';
+  const dl=Math.round((d.daylight_duration[i]||0)/60);
+  let s='<svg viewBox="0 0 240 124" role="img" aria-label="Восход и закат"><line x1="8" y1="90" x2="232" y2="90" style="stroke:var(--line)" stroke-width="1.5"/><path d="'+arc+'" fill="none" style="stroke:var(--line)" stroke-width="3" stroke-dasharray="3 5" stroke-linecap="round"/>';
+  if(i===0){const ff=Math.max(0,Math.min(1,f));s+='<path d="'+arc+'" fill="none" stroke="#f5a623" stroke-width="3" stroke-linecap="round" pathLength="100" stroke-dasharray="'+(ff*100).toFixed(1)+' 200"/>'}
+  if(i===0&&f>=0&&f<=1){const th=Math.PI*(1-f),cx=(120+100*Math.cos(th)).toFixed(1),cy=(90-70*Math.sin(th)).toFixed(1);s+='<circle cx="'+cx+'" cy="'+cy+'" r="10" fill="#f5a623" fill-opacity=".3"/><circle cx="'+cx+'" cy="'+cy+'" r="5.5" fill="#f5a623"/>'}
+  else if(i!==0)s+='<circle cx="120" cy="20" r="5.5" fill="#f5a623" fill-opacity=".55"/>';
+  s+='<text class="tx" x="120" y="82" text-anchor="middle">день: '+Math.floor(dl/60)+' ч '+(dl%60)+' мин</text>';
+  s+='<text class="tx" x="4" y="110" font-size="11">🌅 '+hm(d.sunrise[i])+'</text><text class="tx" x="236" y="110" text-anchor="end" font-size="11">🌇 '+hm(d.sunset[i])+'</text>';
+  return s+'</svg>';
+}
+function detail(i){
+  const d=DW,h=HW,b=i*24,idx=[...Array(24).keys()].map(k=>b+k);
+  const code=d.weather_code[i],wm=wmo(code),dt=new Date(d.time[i]+"T00:00:00");
+  const ts=idx.map(j=>h.temperature_2m[j]);
+  const hum=Math.round(idx.reduce((a,j)=>a+(h.relative_humidity_2m[j]||0),0)/24);
+  const pr=Math.round(idx.reduce((a,j)=>a+(h.pressure_msl[j]||0),0)/24*0.750062);
+  const rise=mins(d.sunrise[i]),set=mins(d.sunset[i]),curH=i===0?Math.floor(nowMin()/60):-1;
+  const p=d.precipitation_probability_max[i],mm=d.precipitation_sum[i]||0,uv=d.uv_index_max[i]||0,ph=Math.round(d.precipitation_hours[i]||0);
+  const T=(e,l,v,s)=>'<div class="st"><div class="k">'+e+' '+l+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>';
+  const hours=idx.map((j,k)=>{const c=h.weather_code[j];let e=wmo(c)[0];if(c<=1&&(k*60+30<rise||k*60+30>=set))e="🌙";const pp=h.precipitation_probability[j];
+    return '<div class="hh'+(k===curH?' cur':'')+'"><div class="h1">'+pad(k)+':00</div><div class="h2">'+e+'</div><div class="h3">'+tt(h.temperature_2m[j])+'</div><div class="h4">'+(pp>0?'💧'+pp+'%':'&nbsp;')+'</div></div>'}).join("");
+  return '<div class="hero '+grad(code)+'"><div class="fx"></div><div class="big">'+wm[0]+'</div><div class="ht"><div class="hd">'+dt.toLocaleDateString("ru-RU",{weekday:"long",day:"numeric",month:"long"})+'</div><div class="hc">'+wm[1]+'</div><div class="hs">Ощущается как '+tt(d.apparent_temperature_max[i])+' днём</div></div><div class="hT">'+tt(d.temperature_2m_max[i])+'<small>ночью '+tt(d.temperature_2m_min[i])+'</small></div></div>'+
+  '<div class="dbody"><div class="tips">'+tips(i)+'</div><div class="stats">'+
+  T("🌡️","Ощущается",tt(d.apparent_temperature_max[i])+" / "+tt(d.apparent_temperature_min[i]),"днём / ночью")+
+  T("💧","Осадки",mm.toFixed(1)+" мм",(p!=null?"вероятность "+p+"%":"")+(ph>0?" · "+ph+" ч":""))+
+  T("💨","Ветер",Math.round(d.wind_speed_10m_max[i]||0)+" м/с","порывы до "+Math.round(d.wind_gusts_10m_max[i]||0)+" · ветер "+dirName(d.wind_direction_10m_dominant[i]||0))+
+  T("☀️","УФ-индекс",Math.round(uv),uvInfo(uv))+
+  T("💦","Влажность",hum+"%","в среднем за день")+
+  T("🧭","Давление",pr,"мм рт. ст.")+
+  '</div><div class="two"><div class="box"><h4>Температура по часам</h4>'+chart(ts)+'</div><div class="box"><h4>Солнце</h4>'+sunArc(i)+'</div></div><div class="box"><h4>Почасовой прогноз</h4><div class="hr">'+hours+'</div></div></div>';
+}
+const wl=document.getElementById("wlist");
+function toggleDay(w){
+  const wx=w.parentElement,det=wx.querySelector(".wdet"),i=+w.dataset.i,open=!wx.classList.contains("open");
+  wl.querySelectorAll(".wx.open").forEach(x=>{x.classList.remove("open");x.querySelector(".wdet").hidden=true;x.querySelector(".w").setAttribute("aria-expanded","false")});
+  if(open){
+    if(!det.dataset.ok){det.innerHTML=detail(i);det.dataset.ok="1"}
+    wx.classList.add("open");det.hidden=false;w.setAttribute("aria-expanded","true");
+    setTimeout(()=>wx.scrollIntoView({behavior:"smooth",block:"nearest"}),60);
+  }
+}
+wl.onclick=e=>{const w=e.target.closest(".w");if(w)toggleDay(w)};
+wl.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){const w=e.target.closest(".w");if(w){e.preventDefault();toggleDay(w)}}};
+
+/* ---- cookie ---- */
+let CONSENT=null; try{CONSENT=localStorage.getItem("consent")}catch(e){}
+const canSave=()=>CONSENT==="all";
+const ck=document.getElementById("ck");
+function setConsent(v){
+  CONSENT=v; ck.hidden=true;
+  try{
+    localStorage.setItem("consent",v);
+    if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); }
+    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); }
+  }catch(e){}
+}
+document.getElementById("ck-yes").onclick=()=>setConsent("all");
+document.getElementById("ck-no").onclick=()=>setConsent("necessary");
+document.getElementById("ck-set").onclick=()=>{ck.hidden=false};
+if(!CONSENT)ck.hidden=false;
 
 /* ---- поиск города ---- */
 const cq=document.getElementById("cq"),cres=document.getElementById("cres");
@@ -252,7 +436,7 @@ async function search(){
 }
 function pick(c){
   CITY={name:c.name,lat:c.lat,lon:c.lon};
-  try{localStorage.setItem("city",JSON.stringify(CITY))}catch(e){}
+  if(canSave())try{localStorage.setItem("city",JSON.stringify(CITY))}catch(e){}
   cres.hidden=true; cq.value=""; loadWeather();
 }
 async function go(){clearTimeout(timer);await search();if(found.length&&cres.querySelector("button"))pick(found[0])}
