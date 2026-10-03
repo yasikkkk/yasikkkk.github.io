@@ -108,7 +108,6 @@ button:hover{border-color:var(--accent)}
 .wl{font-size:1rem;opacity:.8}
 .clk{font-size:clamp(2.4rem,8vw,4.2rem);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.02em;line-height:1.05;margin-top:12px}
 .clk i{font-style:normal;opacity:.6}
-.clk small{font-size:.38em;opacity:.7;font-weight:500;margin-left:4px}
 .dt{font-size:1.05rem;font-weight:500;opacity:.9}
 .dt::first-letter{text-transform:uppercase}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;margin-top:12px}
@@ -125,6 +124,22 @@ button:hover{border-color:var(--accent)}
 .tl{display:grid;gap:6px;margin-top:6px}
 .tl div{display:flex;gap:8px;align-items:center;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tl span.tm{font-variant-numeric:tabular-nums;font-weight:600;color:var(--muted)}
+/* ---- модальные окна ---- */
+.mdl{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(10,16,26,.62);animation:fadein .2s}
+.mdl[hidden]{display:none}
+.mb{width:100%;max-width:440px;max-height:calc(100vh - 32px);display:flex;flex-direction:column;box-sizing:border-box;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.4);padding:24px}
+.mb.wide{max-width:700px}
+.mb h3{margin:0 0 10px;font-size:1.15rem}
+.mb p{margin:0 0 10px;color:var(--muted);font-size:.92rem;line-height:1.5}
+.mb .url{display:block;word-break:break-all;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--tag);color:var(--fg);font-size:.85rem;margin-bottom:18px}
+.mb .acts{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
+.mb .acts button{min-width:110px}
+.mb .acts .pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
+.tbody{overflow:auto;margin:6px -8px 14px 0;padding-right:12px;border-top:1px solid var(--line);padding-top:14px}
+.tbody h4{margin:14px 0 4px;font-size:.95rem}
+.tbody h4:first-child{margin-top:0}
+.tbody p{margin:0 0 6px}
+.tdate{color:var(--muted);font-size:.82rem;margin-top:14px}
 /* ---- подвал и cookie ---- */
 footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));text-align:center}
 .soc{display:flex;justify-content:center;gap:14px}
@@ -209,7 +224,7 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 <section class="sky s-day" id="sky">
 <div class="gr"><span id="gr-t">Добрый день</span></div>
 <div class="wl" data-tr="welcome">Добро пожаловать на YASIK</div>
-<div class="clk"><span id="c-h">00</span><i>:</i><span id="c-m">00</span><small>:<span id="c-s">00</span></small></div>
+<div class="clk"><span id="c-h">00</span><i>:</i><span id="c-m">00</span></div>
 <div class="dt" id="dt"></div>
 </section>
 <div class="cards">
@@ -261,15 +276,38 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 <a href="https://vk.ru/id235586983" id="s-vk" target="_blank" rel="noopener" aria-label="VK" title="VK"><svg viewBox="0 0 24 24"><text x="12" y="16.5" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="12.5">VK</text></svg></a>
 <a href="https://www.facebook.com/share/19PTfoTcHF/?mibextid=wwXIfr" id="s-fb" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.5V11H7v4h2.5v6h4v-6H16l.5-4h-3V9c0-.6.4-1 1-1z"/></svg></a>
 </div>
-<div class="fnote"><span data-tr="contacts">Контакты:</span> <a href="mailto:yarik_2004_kulikov@mail.ru">yarik_2004_kulikov@mail.ru</a> · <button id="ck-set" type="button" data-tr="ckSet">Настройки cookie</button></div>
+<div class="fnote"><span data-tr="contacts">Контакты:</span> <a href="mailto:yarik_2004_kulikov@mail.ru">yarik_2004_kulikov@mail.ru</a> · <button id="terms-open" type="button" data-tr="termsLink">Пользовательское соглашение</button> · <button id="ck-set" type="button" data-tr="ckSet">Настройки cookie</button></div>
+<div class="fnote" data-tr="rights">© 2026 YASIK. Все права защищены.</div>
 </footer>
 <div class="ck" id="ck" role="dialog" aria-label="Cookie" hidden><b data-tr="ckTitle">🍪 Мы используем cookie</b><p data-tr="ckText"></p><div class="ckb"><button class="pri" id="ck-yes" type="button" data-tr="ckYes">Принять</button><button id="ck-no" type="button" data-tr="ckNo">Только необходимые</button></div></div>
+<div class="mdl" id="xl" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="xl-h">
+<h3 id="xl-h">Leaving YASIK</h3>
+<p>You are about to open an external website: <b id="xl-t"></b></p>
+<span class="url" id="xl-u"></span>
+<div class="acts"><button id="xl-no" type="button">Cancel</button><button class="pri" id="xl-go" type="button">Go to link</button></div>
+</div></div>
+<div class="mdl" id="tm" hidden><div class="mb wide" role="dialog" aria-modal="true" aria-labelledby="tm-h">
+<h3 id="tm-h" data-tr="termsTitle">Пользовательское соглашение</h3>
+<div class="tbody" id="tm-b"></div>
+<div class="acts"><button class="pri" id="tm-x" type="button" data-tr="close">Закрыть</button></div>
+</div></div>
 <script>
 let DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-09-29": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 405"}], "2026-10-01": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-02": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 415"}], "2026-10-03": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 316"}, {"time": "12:45–15:55", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 309"}], "2026-10-04": [], "2026-10-05": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-10-06": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 416"}], "2026-10-08": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-09": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 316"}], "2026-10-10": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 416"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 405"}], "2026-10-11": [], "2026-10-12": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-13": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-15": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-16": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-17": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-18": [], "2026-10-19": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-20": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-22": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-23": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-24": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-25": [], "2026-10-26": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "note": "зачет"}], "2026-10-27": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "note": "ИЗ"}], "2026-10-29": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "note": "ИЗ"}], "2026-10-30": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "note": "зачет"}], "2026-10-31": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "note": "ИЗ"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-11-01": [], "_weekly": {"2": [{"time": "15:10–16:40", "title": "Язык программирования SQL", "teacher": "Барашкин И.С.", "place": "Второй учебный корпус, ауд. П-6"}, {"time": "17:00–18:30", "title": "Основы программирования и анализа данных на Python", "teacher": "Горохов О.Е.", "place": "ЯндексТелемост"}, {"time": "19:00–22:10", "title": "Теория принятия решений", "teacher": "Дивина Т.В.", "place": "ауд. 309"}]}};
 
 /* ---- переводы ---- */
 const I18N={
-ru:{study:"Учеба ▾",sched:"Расписание",weather:"Погода",
+ru:{termsLink:"Пользовательское соглашение",termsTitle:"Пользовательское соглашение",close:"Закрыть",rights:"© 2026 YASIK. Все права защищены.",termsDate:"Редакция от 4 октября 2026г.",
+terms:[["1. Общие положения","Настоящее Пользовательское соглашение (далее — «Соглашение») определяет условия использования сайта YASIK (далее — «Сайт»). Используя Сайт, вы подтверждаете, что ознакомились с условиями Соглашения и принимаете их. Если вы не согласны с условиями, прекратите использование Сайта."],
+["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно и не требует регистрации."],
+["3. Информационный характер данных","Расписание и иные сведения на Сайте носят справочный характер и не являются официальным документом образовательной организации. Актуальное расписание следует уточнять в официальных источниках университета. Данные о погоде предоставляются сторонними сервисами и могут содержать неточности."],
+["4. Обязанности пользователя","Пользователь обязуется не нарушать работу Сайта, не предпринимать попыток несанкционированного доступа к нему и не использовать автоматизированные средства, создающие чрезмерную нагрузку."],
+["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык и выбранный город. Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам."],
+["6. Интеллектуальная собственность","Дизайн, оформление и программный код Сайта принадлежат владельцу Сайта. Копирование и распространение материалов без согласия владельца не допускаются, если иное не предусмотрено законодательством."],
+["7. Ограничение ответственности","Сайт предоставляется «как есть». Владелец не гарантирует бесперебойную работу Сайта, полноту и точность размещённых данных и не несёт ответственности за убытки, возникшие в связи с использованием или невозможностью использования Сайта."],
+["8. Внешние ссылки","Сайт содержит ссылки на сторонние ресурсы, в том числе социальные сети. Владелец не контролирует их содержание и не несёт за него ответственности."],
+["9. Изменение условий","Владелец вправе изменять Соглашение в любое время. Новая редакция вступает в силу с момента публикации на Сайте."],
+["10. Контакты","По всем вопросам: yarik_2004_kulikov@mail.ru"]],
+study:"Учеба ▾",sched:"Расписание",weather:"Погода",
 schedTitle:"Расписание занятий · БИ-02",uni:"🎓 МГУ им. М.В. Ломоносова (ВШГА)",
 todayBtn:"Сегодня ▾",optToday:"Сегодня",optNext:"Следующая неделя",optPrev:"Прошлая неделя",optPick:"Выбрать дату…",
 badge:"Сегодня",nosched:"Расписание ещё не добавлено",nolessons:"Занятий нет",nowGoing:"Сейчас идёт",
@@ -296,7 +334,18 @@ inTime:d=>"через "+d,left:d=>"осталось "+d,wToday:tm=>"сегодн
 openSched:"Открыть расписание →",openWeather:"Подробный прогноз →",todayK:"📅 Сегодня",
 todayCount:n=>n?"Пар сегодня: "+n:"Сегодня занятий нет 🎉",wcardK:"Погода сейчас",
 u_d:"д",u_h:"ч",u_m:"мин",feelsS:v=>"Ощущается как "+v},
-en:{study:"Study ▾",sched:"Schedule",weather:"Weather",
+en:{termsLink:"Terms of Use",termsTitle:"Terms of Use",close:"Close",rights:"© 2026 YASIK. All rights reserved.",termsDate:"Last updated: October 4, 2026",
+terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the use of the YASIK website (the “Site”). By using the Site, you confirm that you have read and accepted the Terms. If you do not agree, please stop using the Site."],
+["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free and does not require registration."],
+["3. Informational nature of data","The schedule and other information on the Site are provided for reference only and are not an official document of any educational institution. Please verify the current schedule with the official sources of the university. Weather data is supplied by third-party services and may contain inaccuracies."],
+["4. User obligations","The user agrees not to disrupt the operation of the Site, not to attempt unauthorized access to it, and not to use automated tools that create excessive load."],
+["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language and selected city are saved in your browser. You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services."],
+["6. Intellectual property","The design, layout and source code of the Site belong to its owner. Copying or distributing the materials without the owner’s consent is not permitted unless provided by law."],
+["7. Limitation of liability","The Site is provided “as is”. The owner does not guarantee uninterrupted operation, or the completeness and accuracy of the data, and is not liable for any losses arising from the use of, or inability to use, the Site."],
+["8. External links","The Site contains links to third-party resources, including social networks. The owner does not control their content and is not responsible for it."],
+["9. Changes to the Terms","The owner may change the Terms at any time. The new version takes effect upon publication on the Site."],
+["10. Contact","For any questions: yarik_2004_kulikov@mail.ru"]],
+study:"Study ▾",sched:"Schedule",weather:"Weather",
 schedTitle:"Class schedule · BI-02",uni:"🎓 Lomonosov Moscow State University (HSPA)",
 todayBtn:"Today ▾",optToday:"Today",optNext:"Next week",optPrev:"Previous week",optPick:"Pick a date…",
 badge:"Today",nosched:"Schedule not added yet",nolessons:"No classes",nowGoing:"In progress",
@@ -636,7 +685,7 @@ function tickHome(){
   const n=new Date(),h=n.getHours(),part=h>=5&&h<12?"morning":h>=12&&h<18?"day":h>=18&&h<23?"evening":"night";
   sky.className="sky s-"+part;
   $("gr-t").textContent=tr("g_"+part);
-  $("c-h").textContent=pad(h);$("c-m").textContent=pad(n.getMinutes());$("c-s").textContent=pad(n.getSeconds());
+  $("c-h").textContent=pad(h);$("c-m").textContent=pad(n.getMinutes());
   $("dt").textContent=n.toLocaleDateString(LOC(),{weekday:"long",day:"numeric",month:"long",year:"numeric"}).replace(/\s+г\.$/,"г.");
   // ближайшая пара
   const u=upcoming(),k=$("lc-k"),pb=$("lc-pb");
@@ -681,6 +730,21 @@ $("hwc").onclick=()=>showTab("weather");
 document.querySelectorAll(".cd").forEach(c=>{
   c.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();c.click()}});
 });
+
+/* ---- внешние ссылки и соглашение ---- */
+const xl=$("xl"),tm=$("tm");let XU="";
+document.querySelectorAll(".soc a").forEach(a=>a.addEventListener("click",e=>{
+  e.preventDefault();XU=a.href;$("xl-t").textContent=a.getAttribute("title")||"";$("xl-u").textContent=a.href;xl.hidden=false;$("xl-go").focus();
+}));
+$("xl-go").onclick=()=>{window.open(XU,"_blank","noopener");xl.hidden=true};
+$("xl-no").onclick=()=>{xl.hidden=true};
+$("terms-open").onclick=()=>{
+  $("tm-b").innerHTML=tr("terms").map(x=>"<h4>"+esc(x[0])+"</h4><p>"+esc(x[1])+"</p>").join("")+'<div class="tdate">'+esc(tr("termsDate"))+"</div>";
+  tm.hidden=false;$("tm-x").focus();
+};
+$("tm-x").onclick=()=>{tm.hidden=true};
+[xl,tm].forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.hidden=true}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){xl.hidden=true;tm.hidden=true}});
 
 /* ---- язык ---- */
 function applyLang(){
