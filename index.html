@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Расписание БИ-02</title>
+<style>
+:root{--bg:#eef0f3;--fg:#16202e;--card:#fff;--muted:#5d6b7c;--line:#d9dee5;--head:#14243b;--headfg:#fff;--accent:#14243b;--now:#0f7a4d;--nowbg:#e7f4ee;--tag:#e8ebf0;--badgefg:#ffffff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1420;--fg:#e6eaf0;--card:#17202f;--muted:#9aa6b6;--line:#26334a;--head:#0a101a;--accent:#8fb0e6;--now:#4cd08e;--nowbg:#10281e;--tag:#26334a;--badgefg:#0a101a}}
+:root[data-theme="dark"]{--bg:#0e1420;--fg:#e6eaf0;--card:#17202f;--muted:#9aa6b6;--line:#26334a;--head:#0a101a;--accent:#8fb0e6;--now:#4cd08e;--nowbg:#10281e;--tag:#26334a;--badgefg:#0a101a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.4}
+header{background:var(--head);color:var(--headfg);padding:18px 16px 14px}
+header div{max-width:680px;margin:0 auto}
+h1{font-size:1.15rem;font-weight:600;letter-spacing:.02em;margin:0}
+.sub{font-size:.8rem;opacity:.7;margin-top:2px}
+main{max-width:680px;margin:0 auto;padding:16px 16px 40px}
+.nav{display:flex;gap:8px;align-items:center;margin-bottom:14px}
+.nav .r{flex:1;text-align:center;font-weight:600}
+button{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:7px 14px;font-size:.95rem;cursor:pointer}
+button:hover{border-color:var(--accent)}
+.day{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-bottom:12px;overflow:hidden}
+.day.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.dh{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--tag)}
+.dh b{text-transform:uppercase;font-size:.78rem;letter-spacing:.08em}
+.dh>span{color:var(--muted);font-size:.85rem}
+.dh .badge{font-size:.72rem;font-weight:700;background:var(--accent);color:var(--badgefg);border-radius:4px;padding:3px 9px;margin-left:10px;letter-spacing:.05em;text-transform:uppercase}
+.item{display:grid;grid-template-columns:112px 1fr;gap:12px;padding:12px 16px;border-top:1px solid var(--line)}
+.dh+.item{border-top:0}
+.item.now{background:var(--nowbg)}
+.t{font-variant-numeric:tabular-nums;font-weight:600;font-size:.92rem}
+.c{border-left:4px solid var(--c,#888);padding-left:12px}
+.ti{font-weight:600}
+.m{color:var(--muted);font-size:.88rem;margin-top:2px}
+.tag{display:inline-block;font-size:.72rem;background:var(--tag);border-radius:4px;padding:1px 7px;margin-left:6px;font-weight:500}
+.now-b{display:inline-flex;align-items:center;gap:6px;color:var(--now);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.now-b i{width:8px;height:8px;border-radius:50%;background:var(--now);animation:p 1.6s infinite}
+@keyframes p{50%{opacity:.25}}
+.empty{padding:12px 16px;color:var(--muted)}
+@media (max-width:480px){.item{grid-template-columns:1fr;gap:6px}}
+</style></head><body>
+<header><div><h1>Расписание занятий · БИ-02</h1><div class="sub">Бизнес-информатика</div></div></header>
+<main>
+<div class="nav"><button id="prev">‹</button><span class="r" id="range"></span><button id="next">›</button><button id="now">Сегодня</button></div>
+<div id="list"></div>
+</main>
+<script>
+const DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-09-29": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 405"}], "2026-10-01": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-02": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 415"}], "2026-10-03": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 316"}, {"time": "12:45–15:55", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 309"}], "2026-10-04": [], "2026-10-05": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-10-06": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 416"}], "2026-10-08": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-09": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 316"}], "2026-10-10": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 416"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 405"}], "2026-10-11": [], "2026-10-12": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-13": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-15": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-16": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-17": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-18": [], "2026-10-19": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-20": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-22": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-23": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-24": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-25": [], "2026-10-26": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "note": "зачет"}], "2026-10-27": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "note": "ИЗ"}], "2026-10-29": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "note": "ИЗ"}], "2026-10-30": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "note": "зачет"}], "2026-10-31": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "note": "ИЗ"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-11-01": [], "_weekly": {"2": [{"time": "15:10–16:40", "title": "Язык программирования SQL", "teacher": "Барашкин И.С.", "place": "Второй учебный корпус, ауд. П-6"}, {"time": "17:00–18:30", "title": "Основы программирования и анализа данных на Python", "teacher": "Горохов О.Е.", "place": "ЯндексТелемост"}, {"time": "19:00–22:10", "title": "Теория принятия решений", "teacher": "Дивина Т.В.", "place": "ауд. 309"}]}};
+const DN=["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"];
+const COL=["#1e4e8c","#2f7d6d","#a0662a","#6b3f8c","#a13d3d","#3a6b8a","#5f7a2a"];
+const pad=n=>String(n).padStart(2,"0");
+const key=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const monday=d=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-((x.getDay()+6)%7));return x};
+const fmt=d=>d.toLocaleDateString("ru-RU",{day:"numeric",month:"long"});
+const color=t=>COL[[...t].reduce((a,c)=>a+c.charCodeAt(0),0)%COL.length];
+function isNow(time,d){
+  const m=time.match(/(\d+):(\d+)\s*[–-]\s*(\d+):(\d+)/); if(!m)return false;
+  const n=new Date(); if(key(d)!==key(n))return false;
+  const cur=n.getHours()*60+n.getMinutes();
+  return cur>=(+m[1])*60+(+m[2]) && cur<(+m[3])*60+(+m[4]);
+}
+let start=monday(new Date());
+function render(){
+  const list=document.getElementById("list");list.innerHTML="";
+  const end=new Date(start);end.setDate(end.getDate()+6);
+  document.getElementById("range").textContent=fmt(start)+" – "+fmt(end);
+  for(let i=0;i<7;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const items=(DATA._weekly&&DATA._weekly[i])||DATA[key(d)], tod=key(d)===key(new Date());
+    const el=document.createElement("section");el.className="day"+(tod?" today":"");
+    let h='<div class="dh"><div><b>'+DN[i]+'</b>'+(tod?'<span class="badge">Сегодня</span>':'')+'</div><span>'+fmt(d)+'</span></div>';
+    if(!items)h+='<div class="empty">Расписание ещё не добавлено</div>';
+    else if(!items.length)h+='<div class="empty">Занятий нет</div>';
+    else h+=items.map(it=>{const n=isNow(it.time,d);
+      return '<div class="item'+(n?' now':'')+'"><div class="t">'+it.time+(it.note?'<span class="tag">'+it.note+'</span>':'')+(n?'<div class="now-b"><i></i>Сейчас идёт</div>':'')+'</div>'+
+      '<div class="c" style="--c:'+color(it.title)+'"><div class="ti">'+it.title+'</div><div class="m">'+[it.teacher,it.place].filter(Boolean).join(" · ")+'</div></div></div>';}).join("");
+    el.innerHTML=h;list.appendChild(el);
+  }
+}
+document.getElementById("prev").onclick=()=>{start.setDate(start.getDate()-7);render()};
+document.getElementById("next").onclick=()=>{start.setDate(start.getDate()+7);render()};
+document.getElementById("now").onclick=()=>{start=monday(new Date());render()};
+render(); setInterval(render,60000);
+</script></body></html>
