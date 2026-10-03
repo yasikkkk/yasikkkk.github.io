@@ -1,0 +1,22 @@
+   name: Sync schedule
+   on:
+     schedule:
+       - cron: "*/15 * * * *"
+     workflow_dispatch:
+   permissions:
+     contents: write
+   jobs:
+     sync:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-python@v5
+           with:
+             python-version: "3.12"
+         - run: python sync_sheet.py
+         - name: Commit changes
+           run: |
+             git config user.name "schedule-bot"
+             git config user.email "schedule-bot@users.noreply.github.com"
+             git add schedule.json
+             git diff --cached --quiet || (git commit -m "Update schedule" && git push)
