@@ -11,7 +11,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;line-height:1.4}
 header{background:var(--head);color:var(--headfg);padding:18px 16px 14px}
-header div{max-width:680px;margin:0 auto}
+.hw{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:680px;margin:0 auto}
 h1{font-size:1.15rem;font-weight:600;letter-spacing:.02em;margin:0}
 .sub{font-size:.8rem;opacity:.7;margin-top:2px}
 main{max-width:680px;margin:0 auto;padding:16px 16px 40px}
@@ -43,10 +43,34 @@ button:hover{border-color:var(--accent)}
 .pop button{display:block;width:100%;text-align:left;border:0;border-radius:6px;padding:10px 12px;background:transparent}
 .pop button:hover{background:var(--tag)}
 .dp{position:absolute;right:0;top:100%;width:0;height:0;opacity:0;border:0;padding:0}
-@media (max-width:480px){.item{grid-template-columns:1fr;gap:6px}}
-</style></head><body>
-<header><div><h1>Расписание занятий · БИ-02</h1><div class="sub">Бизнес-информатика</div></div></header>
+.sw{position:relative;width:56px;height:30px;padding:0;border-radius:99px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.14);flex:none}
+.sw i{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-style:normal;transition:transform .2s}
+.sw[aria-checked="true"] i{transform:translateX(26px)}
+.tabs{background:var(--card);border-bottom:1px solid var(--line)}
+.tw{max-width:680px;margin:0 auto;display:flex;padding:0 8px}
+.tabs button{border:0;border-radius:0;background:transparent;padding:12px 16px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent}
+.tabs button.on{color:var(--fg);border-bottom-color:var(--accent)}
+.wh{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.wc{font-size:1.2rem;font-weight:700}
+.w{display:grid;grid-template-columns:64px 40px 1fr auto;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-bottom:8px}
+.w.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.wd b{display:block}
+.wd span{color:var(--muted);font-size:.8rem}
+.wi{font-size:1.7rem;text-align:center}
+.wtemp{text-align:right;font-variant-numeric:tabular-nums}
+.wtemp b{display:block;font-size:1.05rem}
+.wtemp span{color:var(--muted);font-size:.9rem}
+.cp{min-width:260px;padding:8px}
+.cp input{width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font-size:1rem;margin-bottom:4px}
+.src{color:var(--muted);font-size:.8rem;text-align:center;margin-top:16px}
+.src a{color:var(--accent)}
+@media (max-width:480px){.item{grid-template-columns:1fr;gap:6px}.w{grid-template-columns:52px 34px 1fr auto;gap:8px;padding:10px}}
+</style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
+<header><div class="hw"><div><h1>Расписание занятий · БИ-02</h1><div class="sub">Бизнес-информатика</div></div>
+<button class="sw" id="theme" role="switch" aria-checked="false" aria-label="Тёмная тема"><i id="knob">☀️</i></button></div></header>
+<div class="tabs"><div class="tw"><button data-tab="schedule" class="on">Расписание</button><button data-tab="weather">Погода</button></div></div>
 <main>
+<div id="tab-schedule">
 <div class="nav"><button id="prev">‹</button><span class="r" id="range"></span><button id="next">›</button><div class="menu"><button id="now" aria-haspopup="true" aria-expanded="false">Сегодня ▾</button>
 <div class="pop" id="pop" hidden>
 <button data-a="today">Сегодня</button>
@@ -55,6 +79,13 @@ button:hover{border-color:var(--accent)}
 <button data-a="pick">Выбрать дату…</button>
 </div><input type="date" id="dp" class="dp" tabindex="-1" aria-hidden="true"></div></div>
 <div id="list"></div>
+</div>
+<div id="tab-weather" hidden>
+<div class="wh"><div><div class="wc" id="wcity">Москва</div><div class="m" id="wsub">Прогноз на 14 дней</div></div>
+<div class="menu"><button id="cbtn">Город ▾</button><div class="pop cp" id="cpop" hidden><input id="cq" placeholder="Название города" autocomplete="off"><div id="cres"></div></div></div></div>
+<div id="wlist"></div>
+<p class="src">Данные: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></p>
+</div>
 </main>
 <script>
 let DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-09-29": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 405"}], "2026-10-01": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-02": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 415"}], "2026-10-03": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 316"}, {"time": "12:45–15:55", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 309"}], "2026-10-04": [], "2026-10-05": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "place": "ауд. 401"}], "2026-10-06": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "place": "ауд. 416"}], "2026-10-08": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "place": "ауд. 410"}], "2026-10-09": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "place": "ауд. 316"}], "2026-10-10": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "place": "ауд. 416"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И.", "place": "ауд. 405"}], "2026-10-11": [], "2026-10-12": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-13": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-15": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-16": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-17": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-18": [], "2026-10-19": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б."}], "2026-10-20": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З."}], "2026-10-22": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М."}], "2026-10-23": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В."}], "2026-10-24": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В."}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-10-25": [], "2026-10-26": [{"time": "19:00–22:10", "title": "Разработка стратегии информационных технологий", "teacher": "Прончев Г.Б.", "note": "зачет"}], "2026-10-27": [{"time": "19:00–22:10", "title": "Профессиональный английский язык", "teacher": "Арибжанова Д.З.", "note": "ИЗ"}], "2026-10-29": [{"time": "19:00–22:10", "title": "Управление портфелем проектов информационных технологий", "teacher": "Журавлев Д.М.", "note": "ИЗ"}], "2026-10-30": [{"time": "19:00–22:10", "title": "Наука о данных для бизнеса", "teacher": "Назаренко С.В.", "note": "зачет"}], "2026-10-31": [{"time": "09:20–12:30", "title": "Экономическая статистика с использованием научных методов и технологий ИИ", "teacher": "Инюшин В.В.", "note": "ИЗ"}, {"time": "13:00–16:10", "title": "Машинный интеллект и инновационное предпринимательство в бизнес-информатике", "teacher": "Егоров А.И."}], "2026-11-01": [], "_weekly": {"2": [{"time": "15:10–16:40", "title": "Язык программирования SQL", "teacher": "Барашкин И.С.", "place": "Второй учебный корпус, ауд. П-6"}, {"time": "17:00–18:30", "title": "Основы программирования и анализа данных на Python", "teacher": "Горохов О.Е.", "place": "ЯндексТелемост"}, {"time": "19:00–22:10", "title": "Теория принятия решений", "teacher": "Дивина Т.В.", "place": "ауд. 309"}]}};
@@ -119,5 +150,87 @@ async function load(){
     if(r.ok){DATA=await r.json();render();}
   }catch(e){}
 }
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---- тема ---- */
+const root=document.documentElement, tbtn=document.getElementById("theme");
+const mq=matchMedia("(prefers-color-scheme: dark)");
+const isDark=()=>root.dataset.theme?root.dataset.theme==="dark":mq.matches;
+function paintTheme(){const d=isDark();tbtn.setAttribute("aria-checked",String(d));tbtn.title=d?"Включить светлую тему":"Включить тёмную тему";document.getElementById("knob").textContent=d?"🌙":"☀️"}
+tbtn.onclick=()=>{const n=isDark()?"light":"dark";root.dataset.theme=n;try{localStorage.setItem("theme",n)}catch(e){}paintTheme()};
+mq.addEventListener("change",paintTheme);paintTheme();
+
+/* ---- вкладки ---- */
+let wTime=0;
+function showTab(t){
+  for(const b of document.querySelectorAll(".tabs button"))b.classList.toggle("on",b.dataset.tab===t);
+  document.getElementById("tab-schedule").hidden=t!=="schedule";
+  document.getElementById("tab-weather").hidden=t!=="weather";
+  if(t==="weather"&&Date.now()-wTime>1800000)loadWeather();
+  try{history.replaceState(null,"","#"+t)}catch(e){}
+}
+for(const b of document.querySelectorAll(".tabs button"))b.onclick=()=>showTab(b.dataset.tab);
+
+/* ---- погода (Open-Meteo, до 14 дней) ---- */
+let CITY={name:"Москва",lat:55.7558,lon:37.6173};
+try{const s=JSON.parse(localStorage.getItem("city")||"null");if(s&&s.lat&&s.lon)CITY=s}catch(e){}
+function wmo(c){
+  if(c===0)return["☀️","Ясно"]; if(c<=2)return["⛅","Переменная облачность"]; if(c===3)return["☁️","Пасмурно"];
+  if(c<=48)return["🌫️","Туман"]; if(c<=57)return["🌦️","Морось"]; if(c<=67)return["🌧️","Дождь"];
+  if(c<=77)return["🌨️","Снег"]; if(c<=82)return["🌧️","Ливень"]; if(c<=86)return["🌨️","Снегопад"]; return["⛈️","Гроза"];
+}
+const tt=n=>(n>0?"+":"")+Math.round(n)+"°";
+async function loadWeather(){
+  document.getElementById("wcity").textContent=CITY.name;
+  const box=document.getElementById("wlist");
+  box.innerHTML='<div class="empty">Загружаю прогноз…</div>';
+  try{
+    const url="https://api.open-meteo.com/v1/forecast?latitude="+CITY.lat+"&longitude="+CITY.lon+
+      "&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,wind_speed_10m_max"+
+      "&timezone=auto&forecast_days=14&wind_speed_unit=ms";
+    const r=await fetch(url); if(!r.ok)throw new Error(r.status);
+    const d=(await r.json()).daily;
+    box.innerHTML=d.time.map((s,i)=>{
+      const dt=new Date(s+"T00:00:00"), [ic,tx]=wmo(d.weather_code[i]);
+      const wd=dt.toLocaleDateString("ru-RU",{weekday:"short"});
+      const p=d.precipitation_probability_max[i], mm=d.precipitation_sum[i];
+      const info=[p!=null?"💧 "+p+"%":"", mm>0?mm.toFixed(1)+" мм":"", "💨 "+Math.round(d.wind_speed_10m_max[i])+" м/с"].filter(Boolean).join(" · ");
+      return '<div class="w'+(i?'':' today')+'"><div class="wd"><b>'+wd[0].toUpperCase()+wd.slice(1)+'</b><span>'+dt.toLocaleDateString("ru-RU",{day:"numeric",month:"short"})+'</span></div>'+
+        '<div class="wi">'+ic+'</div><div><div class="ti">'+tx+'</div><div class="m">'+info+'</div></div>'+
+        '<div class="wtemp"><b>'+tt(d.temperature_2m_max[i])+'</b><span>'+tt(d.temperature_2m_min[i])+'</span></div></div>';
+    }).join("");
+    wTime=Date.now();
+    document.getElementById("wsub").textContent="Прогноз на "+d.time.length+" дн. · обновлено в "+new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
+  }catch(e){
+    box.innerHTML='<div class="empty">Не удалось загрузить прогноз. Проверьте интернет и попробуйте позже.</div>';
+  }
+}
+
+/* ---- выбор города ---- */
+const cpop=document.getElementById("cpop"),cq=document.getElementById("cq"),cres=document.getElementById("cres");
+let found=[],timer;
+document.getElementById("cbtn").onclick=e=>{e.stopPropagation();cpop.hidden=!cpop.hidden;if(!cpop.hidden){cq.value="";cres.innerHTML="";cq.focus()}};
+cpop.onclick=e=>e.stopPropagation();
+cq.oninput=()=>{
+  clearTimeout(timer); const q=cq.value.trim();
+  if(q.length<2){cres.innerHTML="";return}
+  timer=setTimeout(async()=>{
+    try{
+      const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language=ru&format=json&name="+encodeURIComponent(q));
+      found=(await r.json()).results||[];
+      cres.innerHTML=found.length?found.map((c,i)=>'<button data-i="'+i+'">'+esc(c.name)+'<div class="m">'+esc([c.admin1,c.country].filter(Boolean).join(", "))+'</div></button>').join(""):'<div class="empty" style="padding:8px">Ничего не найдено</div>';
+    }catch(e){cres.innerHTML='<div class="empty" style="padding:8px">Ошибка поиска</div>'}
+  },350);
+};
+cres.onclick=e=>{
+  const b=e.target.closest("button"); if(!b)return; const c=found[+b.dataset.i];
+  CITY={name:c.name,lat:c.latitude,lon:c.longitude};
+  try{localStorage.setItem("city",JSON.stringify(CITY))}catch(err){}
+  cpop.hidden=true; loadWeather();
+};
+document.addEventListener("click",()=>{cpop.hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")cpop.hidden=true});
+
 render(); setInterval(render,60000); load(); setInterval(load,600000);
+showTab(location.hash==="#weather"?"weather":"schedule");
 </script></body></html>
