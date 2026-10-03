@@ -16,6 +16,8 @@ header{background:var(--card);color:var(--fg);border-bottom:1px solid var(--line
 .ctl{display:flex;align-items:center;gap:10px;flex:none}
 main{flex:1;width:100%;box-sizing:border-box;margin:0;padding:16px clamp(16px,3vw,48px) 32px}
 #list,#wlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;align-items:start}
+#list.one{grid-template-columns:minmax(0,640px)}
+.nav .r::first-letter{text-transform:uppercase}
 #list .day{margin-bottom:0}
 #wlist .w{margin-bottom:0}
 #wlist .empty,#list .empty{grid-column:1/-1}
@@ -255,6 +257,7 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 <div class="nav"><button id="prev">‹</button><span class="r" id="range"></span><button id="next">›</button><div class="menu"><button id="now" aria-haspopup="true" aria-expanded="false" data-tr="todayBtn">Сегодня ▾</button>
 <div class="pop" id="pop" hidden>
 <button data-a="today" data-tr="optToday">Сегодня</button>
+<button data-a="week" data-tr="optWeek">Текущая неделя</button>
 <button data-a="next" data-tr="optNext">Следующая неделя</button>
 <button data-a="prev" data-tr="optPrev">Прошлая неделя</button>
 <button data-a="pick" data-tr="optPick">Выбрать дату…</button>
@@ -309,7 +312,7 @@ terms:[["1. Общие положения","Настоящее Пользова�
 ["10. Контакты","По всем вопросам: yarik_2004_kulikov@mail.ru"]],
 study:"Учеба ▾",sched:"Расписание",weather:"Погода",
 schedTitle:"Расписание занятий · БИ-02",uni:"🎓 МГУ им. М.В. Ломоносова (ВШГА)",
-todayBtn:"Сегодня ▾",optToday:"Сегодня",optNext:"Следующая неделя",optPrev:"Прошлая неделя",optPick:"Выбрать дату…",
+todayBtn:"Сегодня ▾",optToday:"Сегодня",optWeek:"Текущая неделя",optNext:"Следующая неделя",optPrev:"Прошлая неделя",optPick:"Выбрать дату…",
 badge:"Сегодня",nosched:"Расписание ещё не добавлено",nolessons:"Занятий нет",nowGoing:"Сейчас идёт",
 dn:["Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье"],
 cityPh:"Введите любой город…",find:"Найти",dataBy:"Данные:",
@@ -347,7 +350,7 @@ terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the
 ["10. Contact","For any questions: yarik_2004_kulikov@mail.ru"]],
 study:"Study ▾",sched:"Schedule",weather:"Weather",
 schedTitle:"Class schedule · BI-02",uni:"🎓 Lomonosov Moscow State University (HSPA)",
-todayBtn:"Today ▾",optToday:"Today",optNext:"Next week",optPrev:"Previous week",optPick:"Pick a date…",
+todayBtn:"Today ▾",optToday:"Today",optWeek:"Current week",optNext:"Next week",optPrev:"Previous week",optPick:"Pick a date…",
 badge:"Today",nosched:"Schedule not added yet",nolessons:"No classes",nowGoing:"In progress",
 dn:["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
 cityPh:"Enter any city…",find:"Search",dataBy:"Data:",
@@ -406,43 +409,61 @@ function parseT(d,time){
 function isNow(time,d){const r=parseT(d,time);if(!r)return false;const n=new Date();return n>=r.s&&n<r.e}
 
 /* ---- расписание ---- */
-let start=monday(new Date()), ANIM=false;
+let start=monday(new Date()), ANIM=false, view="day", sel=null; // sel=null — «сегодня»
+const day0=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
+const addD=(d,n)=>{const x=day0(d);x.setDate(x.getDate()+n);return x};
+const selD=()=>sel||day0(new Date());
 function render(){
   const an=ANIM; ANIM=false;
   const list=$("list");list.innerHTML="";
-  const end=new Date(start);end.setDate(end.getDate()+6);
-  $("range").textContent=fmt(start)+" – "+fmt(end);
-  for(let i=0;i<7;i++){
-    const d=new Date(start);d.setDate(start.getDate()+i);
-    const items=itemsFor(d), tod=key(d)===key(new Date());
+  list.classList.toggle("one",view==="day");
+  let days;
+  if(view==="day"){
+    const d=selD();days=[d];
+    $("range").textContent=d.toLocaleDateString(LOC(),{weekday:"long",day:"numeric",month:"long"});
+  }else{
+    days=[0,1,2,3,4,5,6].map(i=>addD(start,i));
+    $("range").textContent=fmt(days[0])+" – "+fmt(days[6]);
+  }
+  days.forEach((d,i)=>{
+    const items=itemsFor(d), tod=key(d)===key(new Date()), wi=(d.getDay()+6)%7;
     const el=document.createElement("section");el.className="day"+(tod?" today":"")+(an?" rv":"");
     if(an)el.style.setProperty("--i",i);
-    let h='<div class="dh"><div><b>'+tr("dn")[i]+'</b>'+(tod?'<span class="badge">'+tr("badge")+'</span>':'')+'</div><span>'+fmt(d)+'</span></div>';
+    let h='<div class="dh"><div><b>'+tr("dn")[wi]+'</b>'+(tod?'<span class="badge">'+tr("badge")+'</span>':'')+'</div><span>'+fmt(d)+'</span></div>';
     if(!items)h+='<div class="empty">'+tr("nosched")+'</div>';
     else if(!items.length)h+='<div class="empty">'+tr("nolessons")+'</div>';
     else h+=items.map(it=>{const n=isNow(it.time,d);
       return '<div class="item'+(n?' now':'')+'"><div class="t">'+it.time+(it.note?'<span class="tag">'+it.note+'</span>':'')+(n?'<div class="now-b"><i></i>'+tr("nowGoing")+'</div>':'')+'</div>'+
       '<div class="c" style="--c:'+color(it.title)+'"><div class="ti"><span class="ico">'+ico(it.title)+'</span>'+it.title+'</div><div class="m">'+[it.teacher,it.place].filter(Boolean).join(" · ")+'</div></div></div>';}).join("");
     el.innerHTML=h;list.appendChild(el);
-  }
+  });
 }
-$("prev").onclick=()=>{start.setDate(start.getDate()-7);ANIM=true;render()};
-$("next").onclick=()=>{start.setDate(start.getDate()+7);ANIM=true;render()};
+const step=n=>{
+  if(view==="day"){const d=addD(selD(),n);sel=key(d)===key(new Date())?null:d}
+  else start=addD(start,7*n);
+  ANIM=true;render();
+};
+$("prev").onclick=()=>step(-1);
+$("next").onclick=()=>step(1);
 const pop=$("pop"),nowBtn=$("now"),dp=$("dp");
 const closeMenu=()=>{pop.hidden=true;nowBtn.setAttribute("aria-expanded","false")};
-function goTo(d){
-  start=monday(d);ANIM=true;render();
-  const t=document.querySelector(".day.today");
-  if(t)t.scrollIntoView({block:"center",behavior:"smooth"}); else window.scrollTo({top:0,behavior:"smooth"});
+function goTo(d){ // расписание на конкретный день
+  view="day";sel=key(d)===key(new Date())?null:day0(d);start=monday(d);ANIM=true;render();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function goWeek(d){ // расписание на неделю
+  view="week";sel=null;start=monday(d);ANIM=true;render();
+  window.scrollTo({top:0,behavior:"smooth"});
 }
 nowBtn.onclick=e=>{e.stopPropagation();pop.hidden=!pop.hidden;nowBtn.setAttribute("aria-expanded",String(!pop.hidden))};
 pop.onclick=e=>{
   const a=e.target.dataset.a; if(!a)return; closeMenu();
   const n=new Date(), w=new Date(monday(n));
   if(a==="today")goTo(n);
-  else if(a==="next"){w.setDate(w.getDate()+7);goTo(w)}
-  else if(a==="prev"){w.setDate(w.getDate()-7);goTo(w)}
-  else if(a==="pick"){dp.value=key(start);dp.showPicker?dp.showPicker():dp.click()}
+  else if(a==="week")goWeek(n);
+  else if(a==="next"){w.setDate(w.getDate()+7);goWeek(w)}
+  else if(a==="prev"){w.setDate(w.getDate()-7);goWeek(w)}
+  else if(a==="pick"){dp.value=key(selD());dp.showPicker?dp.showPicker():dp.click()}
 };
 dp.onchange=()=>{if(dp.value){const[y,m,d]=dp.value.split("-").map(Number);goTo(new Date(y,m-1,d))}};
 document.addEventListener("click",closeMenu);
