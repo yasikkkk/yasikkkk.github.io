@@ -208,6 +208,42 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 .hh .h4{font-size:.7rem;color:var(--muted)}
 .tx{fill:var(--muted);font-size:10px}
 @media (max-width:480px){.logo{font-size:1.45rem}.nv{margin-left:6px}.nl{padding:8px 8px}.nl.on::after{left:8px;right:8px}.hw{gap:8px}.ctl{gap:6px}.item{grid-template-columns:1fr;gap:6px}.w{grid-template-columns:52px 34px 1fr auto;gap:8px;padding:10px}.gr{padding-right:0}.nav .menu{margin-left:6px}}
+
+/* ---- флаги, онлайн, поиск, AI ---- */
+.lg span{gap:3px}
+.fl{width:14px;height:10px;border-radius:2px;display:block;flex:none;box-shadow:0 0 0 1px rgba(0,0,0,.25)}
+.lg{height:22px}
+.lg span{width:36px}
+.lg::before{width:calc(50% - 1px)}
+.onl{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--tag);border-radius:99px;padding:3px 10px;font-size:.78rem;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;flex:none}
+.onl i{width:8px;height:8px;border-radius:50%;background:var(--now);box-shadow:0 0 0 0 var(--now);animation:pulse 1.8s infinite}
+.onl.off i{background:#9aa6b6;animation:none}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(76,208,142,.7)}70%{box-shadow:0 0 0 7px rgba(76,208,142,0)}100%{box-shadow:0 0 0 0 rgba(76,208,142,0)}}
+.qs{display:flex;gap:8px;margin-bottom:14px}
+.qs input{flex:1;min-width:0;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font-size:1rem}
+.qs input:focus,.srch input:focus,.aiin textarea:focus{outline:2px solid var(--accent);outline-offset:0}
+.qs button{flex:none}
+.hl{background:rgba(245,166,35,.35);color:inherit;border-radius:3px;padding:0 1px}
+.ainav::before{content:"✦ ";color:var(--accent)}
+.aiw{display:flex;flex-direction:column;height:calc(100vh - 190px);min-height:380px;max-width:860px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.aih{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--tag)}
+.aih b{font-size:1.05rem;letter-spacing:.04em}
+.aih .m{margin:0;font-size:.8rem}
+.aih .sp1{flex:1}
+.aiav{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#1e4e8c,#6b3f8c);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none}
+.aimsgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.ms{max-width:85%;padding:10px 14px;border-radius:14px;white-space:pre-wrap;word-wrap:break-word;line-height:1.45;animation:fadein .2s}
+.ms.u{align-self:flex-end;background:var(--accent);color:var(--badgefg);border-bottom-right-radius:4px}
+.ms.a{align-self:flex-start;background:var(--tag);border-bottom-left-radius:4px}
+.ms.a.err{border:1px dashed var(--line)}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:p 1.2s infinite}.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+.aisug{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 10px}
+.aisug button{border-radius:99px;font-size:.84rem;padding:6px 12px}
+.aiin{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);align-items:flex-end}
+.aiin textarea{flex:1;min-width:0;resize:none;box-sizing:border-box;max-height:120px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);font:inherit;font-size:1rem}
+.aiin .pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent);padding:10px 16px}
+.ainote{font-size:.74rem;color:var(--muted);padding:0 16px 10px}
+@media (max-width:480px){.onl{padding:3px 7px}.onl .ot{display:none}.nl{font-size:.9rem}.aiw{height:calc(100vh - 170px)}.ms{max-width:92%}}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <header><div class="hw">
 <a class="logo" id="logo" href="#home">YASIK</a>
@@ -215,9 +251,11 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 <div class="menu"><button class="nl" id="study" aria-haspopup="true" aria-expanded="false" data-tr="study">Учеба ▾</button>
 <div class="pop sp" id="spop" hidden><button data-tab="schedule" data-tr="sched">Расписание</button></div></div>
 <button class="nl" id="wnav" data-tr="weather">Погода</button>
+<button class="nl ainav" id="ainav" type="button">YASIK-AI</button>
 </nav>
 <div class="ctl">
-<button class="lg" id="lang" data-lang="ru" type="button" aria-label="Язык сайта / Site language" title="RU / EN"><span>RU</span><span>EN</span></button>
+<div class="onl off" id="onl" title="Online"><i></i><b id="onn">…</b><span class="ot" id="onl-t">онлайн</span></div>
+<button class="lg" id="lang" data-lang="ru" type="button" aria-label="Язык сайта / Site language" title="RU / EN"><span><svg class="fl" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="2" fill="#fff"/><rect y=".667" width="3" height=".667" fill="#0039a6"/><rect y="1.333" width="3" height=".667" fill="#d52b1e"/></svg>RU</span><span><svg class="fl" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0 0L60 30M60 0L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0L60 30M60 0L0 30" stroke="#c8102e" stroke-width="2.5"/><path d="M30 0V30M0 15H60" stroke="#fff" stroke-width="10"/><path d="M30 0V30M0 15H60" stroke="#c8102e" stroke-width="6"/></svg>EN</span></button>
 <button class="sw" id="theme" role="switch" aria-checked="false" aria-label="Тёмная тема"><i id="knob">☀️</i></button>
 </div>
 </div></header>
@@ -262,14 +300,25 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 <button data-a="prev" data-tr="optPrev">Прошлая неделя</button>
 <button data-a="pick" data-tr="optPick">Выбрать дату…</button>
 </div><input type="date" id="dp" class="dp" tabindex="-1" aria-hidden="true"></div></div>
+<div class="qs"><input id="sq" type="search" data-ph="schPh" placeholder="Поиск: преподаватель, предмет, аудитория…" autocomplete="off" enterkeyhint="search"><button id="sqx" type="button" data-tr="clear" hidden>Сбросить</button></div>
 <div id="list"></div>
 </div>
 <div id="tab-weather" class="tab" hidden>
 <div class="srch"><input id="cq" type="search" data-ph="cityPh" placeholder="Введите любой город…" autocomplete="off" enterkeyhint="search"><button id="cgo" data-tr="find">Найти</button><div class="pop sres" id="cres" hidden></div></div>
 <div class="chips" id="chips"></div>
+<div class="qs"><input id="wq" type="search" data-ph="wPh" placeholder="Фильтр по дням: дождь, пятница, 12 октября…" autocomplete="off"></div>
 <div class="wh"><div><div class="wc" id="wcity">Москва</div><div class="m" id="wsub"></div></div></div>
 <div id="wlist"></div>
 <p class="src"><span data-tr="dataBy">Данные:</span> <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></p>
+</div>
+<div id="tab-ai" class="tab" hidden>
+<div class="aiw">
+<div class="aih"><div class="aiav">AI</div><div><b>YASIK-AI</b><div class="m" id="ai-st"></div></div><div class="sp1"></div><button id="ai-clr" type="button" data-tr="aiClear">Очистить</button></div>
+<div class="aimsgs" id="aim" aria-live="polite"></div>
+<div class="aisug" id="ais"></div>
+<div class="aiin"><textarea id="aiq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="aigo" type="button" data-tr="aiSend">Отправить</button></div>
+<div class="ainote" data-tr="aiNote"></div>
+</div>
 </div>
 </main>
 <footer>
@@ -299,7 +348,13 @@ let DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработ�
 
 /* ---- переводы ---- */
 const I18N={
-ru:{termsLink:"Пользовательское соглашение",termsTitle:"Пользовательское соглашение",close:"Закрыть",rights:"© 2026 YASIK. Все права защищены.",termsDate:"Редакция от 4 октября 2026г.",
+ru:{schPh:"Поиск: преподаватель, предмет, аудитория…",clear:"Сбросить",wPh:"Фильтр по дням: дождь, пятница, 12 октября…",noRes:"Ничего не найдено",resCnt:n=>"Найдено занятий: "+n,onlineT:"онлайн",onlTip:"Сейчас на сайте",onlTipLocal:"Демо-режим: считаются только вкладки этого браузера",
+aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Сообщения отправляются во внешний ИИ-сервис; не вводите личные данные.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
+aiHello:"Привет! Я YASIK-AI 🤖 Помогу с расписанием, аудиториями, преподавателями и погодой — или просто поболтаем. Что интересует?",
+aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?"],
+aiNoUp:"Ближайших занятий не нашёл.",aiNoDay:"В этот день занятий нет 🎉",aiToday:"Сегодня",aiTomorrow:"Завтра",aiNext:"Ближайшая пара",aiW:(c,t,d,f)=>"Сейчас в городе "+c+": "+t+", "+d+". Ощущается как "+f+".",
+aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
+termsLink:"Пользовательское соглашение",termsTitle:"Пользовательское соглашение",close:"Закрыть",rights:"© 2026 YASIK. Все права защищены.",termsDate:"Редакция от 4 октября 2026г.",
 terms:[["1. Общие положения","Настоящее Пользовательское соглашение (далее — «Соглашение») определяет условия использования сайта YASIK (далее — «Сайт»). Используя Сайт, вы подтверждаете, что ознакомились с условиями Соглашения и принимаете их. Если вы не согласны с условиями, прекратите использование Сайта."],
 ["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно и не требует регистрации."],
 ["3. Информационный характер данных","Расписание и иные сведения на Сайте носят справочный характер и не являются официальным документом образовательной организации. Актуальное расписание следует уточнять в официальных источниках университета. Данные о погоде предоставляются сторонними сервисами и могут содержать неточности."],
@@ -337,7 +392,13 @@ inTime:d=>"через "+d,left:d=>"осталось "+d,wToday:tm=>"сегодн
 openSched:"Открыть расписание →",openWeather:"Подробный прогноз →",todayK:"📅 Сегодня",
 todayCount:n=>n?"Пар сегодня: "+n:"Сегодня занятий нет 🎉",wcardK:"Погода сейчас",
 u_d:"д",u_h:"ч",u_m:"мин",feelsS:v=>"Ощущается как "+v},
-en:{termsLink:"Terms of Use",termsTitle:"Terms of Use",close:"Close",rights:"© 2026 YASIK. All rights reserved.",termsDate:"Last updated: October 4, 2026",
+en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
+aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Messages are sent to an external AI service; do not enter personal data.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
+aiHello:"Hi! I'm YASIK-AI 🤖 I can help with the schedule, rooms, teachers and weather — or just chat. What are you curious about?",
+aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?"],
+aiNoUp:"No upcoming classes found.",aiNoDay:"No classes that day 🎉",aiToday:"Today",aiTomorrow:"Tomorrow",aiNext:"Next class",aiW:(c,t,d,f)=>"Right now in "+c+": "+t+", "+d+". Feels like "+f+".",
+aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, and find a teacher, subject or room (e.g. “room 309” or “Divina”).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
+termsLink:"Terms of Use",termsTitle:"Terms of Use",close:"Close",rights:"© 2026 YASIK. All rights reserved.",termsDate:"Last updated: October 4, 2026",
 terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the use of the YASIK website (the “Site”). By using the Site, you confirm that you have read and accepted the Terms. If you do not agree, please stop using the Site."],
 ["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free and does not require registration."],
 ["3. Informational nature of data","The schedule and other information on the Site are provided for reference only and are not an official document of any educational institution. Please verify the current schedule with the official sources of the university. Weather data is supplied by third-party services and may contain inaccuracies."],
@@ -415,6 +476,8 @@ const addD=(d,n)=>{const x=day0(d);x.setDate(x.getDate()+n);return x};
 const selD=()=>sel||day0(new Date());
 function render(){
   const an=ANIM; ANIM=false;
+  if(SQ){renderSearch(an);return}
+  document.querySelector("#tab-schedule .nav").style.display="";
   const list=$("list");list.innerHTML="";
   list.classList.toggle("one",view==="day");
   let days;
@@ -510,7 +573,9 @@ mq.addEventListener("change",paintTheme);
 let wTime=0;
 const study=$("study"),wnav=$("wnav"),spop=$("spop");
 function showTab(x){
-  ["home","schedule","weather"].forEach(n=>{$("tab-"+n).hidden=x!==n});
+  ["home","schedule","weather","ai"].forEach(n=>{$("tab-"+n).hidden=x!==n});
+  $("ainav").classList.toggle("on",x==="ai");
+  if(x==="ai")setTimeout(()=>$("aiq").focus({preventScroll:true}),50);
   study.classList.toggle("on",x==="schedule");
   wnav.classList.toggle("on",x==="weather");
   if(x==="weather"&&Date.now()-wTime>1800000)loadWeather();
@@ -563,10 +628,11 @@ function renderWeather(){
     const wd=dt.toLocaleDateString(LOC(),{weekday:"short"});
     const p=d.precipitation_probability_max[i], mm=d.precipitation_sum[i];
     const info=[p!=null?"💧 "+p+"%":"", mm>0?mm.toFixed(1)+" "+tr("mm"):"", "💨 "+Math.round(d.wind_speed_10m_max[i])+" "+tr("ms")].filter(Boolean).join(" · ");
-    return '<div class="wx"><div class="w'+(i?'':' today')+'" data-i="'+i+'" tabindex="0" role="button" aria-expanded="false"><div class="wd"><b>'+wd[0].toUpperCase()+wd.slice(1)+'</b><span>'+dt.toLocaleDateString(LOC(),{day:"numeric",month:"short"})+'</span></div>'+
+    return '<div class="wx" data-s="'+esc(dt.toLocaleDateString(LOC(),{weekday:"long",day:"numeric",month:"long"})+" "+tx+" "+tt(d.temperature_2m_max[i]))+'"><div class="w'+(i?'':' today')+'" data-i="'+i+'" tabindex="0" role="button" aria-expanded="false"><div class="wd"><b>'+wd[0].toUpperCase()+wd.slice(1)+'</b><span>'+dt.toLocaleDateString(LOC(),{day:"numeric",month:"short"})+'</span></div>'+
       '<div class="wi">'+ic+'</div><div><div class="ti">'+tx+'</div><div class="m">'+info+'</div></div>'+
       '<div class="wtemp"><b>'+tt(d.temperature_2m_max[i])+'</b><span>'+tt(d.temperature_2m_min[i])+'</span></div></div><div class="wdet" hidden></div></div>';
   }).join("");
+  applyWF();
   $("wsub").textContent=tr("wsub",d.time.length,wUpd.toLocaleTimeString(LOC(),{hour:"2-digit",minute:"2-digit"}));
 }
 
@@ -767,6 +833,141 @@ $("tm-x").onclick=()=>{tm.hidden=true};
 [xl,tm].forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.hidden=true}));
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){xl.hidden=true;tm.hidden=true}});
 
+/* ---- поиск ---- */
+const norm=t=>String(t||"").toLowerCase().replace(/ё/g,"е");
+let SQ="",TOK=[];
+const itemText=it=>norm([it.time,it.title,it.teacher,it.place,it.note].filter(Boolean).join(" "));
+const matchIt=(it,tok)=>{const h=itemText(it);return tok.every(w=>h.includes(w))};
+const hlt=t=>{t=String(t==null?"":t);if(!TOK.length)return esc(t);
+  const re=new RegExp("("+TOK.map(x=>x.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")","gi");
+  return t.split(re).map((p,i)=>i%2?'<mark class="hl">'+esc(p)+'</mark>':esc(p)).join("")};
+function findLessons(q){
+  const tok=norm(q).split(/\s+/).filter(Boolean); if(!tok.length)return[];
+  const today=day0(new Date()),out=[],seen={};
+  const add=(d,its)=>{const m=(its||[]).filter(it=>matchIt(it,tok));if(m.length&&!seen[key(d)]){seen[key(d)]=1;out.push({d,items:m})}};
+  Object.keys(DATA).filter(k=>/^\d{4}-\d\d-\d\d$/.test(k)).forEach(k=>{const[y,m,dd]=k.split("-").map(Number),d=new Date(y,m-1,dd);add(d,itemsFor(d))});
+  if(DATA._weekly)Object.keys(DATA._weekly).forEach(w=>{ // еженедельные пары: ближайшая дата
+    const d=addD(today,(+w-((today.getDay()+6)%7)+7)%7);add(d,itemsFor(d))});
+  return out.sort((a,b)=>a.d-b.d);
+}
+function renderSearch(an){
+  document.querySelector("#tab-schedule .nav").style.display="none";
+  const list=$("list");list.classList.remove("one");
+  const res=findLessons(SQ),cnt=res.reduce((a,r)=>a+r.items.length,0);
+  if(!res.length){list.innerHTML='<div class="empty">'+tr("noRes")+': «'+esc(SQ)+'»</div>';return}
+  list.innerHTML='<div class="empty" style="padding:0 0 4px">'+tr("resCnt",cnt)+'</div>'+res.map((r,i)=>{
+    const d=r.d,wi=(d.getDay()+6)%7,tod=key(d)===key(new Date());
+    return '<section class="day'+(tod?' today':'')+(an?' rv':'')+'" data-d="'+key(d)+'" style="'+(an?'--i:'+i+';':'')+'cursor:pointer"><div class="dh"><div><b>'+tr("dn")[wi]+'</b>'+(tod?'<span class="badge">'+tr("badge")+'</span>':'')+'</div><span>'+fmt(d)+'</span></div>'+
+    r.items.map(it=>'<div class="item"><div class="t">'+hlt(it.time)+'</div><div class="c" style="--c:'+color(it.title)+'"><div class="ti"><span class="ico">'+ico(it.title)+'</span>'+hlt(it.title)+'</div><div class="m">'+[hlt(it.teacher||""),hlt(it.place||"")].filter(x=>x).join(" · ")+'</div></div></div>').join("")+'</section>';
+  }).join("");
+}
+const sq=$("sq"),sqx=$("sqx");
+function setSQ(v){SQ=v.trim();TOK=norm(SQ).split(/\s+/).filter(Boolean);sqx.hidden=!SQ;ANIM=true;render()}
+sq.oninput=()=>setSQ(sq.value);
+sqx.onclick=()=>{sq.value="";setSQ("")};
+$("list").addEventListener("click",e=>{const c=e.target.closest(".day[data-d]");if(!c||!SQ)return;
+  const[y,m,d]=c.dataset.d.split("-").map(Number);sq.value="";setSQ("");goTo(new Date(y,m-1,d))});
+const wq=$("wq");
+function applyWF(){const q=norm(wq.value).split(/\s+/).filter(Boolean);
+  document.querySelectorAll("#wlist .wx").forEach(x=>{const h=norm(x.dataset.s);x.hidden=!q.every(w=>h.includes(w))})}
+wq.oninput=applyWF;
+
+/* ---- онлайн-счётчик ----
+   Реальный счётчик нужен общий сервер. Вставьте сюда URL Firebase Realtime Database
+   (например "https://ВАШ-ПРОЕКТ-default-rtdb.firebaseio.com"). Пока пусто — демо-режим:
+   считаются только вкладки этого браузера. */
+const PRESENCE_URL="";
+let ONL=1,ONL_REAL=false;
+function paintOnline(){const b=$("onl");$("onn").textContent=ONL;$("onl-t").textContent=tr("onlineT");
+  b.classList.toggle("off",PRESENCE_URL?!ONL_REAL:false);b.title=PRESENCE_URL?tr("onlTip"):tr("onlTipLocal")}
+const PID=Math.random().toString(36).slice(2,10);
+if(PRESENCE_URL){
+  const base=PRESENCE_URL.replace(/\/$/,"")+"/presence";
+  const beat=async()=>{try{
+    await fetch(base+"/"+PID+".json",{method:"PUT",body:JSON.stringify({t:Date.now()})});
+    const r=await fetch(base+".json");if(!r.ok)throw 0;
+    const all=(await r.json())||{},now=Date.now();let n=0;
+    Object.keys(all).forEach(k=>{const t=all[k]&&all[k].t||0;if(now-t<70000)n++;else if(now-t>300000)fetch(base+"/"+k+".json",{method:"DELETE"}).catch(()=>{})});
+    ONL=Math.max(1,n);ONL_REAL=true;paintOnline();
+  }catch(e){ONL_REAL=false;paintOnline()}};
+  beat();setInterval(beat,25000);
+  addEventListener("pagehide",()=>{try{fetch(base+"/"+PID+".json",{method:"DELETE",keepalive:true})}catch(e){}});
+}else if("BroadcastChannel" in window){
+  const bc=new BroadcastChannel("yasik-presence"),peers={};
+  const ping=()=>{bc.postMessage({id:PID});const now=Date.now();Object.keys(peers).forEach(k=>{if(now-peers[k]>6000)delete peers[k]});ONL=1+Object.keys(peers).length;paintOnline()};
+  bc.onmessage=e=>{if(e.data&&e.data.id&&e.data.id!==PID){if(!peers[e.data.id])setTimeout(ping,50);peers[e.data.id]=Date.now()}};
+  ping();setInterval(ping,3000);
+}
+paintOnline();
+
+/* ---- YASIK-AI ----
+   По умолчанию — бесплатный сервис Pollinations (без ключа). Свой прокси/ключ: поменяйте AI_ENDPOINT.
+   Если облако недоступно, включается локальный помощник, который знает расписание и погоду. */
+const AI_ENDPOINT="https://text.pollinations.ai/openai", AI_MODEL="openai";
+let AIH=[],AI_MODE="cloud",AI_BUSY=false;
+const aim=$("aim"),aiq=$("aiq");
+function paintAI(){
+  $("ai-st").textContent=tr(AI_MODE==="cloud"?"aiCloud":"aiLocal");
+  $("ais").innerHTML=tr("aiSug").map((x,i)=>'<button type="button" data-i="'+i+'">'+esc(x)+'</button>').join("");
+  const f=aim.querySelector(".ms.hello");if(f)f.textContent=tr("aiHello");
+}
+function aiAdd(role,text,cls){const m=document.createElement("div");m.className="ms "+role+(cls?" "+cls:"");m.textContent=text;aim.appendChild(m);aim.scrollTop=aim.scrollHeight;return m}
+function aiReset(){aim.innerHTML="";AIH=[];const h=aiAdd("a",tr("aiHello"));h.classList.add("hello")}
+const lessonLine=it=>it.time+" — "+it.title+" ("+[it.teacher,it.place].filter(Boolean).join(", ")+")";
+const dayText=d=>{const its=itemsFor(d)||[];return its.length?its.map(lessonLine).join("\n"):tr("aiNoDay")};
+function aiContext(){
+  const n=new Date(),lines=[];
+  for(let k=0;k<14;k++){const d=addD(n,k),its=itemsFor(d)||[];if(its.length)lines.push(key(d)+" ("+tr("dn")[(d.getDay()+6)%7]+"):\n"+its.map(lessonLine).join("\n"))}
+  const w=HWD?"Weather in "+CITY.name+": "+tt(HWD.temperature_2m)+", "+wmo(HWD.weather_code)[1]+".":"";
+  return "You are YASIK-AI, a friendly assistant built into the YASIK website for students of group BI-02 (Lomonosov MSU, HSPA). Answer concisely in the language the user writes in. Current date/time: "+n.toLocaleString("ru-RU")+". "+w+"\nSchedule for the next 14 days:\n"+(lines.join("\n")||"(none)")+"\nUse the schedule only when relevant; never invent lessons."
+}
+async function cloudAnswer(){
+  const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),25000);
+  try{
+    const r=await fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
+      body:JSON.stringify({model:AI_MODEL,messages:[{role:"system",content:aiContext()}].concat(AIH.slice(-10))})});
+    if(!r.ok)throw new Error(r.status);
+    const j=await r.json(),txt=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+    if(!txt)throw new Error("empty");return txt.trim();
+  }finally{clearTimeout(t)}
+}
+async function localAnswer(q){
+  const t=norm(q);
+  if(/погод|температур|дожд|weather|rain|temperature/.test(t)){
+    if(!HWD)await loadHomeWeather();
+    if(HWD)return tr("aiW",CITY.name,tt(HWD.temperature_2m),wmo(HWD.weather_code)[1].toLowerCase(),tt(HWD.apparent_temperature));
+  }
+  if(/завтра|tomorrow/.test(t))return tr("aiTomorrow")+":\n"+dayText(addD(new Date(),1));
+  if(/сегодня|today/.test(t))return tr("aiToday")+":\n"+dayText(new Date());
+  if(/следующ|ближайш|next|upcoming|какая пара|what.*class/.test(t)){
+    const u=upcoming();if(!u)return tr("aiNoUp");
+    return tr("aiNext")+": "+lessonLine(u.it)+"\n"+fmt(u.d)+", "+pad(u.s.getHours())+":"+pad(u.s.getMinutes())}
+  const stop=/^(где|когда|какая|какой|у|в|на|пара|пары|ауд|аудитория|проходит|where|when|is|the|room|class|of|at|in|s|у)$/;
+  const words=t.replace(/[?!.,«»"']/g," ").split(/\s+/).filter(w=>w&&!stop.test(w)).map(w=>w.length>5?w.slice(0,w.length-1):w);
+  const hits=findLessons(words.join(" "));
+  const res=hits.length?hits:findLessons(words.filter(w=>w.length>2).slice(0,1).join(" "));
+  if(res.length){const r=res.slice(0,4);return tr("aiFound")+"\n"+r.map(x=>fmt(x.d)+":\n"+x.items.map(lessonLine).join("\n")).join("\n\n")}
+  if(/привет|здравствуй|hello|^hi\b|hey/.test(t))return tr("aiHello");
+  return tr("aiHelp");
+}
+async function aiSend(text){
+  text=(text||"").trim();if(!text||AI_BUSY)return;
+  AI_BUSY=true;aiq.value="";aiq.style.height="";aiAdd("u",text);AIH.push({role:"user",content:text});
+  const bub=aiAdd("a","");bub.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
+  let ans;
+  try{ans=await cloudAnswer();AI_MODE="cloud"}
+  catch(e){AI_MODE="local";ans=await localAnswer(text);bub.classList.add("err")}
+  bub.textContent=ans;AIH.push({role:"assistant",content:ans});paintAI();
+  aim.scrollTop=aim.scrollHeight;AI_BUSY=false;
+}
+$("aigo").onclick=()=>aiSend(aiq.value);
+aiq.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aiSend(aiq.value)}};
+aiq.oninput=()=>{aiq.style.height="auto";aiq.style.height=Math.min(120,aiq.scrollHeight)+"px"};
+$("ais").onclick=e=>{const b=e.target.closest("button");if(b)aiSend(tr("aiSug")[+b.dataset.i])};
+$("ai-clr").onclick=aiReset;
+$("ainav").onclick=()=>{closeStudy();showTab("ai")};
+aiReset();
+
 /* ---- язык ---- */
 function applyLang(){
   root.lang=LANG;
@@ -775,7 +976,7 @@ function applyLang(){
   $("lang").dataset.lang=LANG;
   document.title="YASIK";
   paintTheme();renderChips();render();renderWeather();renderHomeWeather();
-  $("tc-n").dataset.l="";tickHome();
+  $("tc-n").dataset.l="";tickHome();paintOnline();paintAI();applyWF();
 }
 $("lang").onclick=()=>{
   LANG=LANG==="ru"?"en":"ru";
@@ -784,7 +985,7 @@ $("lang").onclick=()=>{
 };
 
 applyLang();
-showTab(location.hash==="#weather"?"weather":location.hash==="#schedule"?"schedule":"home");
+showTab(location.hash==="#weather"?"weather":location.hash==="#schedule"?"schedule":location.hash==="#ai"?"ai":"home");
 setInterval(render,60000);setInterval(tickHome,1000);
 load();setInterval(load,600000);
 </script></body></html>
