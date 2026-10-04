@@ -271,6 +271,60 @@ a.dl{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
 .sv{font-weight:500;font-family:inherit;display:block;margin-top:8px}
 .aiw.drag,.aipop.drag{outline:2px dashed var(--accent);outline-offset:-6px}
 
+/* ---- индикатор «думает» ---- */
+.thk{min-width:210px}
+.thk-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.orb{position:relative;width:18px;height:18px;border-radius:50%;flex:none;background:conic-gradient(from 0deg,#1e4e8c,#6b3f8c,#2f7d6d,#1e4e8c);animation:orbSpin 2.4s linear infinite}
+.orb::before{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--tag)}
+.orb::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--accent);animation:orbPulse 1.2s ease-in-out infinite}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+@keyframes orbPulse{50%{transform:scale(.45);opacity:.5}}
+.wv{display:inline-flex;align-items:center;gap:3px;height:18px;flex:none}
+.wv i{width:3px;height:100%;border-radius:2px;background:var(--accent);transform-origin:center;animation:wave 1s ease-in-out infinite}
+.wv i:nth-child(2){animation-delay:.12s}.wv i:nth-child(3){animation-delay:.24s}.wv i:nth-child(4){animation-delay:.36s}.wv i:nth-child(5){animation-delay:.48s}
+@keyframes wave{0%,100%{transform:scaleY(.25)}50%{transform:scaleY(1)}}
+.thk-t{font-weight:600;background:linear-gradient(90deg,var(--muted) 0%,var(--fg) 50%,var(--muted) 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shim 1.8s linear infinite}
+@keyframes shim{to{background-position:-200% 0}}
+.thk-m{margin-left:auto;font-variant-numeric:tabular-nums;font-size:.8rem;font-weight:700;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1px 8px;background:var(--card)}
+.thk-d{margin-top:8px;font-size:.82rem;color:var(--muted);line-height:1.4}
+.pbar{height:5px;border-radius:99px;background:var(--line);margin-top:8px;overflow:hidden}
+.pbar b{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#1e4e8c,#6b3f8c);transition:width .6s ease}
+.tkd{margin-top:6px;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+/* скрепка */
+.attb{flex:none;width:42px;height:42px;padding:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--tag);border:1px solid var(--line);color:var(--muted);transition:color .15s,border-color .15s,background .15s,transform .15s}
+.attb svg{display:block;transition:transform .2s}
+.attb:hover{color:var(--accent);border-color:var(--accent);background:var(--card)}
+.attb:hover svg{transform:rotate(-15deg) scale(1.1)}
+.attb:active{transform:scale(.94)}
+.aiin{align-items:flex-end;gap:10px;padding:12px 14px}
+.aiin .attb{width:44px;height:44px}
+.aiin textarea{min-height:44px;line-height:1.35}
+.aiin .pri{height:44px;padding-top:0;padding-bottom:0}
+.aipop .aiin{gap:8px;align-items:flex-end}
+.aipop .aiin .attb{width:40px;height:40px}
+.aipop .attb svg{width:18px;height:18px}
+.aipop .aiin textarea{min-height:40px}
+.aipop .aiin .pri{height:40px}
+/* ответы: markdown, курсор, кнопки под ответом, кнопка «Стоп» */
+.ms.md p{margin:0 0 .6em}
+.ms.md>*:last-child{margin-bottom:0}
+.ms.md ul,.ms.md ol{margin:.2em 0 .6em;padding-left:1.4em}
+.ms.md li{margin:.15em 0}
+.ms.md .mh{font-weight:700;margin:.6em 0 .3em}
+.ms.md hr{border:0;border-top:1px solid var(--line);margin:.6em 0}
+.ms.md a{color:var(--accent)}
+.ms.md code{font-family:Consolas,Menlo,monospace;font-size:.88em;background:rgba(127,127,127,.2);border-radius:4px;padding:1px 5px}
+.ms.md pre.cb{margin:.4em 0 .7em;padding:10px 12px;border-radius:8px;overflow-x:auto;background:var(--bg);border:1px solid var(--line);white-space:pre}
+.ms.md pre.cb code{background:none;padding:0;font-size:.85em}
+.caret{display:inline-block;width:7px;height:1.05em;vertical-align:-3px;margin-left:2px;border-radius:1px;background:var(--accent);animation:blink 1s steps(2,start) infinite}
+@keyframes blink{50%{opacity:0}}
+.macts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.macts button{margin:0;padding:3px 10px;font-size:.76rem;font-weight:500;font-family:inherit;border-radius:99px;display:inline-flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--line);color:var(--muted);cursor:pointer}
+.macts button:hover{color:var(--accent);border-color:var(--accent)}
+.aiin .pri.stop{background:#c0392b;border-color:#c0392b;color:#fff}
+@media (prefers-reduced-motion:reduce){.caret{animation:none}}
+@media (prefers-reduced-motion:reduce){.orb,.orb::after,.wv i,.thk-t{animation:none!important}.thk-t{-webkit-text-fill-color:currentColor}}
+
 /* ---- мобильная версия: шапка и cookie ---- */
 @media (max-width:600px){
 html,body{max-width:100%;overflow-x:hidden}
@@ -363,8 +417,7 @@ body{padding-bottom:var(--ckh,0px)}
 <div class="aiw">
 <div class="aih"><div class="aiav">AI</div><div><b>YASIK-AI</b><div class="m" id="ai-st"></div></div><div class="sp1"></div><button id="ai-clr" type="button" data-tr="aiClear">Очистить</button></div>
 <div class="aimsgs" id="aim" aria-live="polite"></div>
-<div class="aisug" id="ais"></div>
-<div class="aiin"><button class="attb" type="button" data-t="aiAttT" aria-label="Прикрепить картинку" title="Прикрепить картинку">📎</button><textarea id="aiq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="aigo" type="button" data-tr="aiSend">Отправить</button></div>
+<div class="aiin"><button class="attb" type="button" data-t="aiAttT" aria-label="Прикрепить картинку" title="Прикрепить картинку"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button><textarea id="aiq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="aigo" type="button" data-tr="aiSend">Отправить</button></div>
 <div class="ainote" data-tr="aiNote"></div>
 </div>
 </div>
@@ -374,7 +427,7 @@ body{padding-bottom:var(--ckh,0px)}
 <div class="aipop" id="aipop" role="dialog" aria-label="YASIK-AI" hidden>
 <div class="aih"><div class="aiav">AI</div><b>YASIK-AI</b><div class="sp1"></div><button id="pfull" type="button" title="Открыть полный чат" aria-label="Открыть полный чат">↗</button><button id="pcls" type="button" aria-label="Закрыть">✕</button></div>
 <div class="aimsgs" id="pm" aria-live="polite"></div>
-<div class="aiin"><button class="attb" type="button" data-t="aiAttT" aria-label="Прикрепить картинку" title="Прикрепить картинку">📎</button><textarea id="pq" rows="1" data-ph="aiPh2" placeholder="Сообщение…" enterkeyhint="send"></textarea><button class="pri" id="pgo" type="button" data-tr="aiSend">Отправить</button></div>
+<div class="aiin"><button class="attb" type="button" data-t="aiAttT" aria-label="Прикрепить картинку" title="Прикрепить картинку"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button><textarea id="pq" rows="1" data-ph="aiPh2" placeholder="Сообщение…" enterkeyhint="send"></textarea><button class="pri" id="pgo" type="button" data-tr="aiSend">Отправить</button></div>
 </div>
 
 <footer>
@@ -416,7 +469,7 @@ terms:[["1. Общие положения","Настоящее Пользова�
 ["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно и не требует регистрации."],
 ["3. Информационный характер данных","Расписание и иные сведения на Сайте носят справочный характер и не являются официальным документом образовательной организации. Актуальное расписание следует уточнять в официальных источниках университета. Данные о погоде предоставляются сторонними сервисами и могут содержать неточности."],
 ["4. Обязанности пользователя","Пользователь обязуется не нарушать работу Сайта, не предпринимать попыток несанкционированного доступа к нему и не использовать автоматизированные средства, создающие чрезмерную нагрузку."],
-["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык и выбранный город. Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам."],
+["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык, выбранный город и история чата с YASIK-AI (она хранится только в вашем браузере). Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам."],
 ["6. Интеллектуальная собственность","Дизайн, оформление и программный код Сайта принадлежат владельцу Сайта. Копирование и распространение материалов без согласия владельца не допускаются, если иное не предусмотрено законодательством."],
 ["7. Ограничение ответственности","Сайт предоставляется «как есть». Владелец не гарантирует бесперебойную работу Сайта, полноту и точность размещённых данных и не несёт ответственности за убытки, возникшие в связи с использованием или невозможностью использования Сайта."],
 ["8. Внешние ссылки","Сайт содержит ссылки на сторонние ресурсы, в том числе социальные сети. Владелец не контролирует их содержание и не несёт за него ответственности."],
@@ -432,7 +485,7 @@ loadW:"Загружаю прогноз…",wfail:"Не удалось загру
 wsub:(n,tm)=>"Прогноз на "+n+" дн. · нажмите на день, чтобы увидеть подробности · обновлено в "+tm,
 searching:"Ищу…",notfound:"Город не найден. Попробуйте другое название.",sfail:"Не удалось выполнить поиск. Проверьте интернет и попробуйте позже.",
 toLight:"Включить светлую тему",toDark:"Включить тёмную тему",themeAria:"Тёмная тема",
-ckTitle:"🍪 Мы используем cookie",ckText:"Сайт может сохранять в браузере выбранную тему, язык и город для погоды, чтобы не настраивать их заново. Вы можете согласиться или оставить только необходимое.",ckYes:"Принять",ckNo:"Только необходимые",ckSet:"Настройки cookie",contacts:"Контакты:",
+ckTitle:"🍪 Мы используем cookie",ckText:"Сайт может сохранять в браузере выбранную тему, язык, город для погоды и историю чата с YASIK-AI, чтобы не настраивать их заново. Вы можете согласиться или оставить только необходимое.",ckYes:"Принять",ckNo:"Только необходимые",ckSet:"Настройки cookie",contacts:"Контакты:",
 wn:["Ясно","Переменная облачность","Пасмурно","Туман","Морось","Дождь","Снег","Ливень","Снегопад","Гроза"],
 dirs:["С","СВ","В","ЮВ","Ю","ЮЗ","З","СЗ"],
 feels:"Ощущается",precip:"Осадки",wind:"Ветер",uv:"УФ-индекс",hum:"Влажность",press:"Давление",
@@ -448,7 +501,13 @@ nowLesson:"Сейчас идёт пара",nextLesson:"Следующая пар
 inTime:d=>"через "+d,left:d=>"осталось "+d,wToday:tm=>"сегодня в "+tm,wTomorrow:tm=>"завтра в "+tm,
 openSched:"Открыть расписание →",openWeather:"Подробный прогноз →",todayK:"📅 Сегодня",
 todayCount:n=>n?"Пар сегодня: "+n:"Сегодня занятий нет 🎉",wcardK:"Погода сейчас",
-u_d:"д",u_h:"ч",u_m:"мин",feelsS:v=>"Ощущается как "+v},
+u_d:"д",u_h:"ч",u_m:"мин",feelsS:v=>"Ощущается как "+v,u_s:"с",tookS:t=>"Думал "+t,
+thk_chat:["Думаю…","Рассуждаю…","Анализирую вопрос…","Подбираю слова…","Формулирую ответ…"],
+thk_doc:["Создаю документ…","Продумываю структуру…","Пишу текст…","Подбираю формулировки…","Редактирую…"],
+thk_img:["Обрабатываю изображение…","Конвертирую…","Собираю файл…"],
+aiStop:"Стоп",aiStopped:"Остановлено",aiCopy:"Копировать",aiCopied:"Скопировано",aiRetry:"Повторить",aiWordS:"📄 Word",
+aiQuota:"Дневной бесплатный лимит облачного ИИ на сегодня исчерпан — ответы нейросети вернутся завтра. Пока отвечаю как локальный помощник: знаю расписание и погоду.",
+aiDocStopped:"Документ собран частично: вы остановили генерацию"},
 en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
 aiPh2:"Message…",aiAttT:"Attach an image",aiImgGot:(n,i)=>"Got “"+n+"” ("+i+"). Which format should I convert it to?",aiImgBad:"Couldn't open this file as an image. PNG, JPG, WEBP, GIF, BMP and SVG work.",aiNeedImg:"Please attach an image first with the 📎 button (or drag it into the chat, or paste it) and I'll change the format.",aiConvDone:(n,s,i)=>"Done: "+n+" · "+s+" · "+i,aiDl:"Download",aiSaveW:"📄 Save to Word",aiDocMake:"Writing the document…",aiDocDone:n=>"Document ready: "+n,aiDocPlan:"Making an outline…",aiDocProg:(i,n,t)=>"Writing section "+i+" of "+n+": “"+t+"”. A large document takes a few minutes, please keep the page open.",aiDocExtra:t=>"Adding more text to “"+t+"”…",aiDocStat:(w,p)=>"≈ "+w+" words, about "+p+" pages of main text",aiDocNote:"The reference list is left empty: the AI does not invent sources. Add real ones yourself. Page numbers in the contents update in Word: right-click the contents → Update field.",aiDocQuota:"The daily free AI limit is used up. Please try again tomorrow.",aiDocPartial:"The document is partial: the AI stopped responding midway",aiDocFail:"Couldn't write the document: the cloud AI is unavailable right now. Please try again later.",aiNoWebp:"This browser can't save WEBP. Choose PNG, JPG or BMP.",aiBig:"The file is too large to process in the browser.",aiNotImg:"That isn't an image. Please attach an image file.",aiPickFmt:"Format:",
 aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Text messages are sent to an external AI service; do not enter personal data. Images are processed on your device and never uploaded.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
@@ -461,7 +520,7 @@ terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the
 ["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free and does not require registration."],
 ["3. Informational nature of data","The schedule and other information on the Site are provided for reference only and are not an official document of any educational institution. Please verify the current schedule with the official sources of the university. Weather data is supplied by third-party services and may contain inaccuracies."],
 ["4. User obligations","The user agrees not to disrupt the operation of the Site, not to attempt unauthorized access to it, and not to use automated tools that create excessive load."],
-["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language and selected city are saved in your browser. You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services."],
+["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language, selected city and YASIK-AI chat history are saved in your browser (only on your device). You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services."],
 ["6. Intellectual property","The design, layout and source code of the Site belong to its owner. Copying or distributing the materials without the owner’s consent is not permitted unless provided by law."],
 ["7. Limitation of liability","The Site is provided “as is”. The owner does not guarantee uninterrupted operation, or the completeness and accuracy of the data, and is not liable for any losses arising from the use of, or inability to use, the Site."],
 ["8. External links","The Site contains links to third-party resources, including social networks. The owner does not control their content and is not responsible for it."],
@@ -477,7 +536,7 @@ loadW:"Loading forecast…",wfail:"Could not load the forecast. Check your conne
 wsub:(n,tm)=>n+"-day forecast · tap a day for details · updated at "+tm,
 searching:"Searching…",notfound:"City not found. Try another name.",sfail:"Search failed. Check your connection and try again later.",
 toLight:"Switch to light theme",toDark:"Switch to dark theme",themeAria:"Dark theme",
-ckTitle:"🍪 We use cookies",ckText:"The site can save your theme, language and weather city in your browser so you don't have to set them again. You can accept or keep only what is necessary.",ckYes:"Accept",ckNo:"Necessary only",ckSet:"Cookie settings",contacts:"Contacts:",
+ckTitle:"🍪 We use cookies",ckText:"The site can save your theme, language, weather city and AI chat history in your browser so you don't have to set them again. You can accept or keep only what is necessary.",ckYes:"Accept",ckNo:"Necessary only",ckSet:"Cookie settings",contacts:"Contacts:",
 wn:["Clear","Partly cloudy","Overcast","Fog","Drizzle","Rain","Snow","Heavy rain","Snowfall","Thunderstorm"],
 dirs:["N","NE","E","SE","S","SW","W","NW"],
 feels:"Feels like",precip:"Precipitation",wind:"Wind",uv:"UV index",hum:"Humidity",press:"Pressure",
@@ -493,7 +552,13 @@ nowLesson:"Class in progress",nextLesson:"Next class",noUp:"No upcoming classes 
 inTime:d=>"in "+d,left:d=>d+" left",wToday:tm=>"today at "+tm,wTomorrow:tm=>"tomorrow at "+tm,
 openSched:"Open schedule →",openWeather:"Full forecast →",todayK:"📅 Today",
 todayCount:n=>n?"Classes today: "+n:"No classes today 🎉",wcardK:"Weather now",
-u_d:"d",u_h:"h",u_m:"min",feelsS:v=>"Feels like "+v}
+u_d:"d",u_h:"h",u_m:"min",feelsS:v=>"Feels like "+v,u_s:"s",tookS:t=>"Thought for "+t,
+thk_chat:["Thinking…","Reasoning…","Analyzing the question…","Choosing words…","Composing the answer…"],
+thk_doc:["Creating the document…","Planning the structure…","Writing the text…","Polishing the wording…","Editing…"],
+thk_img:["Processing the image…","Converting…","Building the file…"],
+aiStop:"Stop",aiStopped:"Stopped",aiCopy:"Copy",aiCopied:"Copied",aiRetry:"Retry",aiWordS:"📄 Word",
+aiQuota:"The daily free limit of the cloud AI is used up — neural answers will be back tomorrow. For now I answer as a local assistant: I know the schedule and the weather.",
+aiDocStopped:"The document is partial: you stopped the generation"}
 };
 let LANG="ru";
 try{const s=localStorage.getItem("lang");if(s==="ru"||s==="en")LANG=s}catch(e){}
@@ -610,8 +675,8 @@ function setConsent(v){
   CONSENT=v; ck.hidden=true;
   try{
     localStorage.setItem("consent",v);
-    if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); localStorage.setItem("lang",LANG); }
-    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); }
+    if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); localStorage.setItem("lang",LANG); saveChat(); }
+    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); }
   }catch(e){}
 }
 $("ck-yes").onclick=()=>setConsent("all");
@@ -1054,19 +1119,44 @@ function toolIntent(text){
 const AI_PROXY="https://yasik-ai.klown575.workers.dev";   // ← сюда URL вашего Cloudflare Worker (см. worker.js), например "https://yasik-ai.ИМЯ.workers.dev"
 const AI_ENDPOINT="https://text.pollinations.ai/openai", AI_MODEL="openai"; // запасной бесплатный вариант
 let AIH=[],AI_MODE="cloud",AI_BUSY=false,ATT=null;
+let STOPPED=false,CUR_CTL=null,GEN=false,EPOCH=0; // STOPPED — нажали «Стоп»; GEN — идёт генерация; EPOCH — меняется при очистке чата
 const aim=$("aim"),aiq=$("aiq"),pm=$("pm"),pq=$("pq"),CONT=[aim,pm];
-function paintAI(){
+function paintAI(){paintSend();
   $("ai-st").textContent=tr(AI_MODE==="cloud"?"aiCloud":"aiLocal");
-  $("ais").innerHTML=tr("aiSug").map((x,i)=>'<button type="button" data-i="'+i+'">'+esc(x)+'</button>').join("");
   document.querySelectorAll(".ms.hello").forEach(f=>{f.textContent=tr("aiHello")});
   document.querySelectorAll(".attb").forEach(b=>{b.title=b.ariaLabel=tr("aiAttT")});$("pfull").title=$("pfull").ariaLabel=tr("aiOpenFull");$("pcls").ariaLabel=tr("aiClose");$("aifab").ariaLabel=tr("aiOpen");
 }
 function aiAdd(role,text,cls){ // добавляет сообщение сразу в оба окна (полный чат и всплывающее)
   const els=CONT.map(c=>{const m=document.createElement("div");m.className="ms "+role+(cls?" "+cls:"");m.textContent=text;c.appendChild(m);c.scrollTop=c.scrollHeight;return m});
-  return{els,set(t){els.forEach(m=>{m.textContent=t})},html(h){els.forEach(m=>{m.innerHTML=h})},cls(c){els.forEach(m=>m.classList.add(c))},
-    fill(build){els.forEach(m=>{m.innerHTML="";m.classList.add("rich");m.appendChild(build())});scrollAI()}}}
+  let pend="",raf=0;const kill=()=>{if(raf){cancelAnimationFrame(raf);raf=0}};
+  return{els,set(t){kill();els.forEach(m=>{m.textContent=t})},html(h){kill();els.forEach(m=>{m.innerHTML=h})},cls(c){els.forEach(m=>m.classList.add(c))},
+    fill(build){kill();els.forEach(m=>{m.innerHTML="";m.classList.add("rich");m.appendChild(build())});scrollAI()},
+    // потоковый вывод: текст дорисовывается по мере прихода, не чаще одного раза за кадр
+    stream(t){pend=t;if(raf)return;raf=requestAnimationFrame(()=>{raf=0;els.forEach(m=>{const c=m.parentElement,nb=!c||c.scrollHeight-c.scrollTop-c.clientHeight<120;
+      m.classList.add("rich","md");m.innerHTML=mdHtml(pend)+'<span class="caret"></span>';if(nb&&c)c.scrollTop=c.scrollHeight})})},
+    md(t){kill();els.forEach(m=>{m.classList.add("rich","md");m.innerHTML=mdHtml(t)});scrollAI()},
+    note(t){els.forEach(m=>{const d=document.createElement("div");d.className="tkd";d.textContent=t;m.appendChild(d)})},
+    // анимированный индикатор «думает» + секундомер; kind: chat | doc | img
+    think(kind){const t0=Date.now();
+      els.forEach(m=>{m.classList.add("rich");m.innerHTML='<div class="thk" data-k="'+kind+'" data-t0="'+t0+'"><div class="thk-r"><span class="orb"></span><span class="wv"><i></i><i></i><i></i><i></i><i></i></span><span class="thk-t"></span><span class="thk-m">0.0 '+tr("u_s")+'</span></div><div class="thk-d" hidden></div><div class="pbar" hidden><b></b></div></div>'});
+      tickThink();scrollAI();return t0},
+    // подпись под индикатором и (необязательно) полоса прогресса 0..1
+    status(d,f){els.forEach(m=>{const x=m.querySelector(".thk");if(!x)return;
+      const dd=x.querySelector(".thk-d");dd.textContent=d||"";dd.hidden=!d;
+      if(f!=null){const pb=x.querySelector(".pbar");pb.hidden=false;pb.firstChild.style.width=Math.max(3,Math.min(100,f*100)).toFixed(0)+"%"}});scrollAI()},
+    // небольшая пометка «Думал N с» под готовым ответом
+    took(sec){this.note("⏱ "+tr("tookS",fmtEl(sec)))}}}
 const scrollAI=()=>CONT.forEach(c=>{c.scrollTop=c.scrollHeight})
-function aiReset(){CONT.forEach(c=>{c.innerHTML=""});AIH=[];aiAdd("a",tr("aiHello")).cls("hello")}
+function fmtEl(s){return s<60?s.toFixed(1)+" "+tr("u_s"):Math.floor(s/60)+":"+pad(Math.floor(s%60))}
+function tickThink(){
+  document.querySelectorAll(".thk").forEach(x=>{
+    const s=(Date.now()-(+x.dataset.t0))/1000,ph=tr("thk_"+x.dataset.k)||[],tx=x.querySelector(".thk-t"),i=ph.length?Math.floor(s/2.6)%ph.length:0;
+    x.querySelector(".thk-m").textContent=fmtEl(s);
+    if(tx.dataset.i!==String(i)+LANG){tx.dataset.i=String(i)+LANG;tx.textContent=ph[i]||""}
+  });
+}
+setInterval(tickThink,100);
+function aiReset(){EPOCH++;CONT.forEach(c=>{c.innerHTML=""});AIH=[];try{localStorage.removeItem("chat")}catch(e){}aiAdd("a",tr("aiHello")).cls("hello")}
 const lessonLine=it=>it.time+" — "+it.title+" ("+[it.teacher,it.place].filter(Boolean).join(", ")+")";
 const dayText=d=>{const its=itemsFor(d)||[];return its.length?its.map(lessonLine).join("\n"):tr("aiNoDay")};
 function aiContext(){
@@ -1079,12 +1169,33 @@ async function cloudAnswer(o){
   o=o||{};
   const hist=AIH.slice(-12).map(m=>({role:m.role,content:m.content}));
   if(o.instr&&hist.length)hist[hist.length-1].content+=o.instr;
-  const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),o.timeout||30000);
+  const ctl=new AbortController();CUR_CTL=ctl;
+  let t=0;const bump=()=>{clearTimeout(t);t=setTimeout(()=>ctl.abort(),o.timeout||30000)};bump(); // таймаут «тишины»: сбрасывается при каждом куске потока
   try{
     if(AI_PROXY){
       const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
-        body:JSON.stringify({context:aiContext().slice(0,4000),messages:hist,max_tokens:o.maxTok||600})});
+        body:JSON.stringify({context:aiContext().slice(0,4000),messages:hist,max_tokens:o.maxTok||600,stream:!!o.onDelta})});
+      if(r.status===429)throw Object.assign(new Error("quota"),{quota:true}); // дневной лимит Workers AI
       if(!r.ok)throw new Error(r.status);
+      if(o.onDelta&&r.body&&(r.headers.get("content-type")||"").includes("text/event-stream")){
+        const rd=r.body.getReader(),dec=new TextDecoder();let buf="",acc="";
+        try{
+          for(;;){
+            const x=await rd.read();if(x.done)break;bump();
+            buf+=dec.decode(x.value,{stream:true});
+            let i;
+            while((i=buf.indexOf("\n"))>=0){
+              const line=buf.slice(0,i).trim();buf=buf.slice(i+1);
+              if(!line.startsWith("data:"))continue;
+              const d=line.slice(5).trim();if(!d||d==="[DONE]")continue;
+              try{const j=JSON.parse(d),p=typeof j.response==="string"?j.response:((j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content)||"");
+                if(p){acc+=p;o.onDelta(acc)}}catch(e){}
+            }
+          }
+        }catch(e){if(acc.trim())return acc.trim();throw e} // оборвали или связь пропала — оставляем то, что успело прийти
+        if(!acc.trim())throw new Error("empty");
+        return acc.trim();
+      }
       const j=await r.json();if(!j.text)throw new Error("empty");return j.text.trim();
     }
     const r=await fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
@@ -1092,8 +1203,120 @@ async function cloudAnswer(o){
     if(!r.ok)throw new Error(r.status);
     const j=await r.json(),txt=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
     if(!txt)throw new Error("empty");return txt.trim();
+  }catch(e){
+    if(STOPPED&&!e.quota)throw Object.assign(new Error("stop"),{stop:true}); // пользователь нажал «Стоп»
+    throw e;
   }finally{clearTimeout(t)}
 }
+
+/* ---- markdown в ответах ---- */
+function fmtSpan(t){
+  return t.replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>")
+    .replace(/(^|[^*\w])\*([^*\s][^*\n]*?)\*(?![*\w])/g,"$1<i>$2</i>")
+    .replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+}
+function mdInline(t){return String(t).split(/`([^`\n]+)`/).map((s,i)=>i%2?"<code>"+esc(s)+"</code>":fmtSpan(esc(s))).join("")}
+function mdBlocks(p){
+  const out=[];let list=null,para=[];
+  const flushP=()=>{if(para.length){out.push("<p>"+para.map(mdInline).join("<br>")+"</p>");para=[]}};
+  const flushL=()=>{if(list){out.push("<"+list.t+(list.t==="ol"&&list.s>1?' start="'+list.s+'"':"")+">"+list.i.map(x=>"<li>"+mdInline(x)+"</li>").join("")+"</"+list.t+">");list=null}};
+  p.split("\n").forEach(raw=>{
+    const l=raw.trim();let m;
+    if(!l){flushP();flushL();return}
+    if(m=l.match(/^#{1,6}\s+(.*)$/)){flushP();flushL();out.push('<div class="mh">'+mdInline(m[1])+"</div>");return}
+    if(/^[-*_]{3,}$/.test(l)){flushP();flushL();out.push("<hr>");return}
+    if(m=l.match(/^[-*•]\s+(.*)$/)){flushP();if(!list||list.t!=="ul"){flushL();list={t:"ul",i:[],s:1}}list.i.push(m[1]);return}
+    if(m=l.match(/^(\d+)[.)]\s+(.*)$/)){flushP();if(!list||list.t!=="ol"){flushL();list={t:"ol",i:[],s:+m[1]}}list.i.push(m[2]);return}
+    flushL();para.push(l);
+  });
+  flushP();flushL();return out.join("");
+}
+function mdHtml(src){
+  return String(src).replace(/\r/g,"").split("```").map((p,i)=>{
+    if(i%2){ // блок кода; первая строка может быть названием языка
+      const nl=p.indexOf("\n"),code=(nl>=0&&/^[\w+#.-]*$/.test(p.slice(0,nl).trim()))?p.slice(nl+1):p;
+      return '<pre class="cb"><code>'+esc(code.replace(/\n$/,""))+"</code></pre>";
+    }
+    return mdBlocks(p);
+  }).join("");
+}
+
+/* ---- кнопки под ответом, «Стоп», история ---- */
+function copyText(t,btn){
+  const done=()=>{const o=btn.dataset.o||btn.textContent;btn.dataset.o=o;btn.textContent="✓ "+tr("aiCopied");setTimeout(()=>{btn.textContent=o},1500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=t;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){}ta.remove()};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,fb);else fb();
+}
+function addActions(bub,ans,o){
+  o=o||{};
+  bub.els.forEach(m=>{
+    const row=document.createElement("div");row.className="macts";
+    const mk=(txt,cls,fn)=>{const b=document.createElement("button");b.type="button";b.textContent=txt;if(cls)b.className=cls;b.onclick=()=>fn(b);row.appendChild(b)};
+    if(ans)mk("⧉ "+tr("aiCopy"),"",b=>copyText(ans,b));
+    mk("↻ "+tr("aiRetry"),"rt",()=>aiRegen(bub));
+    if(o.word&&ans&&ans.length>80)mk(tr("aiWordS"),"",()=>saveBlob(mdToDocx(ans),safeName(mdTitle(ans))+".docx"));
+    m.appendChild(row);
+  });
+  scrollAI();
+}
+function paintSend(){["aigo","pgo"].forEach(id=>{const b=$(id);if(!b)return;b.textContent=(GEN?"■ ":"")+tr(GEN?"aiStop":"aiSend");b.classList.toggle("stop",GEN)})}
+function setGen(v){GEN=v;paintSend()}
+function stopAI(){STOPPED=true;if(CUR_CTL)CUR_CTL.abort()}
+function saveChat(){
+  try{
+    if(!canSave())return;
+    const m=AIH.filter(x=>!x.doc).slice(-30).map(x=>({role:x.role,content:String(x.content).slice(0,8000)}));
+    if(m.length)localStorage.setItem("chat",JSON.stringify(m));else localStorage.removeItem("chat");
+  }catch(e){}
+}
+function aiRestore(){
+  let s=null;
+  try{if(canSave())s=JSON.parse(localStorage.getItem("chat")||"null")}catch(e){}
+  if(!Array.isArray(s)||!s.length){aiReset();return}
+  CONT.forEach(c=>{c.innerHTML=""});AIH=[];
+  s.forEach(m=>{
+    if(!m||typeof m.content!=="string"||(m.role!=="user"&&m.role!=="assistant"))return;
+    AIH.push({role:m.role,content:m.content});
+    const b=aiAdd(m.role==="user"?"u":"a",m.role==="user"?m.content:"");
+    if(m.role==="assistant"){b.md(m.content);addActions(b,m.content,{});b.els.forEach(e=>e.querySelectorAll(".rt").forEach(x=>x.remove()))}
+  });
+  scrollAI();
+}
+// один ответ обычного чата: потоком, с остановкой, с честным сообщением про лимит
+async function chatReply(){
+  const ep=EPOCH,bub=aiAdd("a",""),t0=bub.think("chat");
+  const q=([...AIH].reverse().find(m=>m.role==="user")||{}).content||"";
+  let first=0,ans="",failed=false;
+  try{
+    ans=await cloudAnswer({onDelta:t=>{if(!first)first=Date.now();bub.stream(t)}});
+    AI_MODE="cloud";
+  }catch(e){
+    if(ep!==EPOCH)return;
+    if(e.stop){bub.set(tr("aiStopped"));bub.cls("err");addActions(bub,"");paintAI();return}
+    failed=true;AI_MODE="local";
+    const loc=await localAnswer(q);
+    ans=e.quota?tr("aiQuota")+(loc!==tr("aiHelp")&&loc!==tr("aiHello")?"\n\n"+loc:""):loc;
+  }
+  if(ep!==EPOCH)return;
+  bub.md(ans);if(failed)bub.cls("err");
+  AIH.push({role:"assistant",content:ans});paintAI();
+  if(!failed&&STOPPED)bub.note("⏹ "+tr("aiStopped"));
+  const el=((first||Date.now())-t0)/1000;
+  if(!failed&&el>=1.5)bub.took(el);
+  addActions(bub,ans,{word:!failed});
+}
+// «Повторить»: убирает последний ответ и просит нейросеть ответить заново
+async function aiRegen(bub){
+  if(AI_BUSY)return;
+  const last=AIH[AIH.length-1];if(!last)return;
+  const prev=last.role==="assistant"?AIH[AIH.length-2]:last;
+  if(!prev||prev.role!=="user"||prev.doc||last.doc)return;
+  if(last.role==="assistant")AIH.pop();
+  STOPPED=false;AI_BUSY=true;setGen(true);
+  bub.els.forEach(m=>m.remove());
+  try{await chatReply()}finally{AI_BUSY=false;setGen(false);saveChat()}
+}
+
 async function localAnswer(q){
   const t=norm(q);
   if(/погод|температур|дожд|weather|rain|temperature/.test(t)){
@@ -1118,12 +1341,15 @@ const saveBtn=ans=>{const b=document.createElement("button");b.type="button";b.c
   b.onclick=()=>saveBlob(mdToDocx(ans),safeName(mdTitle(ans))+".docx");return b};
 const dlLink=(blob,name)=>{const a=document.createElement("a");a.className="dl";a.href=URL.createObjectURL(blob);a.download=name;a.textContent="⬇ "+tr("aiDl")+" "+name;return a};
 async function makeDocQuick(text){
-  const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
+  const bub=aiAdd("a","");bub.think("doc");
   let md;
   try{md=await cloudAnswer({instr:DOC_INSTR,maxTok:1700,timeout:70000});AI_MODE="cloud"}
-  catch(e){AI_MODE="local";bub.set(tr("aiDocFail"));bub.cls("err");paintAI();AIH.pop();return}
+  catch(e){
+    if(e.stop){bub.set(tr("aiStopped"));bub.cls("err");AIH.pop();return}
+    if(!e.quota)AI_MODE="local";
+    bub.set(tr(e.quota?"aiDocQuota":"aiDocFail"));bub.cls("err");paintAI();AIH.pop();return}
   const blob=mdToDocx(md),name=safeName(mdTitle(md))+".docx";
-  AIH.push({role:"assistant",content:tr("aiDocDone",name)});
+  AIH.push({role:"assistant",content:tr("aiDocDone",name),doc:true});
   bub.fill(()=>{const d=document.createElement("div"),t=document.createElement("div");t.textContent="📄 "+tr("aiDocDone",name)+" · "+fmtSize(blob.size);d.appendChild(t);d.appendChild(dlLink(blob,name));return d});
   paintAI();
 }
@@ -1168,7 +1394,8 @@ function trimTail(s){
 async function docCall(prompt,maxTok){
   let err;
   for(let a=0;a<2;a++){
-    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),110000);
+    if(STOPPED)throw Object.assign(new Error("stop"),{stop:true});
+    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),110000);CUR_CTL=ctl;
     try{
       const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
         body:JSON.stringify({mode:"doc",context:"",messages:[{role:"user",content:prompt}],max_tokens:maxTok})});
@@ -1176,7 +1403,7 @@ async function docCall(prompt,maxTok){
       if(!r.ok)throw new Error(r.status);
       const j=await r.json();if(!j.text)throw new Error("empty");
       return j.text.trim();
-    }catch(e){err=e;if(e.quota)throw e;await new Promise(z=>setTimeout(z,1500))}
+    }catch(e){err=e;if(e.quota)throw e;if(STOPPED)throw Object.assign(new Error("stop"),{stop:true});await new Promise(z=>setTimeout(z,1500))}
     finally{clearTimeout(t)}
   }
   throw err;
@@ -1247,7 +1474,7 @@ async function makeDocLong(text,sp){
   if(!pages&&!minutes){if(speech)minutes=7;else pages={coursework:12,referat:10,doklad:6}[kind]}
   const totalW=minutes?minutes*120:pages*250;
   const nMain=speech?Math.max(2,Math.min(6,Math.round(totalW/230))):Math.max(2,Math.min(10,Math.round(totalW/500)));
-  const bub=aiAdd("a","");bub.set(tr("aiDocPlan"));
+  const bub=aiAdd("a","");bub.think("doc");bub.status(tr("aiDocPlan"),0);
   let title="",mains=[],qerr=false;
   try{
     const pl=await docCall("Запрос пользователя: «"+req+"»\n\nСоставь план для работы типа «"+K.name[kind]+"». Выведи строго в таком формате, без пояснений и markdown:\nНазвание: <точное название темы>\nзатем ровно "+nMain+" строк основных "+(speech?"смысловых блоков":"разделов")+" (без введения и заключения), каждая строка в виде: Название раздела | о чём писать (до 12 слов)\nБез нумерации. Язык: "+lang+".",500);
@@ -1258,6 +1485,7 @@ async function makeDocLong(text,sp){
       if(l.includes("|")){const p=l.split("|"),h=p[0].replace(/[*«»"#]/g,"").trim();if(h)mains.push({h:h.slice(0,120),d:(p[1]||"").trim()})}
     });
   }catch(e){if(e.quota)qerr=true}
+  if(STOPPED){bub.set(tr("aiStopped"));bub.cls("err");AIH.pop();return}
   if(qerr){bub.set(tr("aiDocQuota"));bub.cls("err");AIH.pop();paintAI();return}
   mains=mains.slice(0,nMain);
   if(mains.length<2){mains=[];for(let i=0;i<nMain;i++)mains.push({h:K.gen[i]||(K.more+" "+(i-K.gen.length+1)),d:""})}
@@ -1271,7 +1499,7 @@ async function makeDocLong(text,sp){
   try{
     for(let i=0;i<secs.length;i++){
       const s=secs[i];
-      bub.set(tr("aiDocProg",i+1,secs.length,s.h));
+      bub.status(tr("aiDocProg",i+1,secs.length,s.h),i/secs.length);
       const p="Ты пишешь «"+K.name[kind]+"» на тему «"+title+"».\nПожелания пользователя: «"+req.slice(0,300)+"»\nПлан: "+outline+".\nСейчас пиши ТОЛЬКО раздел «"+s.h+"»"+(s.d?" ("+s.d+")":"")+".\nОбъём: около "+s.t+" слов. Язык: "+lang+". Стиль: "+style+".\nТребования: связный текст абзацами, без заголовков, списков и таблиц; не повторяй содержание других разделов; не выдумывай цитаты, ссылки на источники, точные статистические данные и имена; не пиши вступлений вроде «Вот текст»"+(s.kind==="c"?"":"; не подводи итог всей работы")+"."+(prevTail?"\nПредыдущий раздел заканчивался так: «"+prevTail+"». Не повторяй это, продолжай логику.":"")+"\nНачни сразу с текста раздела.";
       const out=await docCall(p,Math.min(3000,Math.round(s.t*3.6)+150));
       s.text=trimTail(cleanSec(out));s.w=wc(s.text);prevTail=s.text.slice(-260);
@@ -1285,22 +1513,23 @@ async function makeDocLong(text,sp){
         const c=secs.filter(s=>s.kind==="m"&&s.t>0).sort((a,b)=>a.w/a.t-b.w/b.t)[0];
         if(!c||c.w>=c.t*1.1)break;
         const add=Math.max(120,Math.min(600,Math.round(Math.min(c.t-c.w+60,totalW-tot))));
-        bub.set(tr("aiDocExtra",c.h));
+        bub.status(tr("aiDocExtra",c.h),0.95);
         const o=await docCall("Продолжи текст раздела «"+c.h+"» работы на тему «"+title+"», добавив около "+add+" слов: новые аспекты, примеры, пояснения и аргументы. Не повторяй уже написанное, не подводи итог, без заголовков, списков и таблиц. Язык: "+lang+".\nТекст заканчивается так: «"+c.text.slice(-500)+"»\nНачни сразу с продолжения.",Math.min(3000,Math.round(add*3.6)+150));
         const ext=trimTail(cleanSec(o));if(!ext)break;
         c.text+="\n"+ext;c.w=wc(c.text);
       }
-    }catch(e){if(e.quota)qerr=true}
+    }catch(e){if(e.quota)qerr=true;if(e.stop)partial=true}
   }
   const done=secs.filter(s=>s.text);
+  if(!done.length&&STOPPED){bub.set(tr("aiStopped"));bub.cls("err");AIH.pop();return}
   if(!done.length){bub.set(tr(qerr?"aiDocQuota":"aiDocFail"));bub.cls("err");AI_MODE="local";AIH.pop();paintAI();return}
   AI_MODE="cloud";
   const written=!speech,words=done.reduce((a,s)=>a+s.w,0),pg=Math.max(1,Math.round(words/250));
   const blob=docxPro({title,K,kind:K.label[kind],written,toc:written&&(kind==="coursework"||kind==="referat"||totalW>=2000),secs:done,year:new Date().getFullYear(),en:sp.en}),name=safeName(title)+".docx";
-  AIH.push({role:"assistant",content:tr("aiDocDone",name)});
+  AIH.push({role:"assistant",content:tr("aiDocDone",name),doc:true});
   bub.fill(()=>{const d=document.createElement("div"),t=document.createElement("div"),s2=document.createElement("div");
     t.textContent="📄 "+tr("aiDocDone",name)+" · "+fmtSize(blob.size);
-    s2.textContent=tr("aiDocStat",words,pg)+(partial?". "+tr("aiDocPartial"):"")+(written?". "+tr("aiDocNote"):"");
+    s2.textContent=tr("aiDocStat",words,pg)+(partial?". "+tr(STOPPED?"aiDocStopped":"aiDocPartial"):"")+(written?". "+tr("aiDocNote"):"");
     s2.style.cssText="margin-top:6px;font-size:.85em;opacity:.8";
     d.appendChild(t);d.appendChild(s2);d.appendChild(dlLink(blob,name));return d});
   paintAI();
@@ -1327,7 +1556,7 @@ function fmtButtons(){
 async function doConvert(fmt){
   if(!ATT){aiAdd("a",tr("aiNeedImg"));return}
   if(AI_BUSY)return;AI_BUSY=true;
-  const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
+  const bub=aiAdd("a","");bub.think("img");
   try{
     const r=await convertImage(ATT,fmt),u=URL.createObjectURL(r.blob);
     bub.fill(()=>{const d=document.createElement("div"),im=document.createElement("img");im.className="th";im.src=u;im.alt=r.name;im.onload=scrollAI;
@@ -1352,30 +1581,26 @@ async function onFile(f){
 }
 async function aiSend(text){
   text=(text||"").trim();if(!text||AI_BUSY)return;
-  AI_BUSY=true;aiq.value=pq.value="";aiq.style.height=pq.style.height="";aiAdd("u",text);
+  AI_BUSY=true;STOPPED=false;aiq.value=pq.value="";aiq.style.height=pq.style.height="";
+  document.querySelectorAll(".macts .rt").forEach(b=>b.remove()); // «Повторить» остаётся только у последнего ответа
+  aiAdd("u",text);
   try{
     const tool=toolIntent(text);
     if(tool==="img"){AI_BUSY=false;await imgFromText(text);return}
     AIH.push({role:"user",content:text});
-    if(tool==="doc"){await makeDoc(text);return}
-    const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
-    let ans;
-    try{ans=await cloudAnswer();AI_MODE="cloud"}
-    catch(e){AI_MODE="local";ans=await localAnswer(text);bub.cls("err")}
-    bub.set(ans);AIH.push({role:"assistant",content:ans});paintAI();
-    if(AI_MODE==="cloud"&&ans.length>80)bub.els.forEach(m=>m.appendChild(saveBtn(ans)));
-    scrollAI();
-  }finally{AI_BUSY=false}
+    setGen(true);
+    if(tool==="doc"){AIH[AIH.length-1].doc=true;await makeDoc(text);return}
+    await chatReply();
+  }finally{AI_BUSY=false;setGen(false);saveChat()}
 }
-$("aigo").onclick=()=>aiSend(aiq.value);
+$("aigo").onclick=()=>GEN?stopAI():aiSend(aiq.value);
 aiq.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aiSend(aiq.value)}};
 aiq.oninput=()=>{aiq.style.height="auto";aiq.style.height=Math.min(120,aiq.scrollHeight)+"px"};
-$("ais").onclick=e=>{const b=e.target.closest("button");if(b)aiSend(tr("aiSug")[+b.dataset.i])};
-$("ai-clr").onclick=aiReset;
+$("ai-clr").onclick=()=>{if(AI_BUSY&&!GEN)return;if(GEN)stopAI();aiReset()};
 $("ainav").onclick=()=>{closeStudy();showTab("ai")};
 pq.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aiSend(pq.value)}};
 pq.oninput=()=>{pq.style.height="auto";pq.style.height=Math.min(80,pq.scrollHeight)+"px"};
-$("pgo").onclick=()=>aiSend(pq.value);
+$("pgo").onclick=()=>GEN?stopAI():aiSend(pq.value);
 const aFab=$("aifab"),aPop=$("aipop");
 function togglePop(v){aPop.hidden=!v;aFab.textContent=v?"✕":"AI";if(v){pm.scrollTop=pm.scrollHeight;setTimeout(()=>pq.focus({preventScroll:true}),50)}}
 aFab.onclick=()=>togglePop(aPop.hidden);
@@ -1390,7 +1615,7 @@ aif.onchange=()=>{const f=aif.files[0];aif.value="";if(f)onFile(f)};
   z.addEventListener("dragover",e=>{e.preventDefault();z.classList.add("drag")});
   z.addEventListener("dragleave",()=>z.classList.remove("drag"));
   z.addEventListener("drop",e=>{e.preventDefault();z.classList.remove("drag");const f=e.dataTransfer.files[0];if(f)onFile(f)})});
-aiReset();
+aiRestore();
 
 /* ---- язык ---- */
 function applyLang(){
