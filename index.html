@@ -244,6 +244,22 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 .aiin .pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent);padding:10px 16px}
 .ainote{font-size:.74rem;color:var(--muted);padding:0 16px 10px}
 @media (max-width:480px){.onl{padding:3px 7px}.onl .ot{display:none}.nl{font-size:.9rem}.aiw{height:calc(100vh - 170px)}.ms{max-width:92%}}
+
+.aifab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:60;width:52px;height:52px;padding:0;border-radius:50%;border:0;background:linear-gradient(135deg,#1e4e8c,#6b3f8c);color:#fff;font-weight:800;font-size:1rem;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.35);transition:transform .15s}
+.aifab:hover{transform:scale(1.07)}
+.aifab::after{content:"";position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:var(--now);border:2px solid var(--bg)}
+.aifab[hidden],.aipop[hidden]{display:none}
+.aipop{position:fixed;right:16px;bottom:calc(80px + env(safe-area-inset-bottom,0px));z-index:60;width:min(330px,calc(100vw - 32px));height:min(430px,calc(100vh - 120px));display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 12px 36px rgba(0,0,0,.4);animation:fadein .18s}
+.aipop .aih{padding:8px 10px;gap:8px}
+.aipop .aiav{width:28px;height:28px;border-radius:8px;font-size:.78rem}
+.aipop .aih b{font-size:.95rem}
+.aipop .aih button{padding:4px 9px;font-size:.9rem;line-height:1.2}
+.aipop .aimsgs{padding:10px;gap:8px}
+.aipop .ms{font-size:.9rem;padding:8px 12px;max-width:90%}
+.aipop .aiin{padding:8px}
+.aipop .aiin textarea{padding:8px 10px;font-size:.95rem}
+.aipop .aiin .pri{padding:8px 12px}
+@media (max-width:480px){.aifab{width:48px;height:48px}.aipop{bottom:calc(72px + env(safe-area-inset-bottom,0px))}}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <header><div class="hw">
 <a class="logo" id="logo" href="#home">YASIK</a>
@@ -321,6 +337,13 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 </div>
 </div>
 </main>
+<button class="aifab" id="aifab" type="button" aria-label="YASIK-AI" hidden>AI</button>
+<div class="aipop" id="aipop" role="dialog" aria-label="YASIK-AI" hidden>
+<div class="aih"><div class="aiav">AI</div><b>YASIK-AI</b><div class="sp1"></div><button id="pfull" type="button" title="Открыть полный чат" aria-label="Открыть полный чат">↗</button><button id="pcls" type="button" aria-label="Закрыть">✕</button></div>
+<div class="aimsgs" id="pm" aria-live="polite"></div>
+<div class="aiin"><textarea id="pq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="pgo" type="button" data-tr="aiSend">Отправить</button></div>
+</div>
+
 <footer>
 <div class="soc">
 <a href="https://www.instagram.com/kulikov_yar/" id="s-ig" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.3-3.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></a>
@@ -349,8 +372,8 @@ let DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработ�
 /* ---- переводы ---- */
 const I18N={
 ru:{schPh:"Поиск: преподаватель, предмет, аудитория…",clear:"Сбросить",wPh:"Фильтр по дням: дождь, пятница, 12 октября…",noRes:"Ничего не найдено",resCnt:n=>"Найдено занятий: "+n,onlineT:"онлайн",onlTip:"Сейчас на сайте",onlTipLocal:"Демо-режим: считаются только вкладки этого браузера",
-aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Сообщения отправляются во внешний ИИ-сервис; не вводите личные данные.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
-aiHello:"Привет! Я YASIK-AI 🤖 Помогу с расписанием, аудиториями, преподавателями и погодой — или просто поболтаем. Что интересует?",
+aiOpenFull:"Открыть полный чат",aiClose:"Закрыть",aiOpen:"Открыть YASIK-AI",aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Сообщения отправляются во внешний ИИ-сервис; не вводите личные данные.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
+aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",
 aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?"],
 aiNoUp:"Ближайших занятий не нашёл.",aiNoDay:"В этот день занятий нет 🎉",aiToday:"Сегодня",aiTomorrow:"Завтра",aiNext:"Ближайшая пара",aiW:(c,t,d,f)=>"Сейчас в городе "+c+": "+t+", "+d+". Ощущается как "+f+".",
 aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
@@ -393,8 +416,8 @@ openSched:"Открыть расписание →",openWeather:"Подробн�
 todayCount:n=>n?"Пар сегодня: "+n:"Сегодня занятий нет 🎉",wcardK:"Погода сейчас",
 u_d:"д",u_h:"ч",u_m:"мин",feelsS:v=>"Ощущается как "+v},
 en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
-aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Messages are sent to an external AI service; do not enter personal data.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
-aiHello:"Hi! I'm YASIK-AI 🤖 I can help with the schedule, rooms, teachers and weather — or just chat. What are you curious about?",
+aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Messages are sent to an external AI service; do not enter personal data.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
+aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",
 aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?"],
 aiNoUp:"No upcoming classes found.",aiNoDay:"No classes that day 🎉",aiToday:"Today",aiTomorrow:"Tomorrow",aiNext:"Next class",aiW:(c,t,d,f)=>"Right now in "+c+": "+t+", "+d+". Feels like "+f+".",
 aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, and find a teacher, subject or room (e.g. “room 309” or “Divina”).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
@@ -575,6 +598,7 @@ const study=$("study"),wnav=$("wnav"),spop=$("spop");
 function showTab(x){
   ["home","schedule","weather","ai"].forEach(n=>{$("tab-"+n).hidden=x!==n});
   $("ainav").classList.toggle("on",x==="ai");
+  $("aifab").hidden=x!=="home";if(x!=="home"){$("aipop").hidden=true;$("aifab").textContent="AI"}
   if(x==="ai")setTimeout(()=>$("aiq").focus({preventScroll:true}),50);
   study.classList.toggle("on",x==="schedule");
   wnav.classList.toggle("on",x==="weather");
@@ -906,14 +930,17 @@ paintOnline();
 const AI_PROXY="https://yasik-ai.klown575.workers.dev";   // ← сюда URL вашего Cloudflare Worker (см. worker.js), например "https://yasik-ai.ИМЯ.workers.dev"
 const AI_ENDPOINT="https://text.pollinations.ai/openai", AI_MODEL="openai"; // запасной бесплатный вариант
 let AIH=[],AI_MODE="cloud",AI_BUSY=false;
-const aim=$("aim"),aiq=$("aiq");
+const aim=$("aim"),aiq=$("aiq"),pm=$("pm"),pq=$("pq"),CONT=[aim,pm];
 function paintAI(){
   $("ai-st").textContent=tr(AI_MODE==="cloud"?"aiCloud":"aiLocal");
   $("ais").innerHTML=tr("aiSug").map((x,i)=>'<button type="button" data-i="'+i+'">'+esc(x)+'</button>').join("");
-  const f=aim.querySelector(".ms.hello");if(f)f.textContent=tr("aiHello");
+  document.querySelectorAll(".ms.hello").forEach(f=>{f.textContent=tr("aiHello")});
+  $("pfull").title=$("pfull").ariaLabel=tr("aiOpenFull");$("pcls").ariaLabel=tr("aiClose");$("aifab").ariaLabel=tr("aiOpen");
 }
-function aiAdd(role,text,cls){const m=document.createElement("div");m.className="ms "+role+(cls?" "+cls:"");m.textContent=text;aim.appendChild(m);aim.scrollTop=aim.scrollHeight;return m}
-function aiReset(){aim.innerHTML="";AIH=[];const h=aiAdd("a",tr("aiHello"));h.classList.add("hello")}
+function aiAdd(role,text,cls){ // добавляет сообщение сразу в оба окна (полный чат и всплывающее)
+  const els=CONT.map(c=>{const m=document.createElement("div");m.className="ms "+role+(cls?" "+cls:"");m.textContent=text;c.appendChild(m);c.scrollTop=c.scrollHeight;return m});
+  return{els,set(t){els.forEach(m=>{m.textContent=t})},html(h){els.forEach(m=>{m.innerHTML=h})},cls(c){els.forEach(m=>m.classList.add(c))}}}
+function aiReset(){CONT.forEach(c=>{c.innerHTML=""});AIH=[];aiAdd("a",tr("aiHello")).cls("hello")}
 const lessonLine=it=>it.time+" — "+it.title+" ("+[it.teacher,it.place].filter(Boolean).join(", ")+")";
 const dayText=d=>{const its=itemsFor(d)||[];return its.length?its.map(lessonLine).join("\n"):tr("aiNoDay")};
 function aiContext(){
@@ -959,13 +986,13 @@ async function localAnswer(q){
 }
 async function aiSend(text){
   text=(text||"").trim();if(!text||AI_BUSY)return;
-  AI_BUSY=true;aiq.value="";aiq.style.height="";aiAdd("u",text);AIH.push({role:"user",content:text});
-  const bub=aiAdd("a","");bub.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
+  AI_BUSY=true;aiq.value=pq.value="";aiq.style.height=pq.style.height="";aiAdd("u",text);AIH.push({role:"user",content:text});
+  const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
   let ans;
   try{ans=await cloudAnswer();AI_MODE="cloud"}
-  catch(e){AI_MODE="local";ans=await localAnswer(text);bub.classList.add("err")}
-  bub.textContent=ans;AIH.push({role:"assistant",content:ans});paintAI();
-  aim.scrollTop=aim.scrollHeight;AI_BUSY=false;
+  catch(e){AI_MODE="local";ans=await localAnswer(text);bub.cls("err")}
+  bub.set(ans);AIH.push({role:"assistant",content:ans});paintAI();
+  CONT.forEach(c=>{c.scrollTop=c.scrollHeight});AI_BUSY=false;
 }
 $("aigo").onclick=()=>aiSend(aiq.value);
 aiq.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aiSend(aiq.value)}};
@@ -973,6 +1000,15 @@ aiq.oninput=()=>{aiq.style.height="auto";aiq.style.height=Math.min(120,aiq.scrol
 $("ais").onclick=e=>{const b=e.target.closest("button");if(b)aiSend(tr("aiSug")[+b.dataset.i])};
 $("ai-clr").onclick=aiReset;
 $("ainav").onclick=()=>{closeStudy();showTab("ai")};
+pq.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aiSend(pq.value)}};
+pq.oninput=()=>{pq.style.height="auto";pq.style.height=Math.min(80,pq.scrollHeight)+"px"};
+$("pgo").onclick=()=>aiSend(pq.value);
+const aFab=$("aifab"),aPop=$("aipop");
+function togglePop(v){aPop.hidden=!v;aFab.textContent=v?"✕":"AI";if(v){pm.scrollTop=pm.scrollHeight;setTimeout(()=>pq.focus({preventScroll:true}),50)}}
+aFab.onclick=()=>togglePop(aPop.hidden);
+$("pcls").onclick=()=>togglePop(false);
+$("pfull").onclick=()=>{togglePop(false);closeStudy();showTab("ai")};
+addEventListener("keydown",e=>{if(e.key==="Escape"&&!aPop.hidden)togglePop(false)});
 aiReset();
 
 /* ---- язык ---- */
