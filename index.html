@@ -398,16 +398,21 @@ body.aipage #tab-ai:not([hidden]){flex:1;min-height:0;display:flex;animation:non
 .uacts button{background:var(--card);border:1px solid var(--line);color:var(--muted)}
 .uacts button:hover{background:var(--card);color:var(--accent);border-color:var(--accent)}
 
-/* ---- капча при входе (Cloudflare Turnstile) ---- */
+/* ---- капча при входе ---- */
 #cap{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(10,16,26,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 #cap[hidden]{display:none}
 #cap .cb{width:100%;max-width:380px;box-sizing:border-box;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.4);padding:28px 24px;text-align:center}
 #cap .cl{font-weight:800;letter-spacing:.08em;font-size:1.05rem;color:var(--accent);margin-bottom:14px}
-#cap h2{margin:0 0 8px;font-size:1.15rem}
-#cap p{margin:0 0 16px;color:var(--muted);font-size:.9rem;line-height:1.45}
-#cap #cap-w{min-height:65px;display:flex;justify-content:center;align-items:center}
+#cap h2{margin:0 0 6px;font-size:1.15rem}
+#cap p{margin:0 0 14px;color:var(--muted);font-size:.9rem;line-height:1.45}
+#cap .cg{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:272px;margin:0 auto 4px}
+#cap .cg button{margin:0;padding:0;aspect-ratio:1;overflow:hidden;border:2px solid var(--line);border-radius:14px;background:var(--tag);cursor:pointer;transition:transform .12s,border-color .12s}
+#cap .cg button:hover,#cap .cg button:focus-visible{border-color:var(--accent);transform:scale(1.03);outline:0}
+#cap .cg button:disabled{opacity:.6;cursor:default;transform:none}
+#cap .cg img{display:block;width:100%;height:100%}
 #cap .ce{color:#c0392b;font-size:.85rem;margin-top:10px;min-height:1.2em}
-#cap button{margin-top:6px;padding:8px 18px;border-radius:99px;border:1px solid var(--line);background:var(--tag);color:var(--fg);font:inherit;cursor:pointer}
+#cap .cr{display:flex;gap:8px;justify-content:center;margin-top:6px}
+#cap .cr button{padding:7px 16px;border-radius:99px;border:1px solid var(--line);background:var(--tag);color:var(--fg);font:inherit;font-size:.88rem;cursor:pointer}
 #cap .cf{margin-top:14px;font-size:.72rem;color:var(--muted)}
 body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
 .aiapp{border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.08)}
@@ -456,20 +461,25 @@ body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
 .fchip{display:inline-block;margin:0 0 6px;padding:5px 10px;border-radius:10px;background:rgba(127,127,127,.22);font-size:.85em;word-break:break-all}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <div id="cap" hidden><div class="cb" role="dialog" aria-modal="true" aria-labelledby="cap-t">
-<div class="cl">YASIK</div><h2 id="cap-t"></h2><p id="cap-d"></p><div id="cap-w"></div><div class="ce" id="cap-e" aria-live="polite"></div><button type="button" id="cap-r" hidden></button><div class="cf" id="cap-f"></div>
+<div class="cl">YASIK</div><h2 id="cap-t"></h2><p id="cap-d"></p>
+<div class="cg" id="cap-g"></div>
+<div class="ce" id="cap-e" aria-live="polite"></div>
+<div class="cr"><button type="button" id="cap-rf"></button></div>
+<div class="cf" id="cap-f"></div>
 </div></div>
 <script>
-/* Капча Cloudflare Turnstile. Вставьте публичный Site Key (панель Cloudflare → Turnstile). Пока ключ не вставлен, капча выключена.
-   Проверка настоящая только вместе с воркером: он принимает запросы ИИ лишь с пропуском (заголовок X-Pass). */
+/* Проверка при входе: «Выбери лишнюю картинку». Четыре картинки (три одинаковых вида и одна другая) рисует и проверяет воркер
+   (пути /challenge и /captcha); при каждом входе они собираются заново из случайных чисел. После верного выбора воркер выдаёт пропуск
+   на 12 часов. Пропуск хранится до закрытия вкладки и добавляется ко всем запросам ИИ (заголовок X-Pass). Сервер отклоняет запросы ИИ
+   без пропуска, поэтому одним скрытием окна в браузере защиту не обойти. */
 (function(){
-const SITEKEY="0x4AAAAAAFNZ35bLJXg7k5wi",API="https://yasik-ai.klown575.workers.dev";
-if(!SITEKEY||/^ВАШ/.test(SITEKEY))return;
+const API="https://yasik-ai.klown575.workers.dev";
 const ru=!/^en/i.test(navigator.language||"ru");
-const T=ru?{t:"Проверка безопасности",d:"Подтвердите, что вы человек, чтобы продолжить.",e:"Проверка не пройдена. Попробуйте ещё раз.",n:"Нет связи с сервером проверки. Проверьте интернет и попробуйте снова.",r:"Повторить",f:"Защита: Cloudflare Turnstile"}
-  :{t:"Security check",d:"Please confirm you are human to continue.",e:"Verification failed. Please try again.",n:"Can't reach the verification server. Check your connection and try again.",r:"Try again",f:"Protected by Cloudflare Turnstile"};
-const $=id=>document.getElementById(id),cap=$("cap");
-$("cap-t").textContent=T.t;$("cap-d").textContent=T.d;$("cap-r").textContent=T.r;$("cap-f").textContent=T.f;
-let PASS="",wid=null;
+const T=ru?{t:"Проверка безопасности",d:"Выбери лишнюю картинку",img:n=>"Картинка "+n,rf:"Другие картинки",e:"Неверно. Попробуйте новые картинки.",n:"Нет связи с сервером. Проверьте интернет и попробуйте снова.",many:"Слишком много попыток. Подождите несколько минут.",f:"Защита от автоматических запросов"}
+  :{t:"Security check",d:"Pick the odd one out",img:n=>"Picture "+n,rf:"Other pictures",e:"Wrong. Try the new pictures.",n:"Can't reach the server. Check your connection and try again.",many:"Too many attempts. Please wait a few minutes.",f:"Protection against automated requests"};
+const $=id=>document.getElementById(id),cap=$("cap"),grid=$("cap-g");
+$("cap-t").textContent=T.t;$("cap-d").textContent=T.d;$("cap-rf").textContent="↻ "+T.rf;$("cap-f").textContent=T.f;
+let PASS="",TOKEN="",busy=false;
 const valid=p=>{const m=/^(\d{13})\./.exec(p||"");return !!m&&+m[1]>Date.now()+60000};
 try{const p=sessionStorage.getItem("yp");if(valid(p))PASS=p}catch(e){}
 // ко всем запросам к ИИ добавляем пропуск; если сервер ответил 401 — пропуск устарел, показываем проверку снова
@@ -479,29 +489,40 @@ window.fetch=function(u,o){
   const r=_f(u,o);
   return u===API?r.then(x=>{if(x.status===401){PASS="";try{sessionStorage.removeItem("yp")}catch(e){}show()}return x}):r;
 };
+const post=(path,body)=>_f(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
 function lock(v){document.documentElement.style.overflow=v?"hidden":""}
-function show(){cap.hidden=false;lock(true);$("cap-e").textContent="";$("cap-r").hidden=true;start()}
-function done(p){PASS=p;try{sessionStorage.setItem("yp",p)}catch(e){}cap.hidden=true;lock(false)}
-function fail(msg){$("cap-e").textContent=msg;$("cap-r").hidden=false;try{if(wid!==null)turnstile.reset(wid)}catch(e){}}
-async function onToken(token){
-  $("cap-e").textContent="";
+function done(p){PASS=p;try{if(p)sessionStorage.setItem("yp",p)}catch(e){}cap.hidden=true;lock(false);grid.textContent=""}
+function setBusy(v){busy=v;grid.querySelectorAll("button").forEach(b=>b.disabled=v)}
+async function load(){
+  TOKEN="";grid.textContent="";
   try{
-    const r=await _f(API+"/verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token})});
+    const r=await post("/challenge");
+    if(r.status===501){done("");return}                 // на сервере капча не настроена — пускаем
+    const j=await r.json();
+    if(!r.ok||!Array.isArray(j.imgs)||j.imgs.length!==4)throw new Error("c");
+    TOKEN=j.token;
+    j.imgs.forEach((svg,i)=>{
+      const b=document.createElement("button"),im=document.createElement("img");
+      b.type="button";b.setAttribute("aria-label",T.img(i+1));
+      im.alt="";im.draggable=false;im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+      b.appendChild(im);b.onclick=()=>submit(i);grid.appendChild(b);
+    });
+  }catch(e){$("cap-e").textContent=T.n}
+}
+function show(){busy=false;cap.hidden=false;lock(true);$("cap-e").textContent="";load()}
+async function submit(i){
+  if(busy||!TOKEN)return;
+  setBusy(true);
+  try{
+    const r=await post("/captcha",{token:TOKEN,answer:i});
     const j=await r.json().catch(()=>({}));
-    if(r.ok&&j.pass)done(j.pass);else fail((r.status>=500?T.n:T.e)+" [verify "+r.status+(j.error?" "+j.error:"")+(j.codes&&j.codes.length?" "+j.codes.join(","):"")+"]");
-  }catch(e){fail(T.n)}
+    if(r.ok&&j.pass){done(j.pass);return}
+    $("cap-e").textContent=r.status===429?T.many:(r.status>=500?T.n:T.e);
+    await load();
+  }catch(e){$("cap-e").textContent=T.n;setBusy(false)}
+  finally{if(!cap.hidden)busy=false}
 }
-function render(){
-  if(wid!==null){try{turnstile.reset(wid)}catch(e){}return}
-  wid=turnstile.render("#cap-w",{sitekey:SITEKEY,theme:"auto",language:ru?"ru":"en",callback:onToken,"error-callback":(c)=>{$("cap-e").textContent=T.e+" ["+c+"] "+location.hostname;$("cap-r").hidden=false;return true},"expired-callback":()=>{try{turnstile.reset(wid)}catch(e){}}});
-}
-function start(){
-  if(window.turnstile){render();return}
-  if(document.getElementById("ts-api"))return;
-  const sc=document.createElement("script");sc.id="ts-api";sc.async=true;sc.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-  sc.onload=render;sc.onerror=()=>fail(T.n);document.head.appendChild(sc);
-}
-$("cap-r").onclick=()=>{$("cap-e").textContent="";$("cap-r").hidden=true;if(window.turnstile&&wid!==null)turnstile.reset(wid);else start()};
+$("cap-rf").onclick=()=>{if(busy)return;$("cap-e").textContent="";load()};
 if(!PASS)show();
 })();
 </script>
@@ -639,7 +660,7 @@ terms:[["1. Общие положения","Настоящее Пользова�
 ["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно и не требует регистрации."],
 ["3. Информационный характер данных","Расписание и иные сведения на Сайте носят справочный характер и не являются официальным документом образовательной организации. Актуальное расписание следует уточнять в официальных источниках университета. Данные о погоде предоставляются сторонними сервисами и могут содержать неточности."],
 ["4. Обязанности пользователя","Пользователь обязуется не нарушать работу Сайта, не предпринимать попыток несанкционированного доступа к нему и не использовать автоматизированные средства, создающие чрезмерную нагрузку."],
-["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык, выбранный город и история чата с YASIK-AI (она хранится только в вашем браузере). Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам. Для защиты от автоматических запросов при входе используется проверка Cloudflare Turnstile: она работает на серверах Cloudflare и может обрабатывать технические данные вашего браузера (например, IP-адрес). Результат проверки хранится в браузере только до закрытия вкладки."],
+["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык, выбранный город и история чата с YASIK-AI (она хранится только в вашем браузере). Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам. Для защиты от автоматических запросов при входе предлагается простая задача (выбрать лишнюю из четырёх картинок). Результат проверки хранится в браузере только до закрытия вкладки; на сервере кратковременно сохраняется обезличенный отпечаток попытки (не IP-адрес) для ограничения числа попыток."],
 ["6. Интеллектуальная собственность","Дизайн, оформление и программный код Сайта принадлежат владельцу Сайта. Копирование и распространение материалов без согласия владельца не допускаются, если иное не предусмотрено законодательством."],
 ["7. Ограничение ответственности","Сайт предоставляется «как есть». Владелец не гарантирует бесперебойную работу Сайта, полноту и точность размещённых данных и не несёт ответственности за убытки, возникшие в связи с использованием или невозможностью использования Сайта."],
 ["8. Внешние ссылки","Сайт содержит ссылки на сторонние ресурсы, в том числе социальные сети. Владелец не контролирует их содержание и не несёт за него ответственности."],
@@ -690,7 +711,7 @@ terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the
 ["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free and does not require registration."],
 ["3. Informational nature of data","The schedule and other information on the Site are provided for reference only and are not an official document of any educational institution. Please verify the current schedule with the official sources of the university. Weather data is supplied by third-party services and may contain inaccuracies."],
 ["4. User obligations","The user agrees not to disrupt the operation of the Site, not to attempt unauthorized access to it, and not to use automated tools that create excessive load."],
-["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language, selected city and YASIK-AI chat history are saved in your browser (only on your device). You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services. To protect against automated requests, the Site uses Cloudflare Turnstile at entry: it runs on Cloudflare servers and may process technical data from your browser (such as the IP address). The result of the check is kept in your browser only until the tab is closed."],
+["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language, selected city and YASIK-AI chat history are saved in your browser (only on your device). You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services. To protect against automated requests, a simple task (picking the odd one out of four pictures) is offered at entry. The result of the check is kept in your browser only until the tab is closed; the server briefly stores an anonymised fingerprint of the attempt (not the IP address) to limit the number of attempts."],
 ["6. Intellectual property","The design, layout and source code of the Site belong to its owner. Copying or distributing the materials without the owner’s consent is not permitted unless provided by law."],
 ["7. Limitation of liability","The Site is provided “as is”. The owner does not guarantee uninterrupted operation, or the completeness and accuracy of the data, and is not liable for any losses arising from the use of, or inability to use, the Site."],
 ["8. External links","The Site contains links to third-party resources, including social networks. The owner does not control their content and is not responsible for it."],
