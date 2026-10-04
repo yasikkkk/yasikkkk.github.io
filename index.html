@@ -260,6 +260,16 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 .aipop .aiin textarea{padding:8px 10px;font-size:.95rem}
 .aipop .aiin .pri{padding:8px 12px}
 @media (max-width:480px){.aifab{width:48px;height:48px}.aipop{bottom:calc(72px + env(safe-area-inset-bottom,0px))}}
+
+.attb{flex:none;padding:8px 10px;font-size:1.05rem;line-height:1}
+.ms.rich{white-space:normal}
+.ms img.th{display:block;max-width:100%;max-height:170px;border-radius:8px;margin-bottom:6px;background:repeating-conic-gradient(#8883 0 25%,transparent 0 50%) 0 0/14px 14px}
+.fmts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.fmts button{padding:5px 12px;font-size:.85rem;border-radius:99px;font-weight:600}
+a.dl,.sv{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);font-size:.85rem;font-weight:600;text-decoration:none;cursor:pointer}
+a.dl{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
+.sv{font-weight:500;font-family:inherit;display:block;margin-top:8px}
+.aiw.drag,.aipop.drag{outline:2px dashed var(--accent);outline-offset:-6px}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <header><div class="hw">
 <a class="logo" id="logo" href="#home">YASIK</a>
@@ -332,16 +342,17 @@ footer{border-top:1px solid var(--line);background:var(--card);padding:18px 16px
 <div class="aih"><div class="aiav">AI</div><div><b>YASIK-AI</b><div class="m" id="ai-st"></div></div><div class="sp1"></div><button id="ai-clr" type="button" data-tr="aiClear">Очистить</button></div>
 <div class="aimsgs" id="aim" aria-live="polite"></div>
 <div class="aisug" id="ais"></div>
-<div class="aiin"><textarea id="aiq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="aigo" type="button" data-tr="aiSend">Отправить</button></div>
+<div class="aiin"><button class="attb" type="button" data-t="aiAttT" aria-label="Прикрепить картинку" title="Прикрепить картинку">📎</button><textarea id="aiq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="aigo" type="button" data-tr="aiSend">Отправить</button></div>
 <div class="ainote" data-tr="aiNote"></div>
 </div>
 </div>
 </main>
+<input type="file" id="aif" accept="image/*" hidden>
 <button class="aifab" id="aifab" type="button" aria-label="YASIK-AI" hidden>AI</button>
 <div class="aipop" id="aipop" role="dialog" aria-label="YASIK-AI" hidden>
 <div class="aih"><div class="aiav">AI</div><b>YASIK-AI</b><div class="sp1"></div><button id="pfull" type="button" title="Открыть полный чат" aria-label="Открыть полный чат">↗</button><button id="pcls" type="button" aria-label="Закрыть">✕</button></div>
 <div class="aimsgs" id="pm" aria-live="polite"></div>
-<div class="aiin"><textarea id="pq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="pgo" type="button" data-tr="aiSend">Отправить</button></div>
+<div class="aiin"><button class="attb" type="button" data-t="aiAttT" aria-label="Прикрепить картинку" title="Прикрепить картинку">📎</button><textarea id="pq" rows="1" data-ph="aiPh2" placeholder="Сообщение…" enterkeyhint="send"></textarea><button class="pri" id="pgo" type="button" data-tr="aiSend">Отправить</button></div>
 </div>
 
 <footer>
@@ -372,11 +383,12 @@ let DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработ�
 /* ---- переводы ---- */
 const I18N={
 ru:{schPh:"Поиск: преподаватель, предмет, аудитория…",clear:"Сбросить",wPh:"Фильтр по дням: дождь, пятница, 12 октября…",noRes:"Ничего не найдено",resCnt:n=>"Найдено занятий: "+n,onlineT:"онлайн",onlTip:"Сейчас на сайте",onlTipLocal:"Демо-режим: считаются только вкладки этого браузера",
-aiOpenFull:"Открыть полный чат",aiClose:"Закрыть",aiOpen:"Открыть YASIK-AI",aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Сообщения отправляются во внешний ИИ-сервис; не вводите личные данные.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
+aiPh2:"Сообщение…",aiAttT:"Прикрепить картинку",aiImgGot:(n,i)=>"Получил «"+n+"» ("+i+"). В какой формат конвертировать?",aiImgBad:"Не удалось открыть файл как картинку. Подойдут PNG, JPG, WEBP, GIF, BMP, SVG.",aiNeedImg:"Сначала прикрепите картинку кнопкой 📎 (или перетащите её в чат, или вставьте из буфера) — и я поменяю формат.",aiConvDone:(n,s,i)=>"Готово: "+n+" · "+s+" · "+i,aiDl:"Скачать",aiSaveW:"📄 Сохранить в Word",aiDocMake:"Составляю документ…",aiDocDone:n=>"Документ готов: "+n,aiDocFail:"Не получилось составить документ: облачный ИИ сейчас недоступен. Попробуйте чуть позже.",aiNoWebp:"Этот браузер не умеет сохранять в WEBP. Выберите PNG, JPG или BMP.",aiBig:"Файл слишком большой для обработки в браузере.",aiNotImg:"Это не картинка. Прикрепите файл изображения.",aiPickFmt:"Формат:",
+aiOpenFull:"Открыть полный чат",aiClose:"Закрыть",aiOpen:"Открыть YASIK-AI",aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Текстовые сообщения отправляются во внешний ИИ-сервис; не вводите личные данные. Картинки обрабатываются на вашем устройстве и никуда не отправляются.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
 aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",
-aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?"],
+aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?","Создай Word-файл с планом подготовки к экзамену","Конвертировать картинку в PNG"],
 aiNoUp:"Ближайших занятий не нашёл.",aiNoDay:"В этот день занятий нет 🎉",aiToday:"Сегодня",aiTomorrow:"Завтра",aiNext:"Ближайшая пара",aiW:(c,t,d,f)=>"Сейчас в городе "+c+": "+t+", "+d+". Ощущается как "+f+".",
-aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
+aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»), а также менять формат картинок (📎 → PNG, JPG, WEBP, BMP).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
 termsLink:"Пользовательское соглашение",termsTitle:"Пользовательское соглашение",close:"Закрыть",rights:"© 2026 YASIK. Все права защищены.",termsDate:"Редакция от 4 октября 2026г.",
 terms:[["1. Общие положения","Настоящее Пользовательское соглашение (далее — «Соглашение») определяет условия использования сайта YASIK (далее — «Сайт»). Используя Сайт, вы подтверждаете, что ознакомились с условиями Соглашения и принимаете их. Если вы не согласны с условиями, прекратите использование Сайта."],
 ["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно и не требует регистрации."],
@@ -416,11 +428,12 @@ openSched:"Открыть расписание →",openWeather:"Подробн�
 todayCount:n=>n?"Пар сегодня: "+n:"Сегодня занятий нет 🎉",wcardK:"Погода сейчас",
 u_d:"д",u_h:"ч",u_m:"мин",feelsS:v=>"Ощущается как "+v},
 en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
-aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Messages are sent to an external AI service; do not enter personal data.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
+aiPh2:"Message…",aiAttT:"Attach an image",aiImgGot:(n,i)=>"Got “"+n+"” ("+i+"). Which format should I convert it to?",aiImgBad:"Couldn't open this file as an image. PNG, JPG, WEBP, GIF, BMP and SVG work.",aiNeedImg:"Please attach an image first with the 📎 button (or drag it into the chat, or paste it) and I'll change the format.",aiConvDone:(n,s,i)=>"Done: "+n+" · "+s+" · "+i,aiDl:"Download",aiSaveW:"📄 Save to Word",aiDocMake:"Writing the document…",aiDocDone:n=>"Document ready: "+n,aiDocFail:"Couldn't write the document: the cloud AI is unavailable right now. Please try again later.",aiNoWebp:"This browser can't save WEBP. Choose PNG, JPG or BMP.",aiBig:"The file is too large to process in the browser.",aiNotImg:"That isn't an image. Please attach an image file.",aiPickFmt:"Format:",
+aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Text messages are sent to an external AI service; do not enter personal data. Images are processed on your device and never uploaded.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
 aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",
-aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?"],
+aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?","Create a Word file with an exam study plan","Convert an image to PNG"],
 aiNoUp:"No upcoming classes found.",aiNoDay:"No classes that day 🎉",aiToday:"Today",aiTomorrow:"Tomorrow",aiNext:"Next class",aiW:(c,t,d,f)=>"Right now in "+c+": "+t+", "+d+". Feels like "+f+".",
-aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, and find a teacher, subject or room (e.g. “room 309” or “Divina”).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
+aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, find a teacher, subject or room (e.g. “room 309” or “Divina”), and convert image formats (📎 → PNG, JPG, WEBP, BMP).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
 termsLink:"Terms of Use",termsTitle:"Terms of Use",close:"Close",rights:"© 2026 YASIK. All rights reserved.",termsDate:"Last updated: October 4, 2026",
 terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the use of the YASIK website (the “Site”). By using the Site, you confirm that you have read and accepted the Terms. If you do not agree, please stop using the Site."],
 ["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free and does not require registration."],
@@ -924,22 +937,113 @@ if(PRESENCE_URL){
 }
 paintOnline();
 
+/* ---- инструменты YASIK-AI: Word-файлы и конвертация картинок (всё в браузере, без загрузки на сервер) ---- */
+const xe=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");
+const CRCT=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=b=>{let c=-1;for(let i=0;i<b.length;i++)c=CRCT[(c^b[i])&255]^(c>>>8);return(c^-1)>>>0};
+function zipBlob(files,type){
+  const enc=new TextEncoder(),chunks=[],cd=[],u16=n=>[n&255,(n>>8)&255],u32=n=>[n&255,(n>>8)&255,(n>>16)&255,(n>>>24)&255];
+  let off=0;
+  files.forEach(f=>{const nm=enc.encode(f.name),data=enc.encode(f.text),crc=crc32(data),sz=data.length;
+    const lh=new Uint8Array([0x50,0x4b,3,4,...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(33),...u32(crc),...u32(sz),...u32(sz),...u16(nm.length),...u16(0)]);
+    chunks.push(lh,nm,data);cd.push({nm,crc,sz,off});off+=lh.length+nm.length+sz});
+  const st=off;
+  cd.forEach(e=>{const h=new Uint8Array([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(33),...u32(e.crc),...u32(e.sz),...u32(e.sz),...u16(e.nm.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(e.off)]);chunks.push(h,e.nm);off+=h.length+e.nm.length});
+  chunks.push(new Uint8Array([0x50,0x4b,5,6,...u16(0),...u16(0),...u16(cd.length),...u16(cd.length),...u32(off-st),...u32(st),...u16(0)]));
+  return new Blob(chunks,{type});
+}
+function mdRuns(t){
+  const out=[],re=/(\*\*[^*]+\*\*|\*[^*\s][^*]*\*|`[^`]+`)/g;let last=0,m;
+  const push=(s,rp)=>{if(s)out.push("<w:r>"+(rp?"<w:rPr>"+rp+"</w:rPr>":"")+'<w:t xml:space="preserve">'+xe(s)+"</w:t></w:r>")};
+  while((m=re.exec(t))){push(t.slice(last,m.index));const g=m[0];
+    if(g.startsWith("**"))push(g.slice(2,-2),"<w:b/>");
+    else if(g[0]==="`")push(g.slice(1,-1),'<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:cs="Consolas"/>');
+    else push(g.slice(1,-1),"<w:i/>");
+    last=m.index+g.length}
+  push(t.slice(last));return out.join("");
+}
+function mdTitle(md){
+  const l=md.replace(/```[a-z]*/gi,"").split("\n").map(x=>x.trim()).filter(Boolean)[0]||"";
+  return l.replace(/^#+\s*/,"").replace(/[*`_>]/g,"").trim();
+}
+function mdToDocx(md){
+  const lines=md.replace(/\r/g,"").replace(/```[a-zA-Z]*/g,"").split("\n"),P=[];
+  lines.forEach(raw=>{
+    const l=raw.replace(/\s+$/,"");let m;
+    if(!l.trim()||/^\s*([-*_]\s*){3,}$/.test(l)||/^\s*\|?[\s:|-]+\|?\s*$/.test(l)&&l.includes("-")&&l.includes("|"))return;
+    if(m=l.match(/^\s*(#{1,6})\s+(.*)$/))P.push('<w:p><w:pPr><w:pStyle w:val="Heading'+Math.min(3,m[1].length)+'"/></w:pPr>'+mdRuns(m[2])+"</w:p>");
+    else if(m=l.match(/^\s*[-*•]\s+(.*)$/))P.push('<w:p><w:pPr><w:pStyle w:val="ListParagraph"/><w:ind w:left="720" w:hanging="360"/></w:pPr><w:r><w:t>•</w:t></w:r><w:r><w:tab/></w:r>'+mdRuns(m[1])+"</w:p>");
+    else if(m=l.match(/^\s*(\d+)[.)]\s+(.*)$/))P.push('<w:p><w:pPr><w:pStyle w:val="ListParagraph"/><w:ind w:left="720" w:hanging="360"/></w:pPr><w:r><w:t>'+m[1]+'.</w:t></w:r><w:r><w:tab/></w:r>'+mdRuns(m[2])+"</w:p>");
+    else if(l.trim().startsWith("|"))P.push("<w:p>"+mdRuns(l.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim()).join("  |  "))+"</w:p>");
+    else P.push("<w:p>"+mdRuns(l.replace(/^\s*>\s?/,"").trim())+"</w:p>");
+  });
+  const W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"',H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  const hs=(id,nm,sz,lv,col)=>'<w:style w:type="paragraph" w:styleId="'+id+'"><w:name w:val="'+nm+'"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="'+(lv?240:360)+'" w:after="120"/><w:outlineLvl w:val="'+lv+'"/></w:pPr><w:rPr><w:b/><w:color w:val="'+col+'"/><w:sz w:val="'+sz+'"/><w:szCs w:val="'+sz+'"/></w:rPr></w:style>';
+  return zipBlob([
+    {name:"[Content_Types].xml",text:H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>'},
+    {name:"_rels/.rels",text:H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'},
+    {name:"word/_rels/document.xml.rels",text:H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'},
+    {name:"word/styles.xml",text:H+"<w:styles "+W+'><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:eastAsia="Calibri" w:cs="Calibri"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>'+hs("Heading1","heading 1",36,0,"1F3864")+hs("Heading2","heading 2",30,1,"2F5496")+hs("Heading3","heading 3",26,2,"2F5496")+'<w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/><w:basedOn w:val="Normal"/><w:qFormat/><w:pPr><w:spacing w:after="60"/></w:pPr></w:style></w:styles>'},
+    {name:"word/document.xml",text:H+"<w:document "+W+"><w:body>"+P.join("")+'<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="850" w:bottom="1134" w:left="1701" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>'}
+  ],"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+}
+function bmpBlob(id){
+  const w=id.width,h=id.height,row=(w*3+3)&~3,size=54+row*h,buf=new ArrayBuffer(size),v=new DataView(buf),u=new Uint8Array(buf),d=id.data;
+  u[0]=0x42;u[1]=0x4d;v.setUint32(2,size,true);v.setUint32(10,54,true);v.setUint32(14,40,true);v.setInt32(18,w,true);v.setInt32(22,h,true);v.setUint16(26,1,true);v.setUint16(28,24,true);v.setUint32(34,row*h,true);v.setInt32(38,2835,true);v.setInt32(42,2835,true);
+  for(let y=0;y<h;y++){let o=54+(h-1-y)*row;for(let x=0;x<w;x++){const i=(y*w+x)*4;u[o++]=d[i+2];u[o++]=d[i+1];u[o++]=d[i]}}
+  return new Blob([buf],{type:"image/bmp"});
+}
+const IMGF={png:{mime:"image/png",ext:"png"},jpg:{mime:"image/jpeg",ext:"jpg"},webp:{mime:"image/webp",ext:"webp"},bmp:{mime:"image/bmp",ext:"bmp"}};
+const loadImg=url=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error("decode"));i.src=url});
+async function convertImage(att,fmt){
+  const F=IMGF[fmt],img=await loadImg(att.url);
+  const w=img.naturalWidth||1024,h=img.naturalHeight||1024;
+  if(w*h>60e6)throw new Error("big");
+  const c=document.createElement("canvas");c.width=w;c.height=h;
+  const x=c.getContext("2d");
+  if(fmt==="jpg"||fmt==="bmp"){x.fillStyle="#fff";x.fillRect(0,0,w,h)}   // у JPG/BMP нет прозрачности — подложка белая
+  x.drawImage(img,0,0,w,h);
+  const blob=fmt==="bmp"?bmpBlob(x.getImageData(0,0,w,h)):await new Promise(r=>c.toBlob(r,F.mime,.92));
+  if(!blob||blob.type!==F.mime)throw new Error("nofmt");
+  const base=(att.file.name||"image").replace(/\.[^.]+$/,"")||"image";
+  return{blob,name:base+"."+F.ext,w,h};
+}
+const fmtSize=b=>b<1024?b+(LANG==="ru"?" Б":" B"):b<1048576?Math.round(b/1024)+(LANG==="ru"?" КБ":" KB"):(b/1048576).toFixed(1)+(LANG==="ru"?" МБ":" MB");
+function saveBlob(blob,name){const a=document.createElement("a"),u=URL.createObjectURL(blob);a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+const safeName=t=>(String(t||"").replace(/[\\/:*?"<>|\u0000-\u001f]+/g,"").replace(/\s+/g," ").trim().slice(0,60)||"YASIK-AI");
+const tokens=t=>norm(t).split(/[^a-zа-я0-9]+/).filter(Boolean);
+const FMTW={png:"png",пнг:"png",jpg:"jpg",jpeg:"jpg",джпг:"jpg",джипег:"jpg",джейпег:"jpg",жпег:"jpg",webp:"webp",вебп:"webp",bmp:"bmp",бмп:"bmp"};
+const fmtOf=t=>{const f=tokens(t).map(w=>FMTW[w]).filter(Boolean);return f.length?f[f.length-1]:null};
+const V_CONV=/конверт|преобраз|смени|измени|поменя|перевед|перегон|сохрани|convert|change|transform|save as|в формат|расширен/;
+const V_MAKE=/созда|сдела|напиш|сгенер|подготов|состав|оформ|сформир|выгруз|create|make|write|generate|draft|prepare|compose/;
+function toolIntent(text){
+  const tk=tokens(text),n=norm(text),fm=fmtOf(text);
+  if(fm&&((ATT&&(V_CONV.test(n)||text.length<=25))||V_CONV.test(n)))return"img";
+  if(!fm&&V_CONV.test(n)&&tk.some(w=>/^(картинк|изображ|фото|image|picture|photo|jpeg|png)/.test(w)))return"img";
+  const wordTok=tk.some(w=>/^(word|docx?|ворд\w*|вордов\w*)$/.test(w));
+  const docTok=tk.some(w=>/^(документ\w*|реферат\w*|доклад\w*|отчет\w*|конспект\w*|резюме|письм\w*|document|essay|report)$/.test(w))&&tk.some(w=>/^(файл\w*|file)$/.test(w));
+  if(V_MAKE.test(n)&&(wordTok||docTok))return"doc";
+  return null;
+}
+
 /* ---- YASIK-AI ----
    По умолчанию — бесплатный сервис Pollinations (без ключа). Свой прокси/ключ: поменяйте AI_ENDPOINT.
    Если облако недоступно, включается локальный помощник, который знает расписание и погоду. */
 const AI_PROXY="https://yasik-ai.klown575.workers.dev";   // ← сюда URL вашего Cloudflare Worker (см. worker.js), например "https://yasik-ai.ИМЯ.workers.dev"
 const AI_ENDPOINT="https://text.pollinations.ai/openai", AI_MODEL="openai"; // запасной бесплатный вариант
-let AIH=[],AI_MODE="cloud",AI_BUSY=false;
+let AIH=[],AI_MODE="cloud",AI_BUSY=false,ATT=null;
 const aim=$("aim"),aiq=$("aiq"),pm=$("pm"),pq=$("pq"),CONT=[aim,pm];
 function paintAI(){
   $("ai-st").textContent=tr(AI_MODE==="cloud"?"aiCloud":"aiLocal");
   $("ais").innerHTML=tr("aiSug").map((x,i)=>'<button type="button" data-i="'+i+'">'+esc(x)+'</button>').join("");
   document.querySelectorAll(".ms.hello").forEach(f=>{f.textContent=tr("aiHello")});
-  $("pfull").title=$("pfull").ariaLabel=tr("aiOpenFull");$("pcls").ariaLabel=tr("aiClose");$("aifab").ariaLabel=tr("aiOpen");
+  document.querySelectorAll(".attb").forEach(b=>{b.title=b.ariaLabel=tr("aiAttT")});$("pfull").title=$("pfull").ariaLabel=tr("aiOpenFull");$("pcls").ariaLabel=tr("aiClose");$("aifab").ariaLabel=tr("aiOpen");
 }
 function aiAdd(role,text,cls){ // добавляет сообщение сразу в оба окна (полный чат и всплывающее)
   const els=CONT.map(c=>{const m=document.createElement("div");m.className="ms "+role+(cls?" "+cls:"");m.textContent=text;c.appendChild(m);c.scrollTop=c.scrollHeight;return m});
-  return{els,set(t){els.forEach(m=>{m.textContent=t})},html(h){els.forEach(m=>{m.innerHTML=h})},cls(c){els.forEach(m=>m.classList.add(c))}}}
+  return{els,set(t){els.forEach(m=>{m.textContent=t})},html(h){els.forEach(m=>{m.innerHTML=h})},cls(c){els.forEach(m=>m.classList.add(c))},
+    fill(build){els.forEach(m=>{m.innerHTML="";m.classList.add("rich");m.appendChild(build())});scrollAI()}}}
+const scrollAI=()=>CONT.forEach(c=>{c.scrollTop=c.scrollHeight})
 function aiReset(){CONT.forEach(c=>{c.innerHTML=""});AIH=[];aiAdd("a",tr("aiHello")).cls("hello")}
 const lessonLine=it=>it.time+" — "+it.title+" ("+[it.teacher,it.place].filter(Boolean).join(", ")+")";
 const dayText=d=>{const its=itemsFor(d)||[];return its.length?its.map(lessonLine).join("\n"):tr("aiNoDay")};
@@ -949,17 +1053,20 @@ function aiContext(){
   const w=HWD?"Weather in "+CITY.name+": "+tt(HWD.temperature_2m)+", "+wmo(HWD.weather_code)[1]+".":"";
   return "You are YASIK-AI, a friendly assistant built into the YASIK website for students of group BI-02 (Lomonosov MSU, HSPA). Answer concisely in the language the user writes in. Current date/time: "+n.toLocaleString("ru-RU")+". "+w+"\nSchedule for the next 14 days:\n"+(lines.join("\n")||"(none)")+"\nUse the schedule only when relevant; never invent lessons."
 }
-async function cloudAnswer(){
-  const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),30000);
+async function cloudAnswer(o){
+  o=o||{};
+  const hist=AIH.slice(-12).map(m=>({role:m.role,content:m.content}));
+  if(o.instr&&hist.length)hist[hist.length-1].content+=o.instr;
+  const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),o.timeout||30000);
   try{
     if(AI_PROXY){
       const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
-        body:JSON.stringify({context:aiContext().slice(0,4000),messages:AIH.slice(-12)})});
+        body:JSON.stringify({context:aiContext().slice(0,4000),messages:hist,max_tokens:o.maxTok||600})});
       if(!r.ok)throw new Error(r.status);
       const j=await r.json();if(!j.text)throw new Error("empty");return j.text.trim();
     }
     const r=await fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
-      body:JSON.stringify({model:AI_MODEL,messages:[{role:"system",content:aiContext()}].concat(AIH.slice(-10))})});
+      body:JSON.stringify({model:AI_MODEL,messages:[{role:"system",content:aiContext()}].concat(hist.slice(-10))})});
     if(!r.ok)throw new Error(r.status);
     const j=await r.json(),txt=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
     if(!txt)throw new Error("empty");return txt.trim();
@@ -984,15 +1091,76 @@ async function localAnswer(q){
   if(/привет|здравствуй|hello|^hi\b|hey/.test(t))return tr("aiHello");
   return tr("aiHelp");
 }
+const DOC_INSTR="\n\n[Write a complete, ready-to-use document for this request, in the language of the request. Format it as Markdown: first line is the title as '# Title', then sections as '## Heading', normal paragraphs, and lists with '- '. No introduction or comments outside the document itself. Keep it under about 500 words.]";
+const saveBtn=ans=>{const b=document.createElement("button");b.type="button";b.className="sv";b.textContent=tr("aiSaveW");
+  b.onclick=()=>saveBlob(mdToDocx(ans),safeName(mdTitle(ans))+".docx");return b};
+const dlLink=(blob,name)=>{const a=document.createElement("a");a.className="dl";a.href=URL.createObjectURL(blob);a.download=name;a.textContent="⬇ "+tr("aiDl")+" "+name;return a};
+async function makeDoc(text){
+  const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
+  let md;
+  try{md=await cloudAnswer({instr:DOC_INSTR,maxTok:1700,timeout:70000});AI_MODE="cloud"}
+  catch(e){AI_MODE="local";bub.set(tr("aiDocFail"));bub.cls("err");paintAI();AIH.pop();return}
+  const blob=mdToDocx(md),name=safeName(mdTitle(md))+".docx";
+  AIH.push({role:"assistant",content:tr("aiDocDone",name)});
+  bub.fill(()=>{const d=document.createElement("div"),t=document.createElement("div");t.textContent="📄 "+tr("aiDocDone",name)+" · "+fmtSize(blob.size);d.appendChild(t);d.appendChild(dlLink(blob,name));return d});
+  paintAI();
+}
+async function imgFromText(text){
+  const fm=fmtOf(text);
+  if(!ATT){aiAdd("a",tr("aiNeedImg"));return}
+  if(!fm){showFmtPicker();return}
+  await doConvert(fm);
+}
+function showFmtPicker(){
+  aiAdd("a","").fill(()=>{const d=document.createElement("div"),t=document.createElement("div");t.textContent=tr("aiPickFmt");d.appendChild(t);d.appendChild(fmtButtons());return d});
+}
+function fmtButtons(){
+  const w=document.createElement("div");w.className="fmts";
+  Object.keys(IMGF).forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=k.toUpperCase();b.onclick=()=>doConvert(k);w.appendChild(b)});
+  return w;
+}
+async function doConvert(fmt){
+  if(!ATT){aiAdd("a",tr("aiNeedImg"));return}
+  if(AI_BUSY)return;AI_BUSY=true;
+  const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
+  try{
+    const r=await convertImage(ATT,fmt),u=URL.createObjectURL(r.blob);
+    bub.fill(()=>{const d=document.createElement("div"),im=document.createElement("img");im.className="th";im.src=u;im.alt=r.name;im.onload=scrollAI;
+      const t=document.createElement("div");t.textContent=tr("aiConvDone",r.name,fmtSize(r.blob.size),r.w+"×"+r.h);
+      d.appendChild(im);d.appendChild(t);d.appendChild(dlLink(r.blob,r.name));return d});
+  }catch(e){bub.set(tr(e.message==="nofmt"?"aiNoWebp":e.message==="big"?"aiBig":"aiImgBad"));bub.cls("err")}
+  AI_BUSY=false;
+}
+async function onFile(f){
+  if(AI_BUSY)return;
+  if(!/^image\//.test(f.type)&&!/\.(png|jpe?g|webp|gif|bmp|svg|avif|heic|heif|ico)$/i.test(f.name)){aiAdd("a",tr("aiNotImg"));return}
+  if(f.size>30*1048576){aiAdd("a",tr("aiBig"));return}
+  const url=URL.createObjectURL(f);let im;
+  try{im=await loadImg(url)}catch(e){URL.revokeObjectURL(url);aiAdd("u","📎 "+f.name);aiAdd("a",tr("aiImgBad")).cls("err");return}
+  if(ATT)URL.revokeObjectURL(ATT.url);
+  ATT={file:f,url};
+  const w=im.naturalWidth||0,h=im.naturalHeight||0,ext=((f.name.match(/\.([^.]+)$/)||[])[1]||f.type.split("/")[1]||"img").toUpperCase();
+  aiAdd("u","").fill(()=>{const d=document.createElement("div"),i=document.createElement("img");i.className="th";i.src=url;i.alt=f.name;i.onload=scrollAI;
+    const t=document.createElement("div");t.textContent="📎 "+f.name;d.appendChild(i);d.appendChild(t);return d});
+  const info=ext+(w?", "+w+"×"+h:"")+", "+fmtSize(f.size);
+  aiAdd("a","").fill(()=>{const d=document.createElement("div"),t=document.createElement("div");t.textContent=tr("aiImgGot",f.name,info);d.appendChild(t);d.appendChild(fmtButtons());return d});
+}
 async function aiSend(text){
   text=(text||"").trim();if(!text||AI_BUSY)return;
-  AI_BUSY=true;aiq.value=pq.value="";aiq.style.height=pq.style.height="";aiAdd("u",text);AIH.push({role:"user",content:text});
-  const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
-  let ans;
-  try{ans=await cloudAnswer();AI_MODE="cloud"}
-  catch(e){AI_MODE="local";ans=await localAnswer(text);bub.cls("err")}
-  bub.set(ans);AIH.push({role:"assistant",content:ans});paintAI();
-  CONT.forEach(c=>{c.scrollTop=c.scrollHeight});AI_BUSY=false;
+  AI_BUSY=true;aiq.value=pq.value="";aiq.style.height=pq.style.height="";aiAdd("u",text);
+  try{
+    const tool=toolIntent(text);
+    if(tool==="img"){AI_BUSY=false;await imgFromText(text);return}
+    AIH.push({role:"user",content:text});
+    if(tool==="doc"){await makeDoc(text);return}
+    const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
+    let ans;
+    try{ans=await cloudAnswer();AI_MODE="cloud"}
+    catch(e){AI_MODE="local";ans=await localAnswer(text);bub.cls("err")}
+    bub.set(ans);AIH.push({role:"assistant",content:ans});paintAI();
+    if(AI_MODE==="cloud"&&ans.length>80)bub.els.forEach(m=>m.appendChild(saveBtn(ans)));
+    scrollAI();
+  }finally{AI_BUSY=false}
 }
 $("aigo").onclick=()=>aiSend(aiq.value);
 aiq.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();aiSend(aiq.value)}};
@@ -1009,6 +1177,14 @@ aFab.onclick=()=>togglePop(aPop.hidden);
 $("pcls").onclick=()=>togglePop(false);
 $("pfull").onclick=()=>{togglePop(false);closeStudy();showTab("ai")};
 addEventListener("keydown",e=>{if(e.key==="Escape"&&!aPop.hidden)togglePop(false)});
+const aif=$("aif");
+document.querySelectorAll(".attb").forEach(b=>{b.onclick=()=>aif.click()});
+aif.onchange=()=>{const f=aif.files[0];aif.value="";if(f)onFile(f)};
+[aiq,pq].forEach(t=>t.addEventListener("paste",e=>{const f=[...(e.clipboardData&&e.clipboardData.files||[])].find(x=>/^image\//.test(x.type));if(f){e.preventDefault();onFile(f)}}));
+[document.querySelector(".aiw"),$("aipop")].forEach(z=>{
+  z.addEventListener("dragover",e=>{e.preventDefault();z.classList.add("drag")});
+  z.addEventListener("dragleave",()=>z.classList.remove("drag"));
+  z.addEventListener("drop",e=>{e.preventDefault();z.classList.remove("drag");const f=e.dataTransfer.files[0];if(f)onFile(f)})});
 aiReset();
 
 /* ---- язык ---- */
