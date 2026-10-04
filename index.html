@@ -1459,7 +1459,7 @@ async function cloudAnswer(o){
   const hist=AIH.slice(-12).map(m=>({role:m.role,content:m.content}));
   if(o.instr&&hist.length)hist[hist.length-1].content+=o.instr;
   const ctl=new AbortController();CUR_CTL=ctl;
-  let t=0;const bump=()=>{clearTimeout(t);t=setTimeout(()=>ctl.abort(),o.timeout||30000)};bump(); // таймаут «тишины»: сбрасывается при каждом куске потока
+  let t=0;const bump=()=>{clearTimeout(t);t=setTimeout(()=>ctl.abort(),o.timeout||75000)};bump(); // таймаут «тишины»: сбрасывается при каждом куске потока
   try{
     if(AI_PROXY){
       const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
