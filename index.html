@@ -513,70 +513,73 @@ body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
 @media (max-width:600px){.lgin{padding:5px 10px;font-size:.82rem}}
 .onl .ot{display:none}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
-<div id="cap" hidden><div class="cb" role="dialog" aria-modal="true" aria-labelledby="cap-t">
-<div class="cl">YASIK</div><h2 id="cap-t"></h2><p id="cap-d"></p>
-<div class="cg" id="cap-g"></div>
-<div class="ce" id="cap-e" aria-live="polite"></div>
-<div class="cr"><button type="button" id="cap-rf"></button></div>
-<div class="cf" id="cap-f"></div>
-</div></div>
 <script>
-/* Проверка при входе: «Выбери лишнюю картинку». Четыре картинки (три одинаковых вида и одна другая) рисует и проверяет воркер
-   (пути /challenge и /captcha); при каждом входе они собираются заново из случайных чисел. После верного выбора воркер выдаёт пропуск
-   на 12 часов. Пропуск хранится до закрытия вкладки и добавляется ко всем запросам ИИ (заголовок X-Pass). Сервер отклоняет запросы ИИ
-   без пропуска, поэтому одним скрытием окна в браузере защиту не обойти. */
+/* Автоматическая проверка браузера при входе на сайт. Посетителю ничего нажимать не нужно: страница сама решает небольшую
+   вычислительную задачу (пути /challenge и /captcha воркера), на телефоне это доли секунды. Воркер выдаёт пропуск на 12 часов.
+   Пропуск хранится до закрытия вкладки и добавляется ко всем запросам ИИ (заголовок X-Pass). Сервер отклоняет запросы ИИ без
+   пропуска. Если пропуск устарел (ответ 401), новый берётся незаметно, и запрос повторяется. */
 (function(){
 const API="https://yasik-ai.klown575.workers.dev";
-const ru=!/^en/i.test(navigator.language||"ru");
-const T=ru?{t:"Проверка безопасности",d:"Выбери лишнюю картинку",img:n=>"Картинка "+n,rf:"Другие картинки",e:"Неверно. Попробуйте новые картинки.",n:"Нет связи с сервером. Проверьте интернет и попробуйте снова.",many:"Слишком много попыток. Подождите несколько минут.",f:"Защита от автоматических запросов"}
-  :{t:"Security check",d:"Pick the odd one out",img:n=>"Picture "+n,rf:"Other pictures",e:"Wrong. Try the new pictures.",n:"Can't reach the server. Check your connection and try again.",many:"Too many attempts. Please wait a few minutes.",f:"Protection against automated requests"};
-const $=id=>document.getElementById(id),cap=$("cap"),grid=$("cap-g");
-$("cap-t").textContent=T.t;$("cap-d").textContent=T.d;$("cap-rf").textContent="↻ "+T.rf;$("cap-f").textContent=T.f;
-let PASS="",TOKEN="",busy=false;
+let PASS="",job=null,off=false;
 const valid=p=>{const m=/^(\d{13})\./.exec(p||"");return !!m&&+m[1]>Date.now()+60000};
 try{const p=sessionStorage.getItem("yp");if(valid(p))PASS=p}catch(e){}
-// ко всем запросам к ИИ добавляем пропуск; если сервер ответил 401 — пропуск устарел, показываем проверку снова
 const _f=window.fetch.bind(window);
-window.fetch=function(u,o){
-  if(u===API){const h={},ss=window.YS&&window.YS.token();if(PASS)h["X-Pass"]=PASS;if(ss)h["X-Session"]=ss;o=Object.assign({},o);o.headers=Object.assign({},o.headers,h)}
-  const r=_f(u,o);
-  return u===API?r.then(x=>{if(x.status===401){PASS="";try{sessionStorage.removeItem("yp")}catch(e){}show()}else if(x.status===403&&window.YS){x.clone().json().then(j=>{if(j&&j.error==="login")window.YS.expired()}).catch(()=>{})}return x}):r;
-};
 const post=(path,body)=>_f(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
-function lock(v){document.documentElement.style.overflow=v?"hidden":""}
-function done(p){PASS=p;try{if(p)sessionStorage.setItem("yp",p)}catch(e){}cap.hidden=true;lock(false);grid.textContent=""}
-function setBusy(v){busy=v;grid.querySelectorAll("button").forEach(b=>b.disabled=v)}
-async function load(){
-  TOKEN="";grid.textContent="";
-  try{
-    const r=await post("/challenge");
-    if(r.status===501){done("");return}                 // на сервере капча не настроена — пускаем
-    const j=await r.json();
-    if(!r.ok||!Array.isArray(j.imgs)||j.imgs.length!==4)throw new Error("c");
-    TOKEN=j.token;
-    j.imgs.forEach((svg,i)=>{
-      const b=document.createElement("button"),im=document.createElement("img");
-      b.type="button";b.setAttribute("aria-label",T.img(i+1));
-      im.alt="";im.draggable=false;im.src=String(svg).startsWith("data:")?svg:"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
-      b.appendChild(im);b.onclick=()=>submit(i);grid.appendChild(b);
-    });
-  }catch(e){$("cap-e").textContent=T.n}
+// Поиск числа n, при котором SHA-256("nonce:n") начинается с bits нулевых бит (SHA-256 написан вручную для скорости)
+function powSolve(nonce,bits){
+  const K=new Uint32Array([0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2]);
+  const te=new TextEncoder(),w=new Uint32Array(64),blk=new Uint8Array(64),dv=new DataView(blk.buffer),sh=32-bits;
+  for(let n=0;;n++){
+    const m=te.encode(nonce+":"+n);blk.fill(0);blk.set(m);blk[m.length]=128;dv.setUint32(60,m.length*8);
+    for(let i=0;i<16;i++)w[i]=dv.getUint32(i*4);
+    for(let i=16;i<64;i++){const x=w[i-15],y=w[i-2];
+      w[i]=(w[i-16]+(((x>>>7)|(x<<25))^((x>>>18)|(x<<14))^(x>>>3))+w[i-7]+(((y>>>17)|(y<<15))^((y>>>19)|(y<<13))^(y>>>10)))|0}
+    let a=0x6a09e667,b=0xbb67ae85,c=0x3c6ef372,d=0xa54ff53a,e=0x510e527f,f=0x9b05688c,g=0x1f83d9ab,h=0x5be0cd19;
+    for(let i=0;i<64;i++){
+      const t1=(h+(((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7)))+((e&f)^(~e&g))+K[i]+w[i])|0;
+      const t2=((((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10)))+((a&b)^(a&c)^(b&c)))|0;
+      h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0}
+    if((((0x6a09e667+a)|0)>>>sh)===0)return n;
+  }
 }
-function show(){busy=false;cap.hidden=false;lock(true);$("cap-e").textContent="";load()}
-async function submit(i){
-  if(busy||!TOKEN)return;
-  setBusy(true);
-  try{
-    const r=await post("/captcha",{token:TOKEN,answer:i});
-    const j=await r.json().catch(()=>({}));
-    if(r.ok&&j.pass){done(j.pass);return}
-    $("cap-e").textContent=r.status===429?T.many:(r.status>=500?T.n:T.e);
-    await load();
-  }catch(e){$("cap-e").textContent=T.n;setBusy(false)}
-  finally{if(!cap.hidden)busy=false}
+// считаем в фоновом потоке, чтобы страница не подтормаживала; если потоки недоступны, считаем на месте
+function solve(nonce,bits){
+  return new Promise(res=>{
+    try{
+      const url=URL.createObjectURL(new Blob(["onmessage=e=>postMessage(("+powSolve.toString()+")(e.data.nonce,e.data.bits))"],{type:"text/javascript"}));
+      const w=new Worker(url),fin=v=>{w.terminate();URL.revokeObjectURL(url);res(v)};
+      w.onmessage=e=>fin(e.data);w.onerror=()=>fin(powSolve(nonce,bits));
+      w.postMessage({nonce,bits});
+    }catch(e){res(powSolve(nonce,bits))}
+  });
 }
-$("cap-rf").onclick=()=>{if(busy)return;$("cap-e").textContent="";load()};
-if(!PASS)show();
+async function verify(){
+  const r=await post("/challenge");
+  if(r.status===501){off=true;return}              // на сервере проверка не настроена — пускаем без неё
+  const j=await r.json();
+  if(!r.ok||!j.token||!j.bits)throw new Error("challenge");
+  const n=await solve(j.token.split(".")[1],j.bits);
+  const r2=await post("/captcha",{token:j.token,n});
+  const k=await r2.json().catch(()=>({}));
+  if(!r2.ok||!k.pass)throw new Error("captcha "+r2.status);
+  PASS=k.pass;try{sessionStorage.setItem("yp",PASS)}catch(e){}
+}
+function ensure(){
+  if(PASS||off)return Promise.resolve();
+  if(!job)job=verify().finally(()=>{job=null});
+  return job;
+}
+// ко всем запросам к ИИ добавляем пропуск и вход (X-Session)
+window.fetch=function(u,o){
+  if(u!==API)return _f(u,o);
+  const go=()=>{const h={},ss=window.YS&&window.YS.token();if(PASS)h["X-Pass"]=PASS;if(ss)h["X-Session"]=ss;
+    return _f(u,Object.assign({},o,{headers:Object.assign({},o&&o.headers,h)}))};
+  return ensure().catch(()=>{}).then(go).then(x=>{
+    if(x.status===401){PASS="";try{sessionStorage.removeItem("yp")}catch(e){}return ensure().catch(()=>{}).then(go)}
+    if(x.status===403&&window.YS){x.clone().json().then(j=>{if(j&&j.error==="login")window.YS.expired()}).catch(()=>{})}
+    return x});
+};
+ensure().catch(()=>{});                              // проверка стартует сразу при входе на сайт
 })();
 </script>
 
