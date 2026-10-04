@@ -392,6 +392,23 @@ body.aipage #tab-ai:not([hidden]){flex:1;min-height:0;display:flex;animation:non
 @media (hover:none){.uacts{opacity:.9}}
 .uacts button{margin:0;width:30px;height:30px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:500;font-family:inherit;border:0;border-radius:99px;background:rgba(127,127,127,.26);color:inherit;cursor:pointer}
 .uacts button:hover{background:rgba(127,127,127,.42)}
+/* кнопки под сообщением пользователя: вынесены из голубой рамки, она остаётся компактной */
+.ms.u{position:relative;margin-bottom:34px}
+.ms.u .uacts{position:absolute;right:0;top:100%;margin:0;padding-top:4px;flex-wrap:nowrap}
+.uacts button{background:var(--card);border:1px solid var(--line);color:var(--muted)}
+.uacts button:hover{background:var(--card);color:var(--accent);border-color:var(--accent)}
+
+/* ---- капча при входе (Cloudflare Turnstile) ---- */
+#cap{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(10,16,26,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#cap[hidden]{display:none}
+#cap .cb{width:100%;max-width:380px;box-sizing:border-box;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.4);padding:28px 24px;text-align:center}
+#cap .cl{font-weight:800;letter-spacing:.08em;font-size:1.05rem;color:var(--accent);margin-bottom:14px}
+#cap h2{margin:0 0 8px;font-size:1.15rem}
+#cap p{margin:0 0 16px;color:var(--muted);font-size:.9rem;line-height:1.45}
+#cap #cap-w{min-height:65px;display:flex;justify-content:center;align-items:center}
+#cap .ce{color:#c0392b;font-size:.85rem;margin-top:10px;min-height:1.2em}
+#cap button{margin-top:6px;padding:8px 18px;border-radius:99px;border:1px solid var(--line);background:var(--tag);color:var(--fg);font:inherit;cursor:pointer}
+#cap .cf{margin-top:14px;font-size:.72rem;color:var(--muted)}
 body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
 .aiapp{border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.08)}
 .aiapp .ms,.aipop .ms{border-radius:20px}
@@ -431,13 +448,64 @@ body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
 .ach .nm{min-width:0;display:flex;flex-direction:column}
 .ach .nm b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
 .ach .nm small{opacity:.7}
-.ach.ld .nm small{animation:pulse 1s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.25}}
+.ach.ld .nm small{animation:achpulse 1s ease-in-out infinite}
+@keyframes achpulse{50%{opacity:.25}}
 .ach .ax{position:absolute;top:3px;right:3px;width:22px;height:22px;padding:0;border-radius:50%;border:0;background:rgba(127,127,127,.25);color:inherit;font-size:.7rem;line-height:1;cursor:pointer}
 .ach .ax:hover{background:rgba(192,57,43,.8);color:#fff}
 .ms img.th.gen{max-height:min(420px,60vh);cursor:zoom-in}
 .fchip{display:inline-block;margin:0 0 6px;padding:5px 10px;border-radius:10px;background:rgba(127,127,127,.22);font-size:.85em;word-break:break-all}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
+<div id="cap" hidden><div class="cb" role="dialog" aria-modal="true" aria-labelledby="cap-t">
+<div class="cl">YASIK</div><h2 id="cap-t"></h2><p id="cap-d"></p><div id="cap-w"></div><div class="ce" id="cap-e" aria-live="polite"></div><button type="button" id="cap-r" hidden></button><div class="cf" id="cap-f"></div>
+</div></div>
+<script>
+/* Капча Cloudflare Turnstile. Вставьте публичный Site Key (панель Cloudflare → Turnstile). Пока ключ не вставлен, капча выключена.
+   Проверка настоящая только вместе с воркером: он принимает запросы ИИ лишь с пропуском (заголовок X-Pass). */
+(function(){
+const SITEKEY="0x4AAAAAAFNZ35bLJXg7k5wi",API="https://yasik-ai.klown575.workers.dev";
+if(!SITEKEY||/^ВАШ/.test(SITEKEY))return;
+const ru=!/^en/i.test(navigator.language||"ru");
+const T=ru?{t:"Проверка безопасности",d:"Подтвердите, что вы человек, чтобы продолжить.",e:"Проверка не пройдена. Попробуйте ещё раз.",n:"Нет связи с сервером проверки. Проверьте интернет и попробуйте снова.",r:"Повторить",f:"Защита: Cloudflare Turnstile"}
+  :{t:"Security check",d:"Please confirm you are human to continue.",e:"Verification failed. Please try again.",n:"Can't reach the verification server. Check your connection and try again.",r:"Try again",f:"Protected by Cloudflare Turnstile"};
+const $=id=>document.getElementById(id),cap=$("cap");
+$("cap-t").textContent=T.t;$("cap-d").textContent=T.d;$("cap-r").textContent=T.r;$("cap-f").textContent=T.f;
+let PASS="",wid=null;
+const valid=p=>{const m=/^(\d{13})\./.exec(p||"");return !!m&&+m[1]>Date.now()+60000};
+try{const p=sessionStorage.getItem("yp");if(valid(p))PASS=p}catch(e){}
+// ко всем запросам к ИИ добавляем пропуск; если сервер ответил 401 — пропуск устарел, показываем проверку снова
+const _f=window.fetch.bind(window);
+window.fetch=function(u,o){
+  if(u===API&&PASS){o=Object.assign({},o);o.headers=Object.assign({},o.headers,{"X-Pass":PASS})}
+  const r=_f(u,o);
+  return u===API?r.then(x=>{if(x.status===401){PASS="";try{sessionStorage.removeItem("yp")}catch(e){}show()}return x}):r;
+};
+function lock(v){document.documentElement.style.overflow=v?"hidden":""}
+function show(){cap.hidden=false;lock(true);$("cap-e").textContent="";$("cap-r").hidden=true;start()}
+function done(p){PASS=p;try{sessionStorage.setItem("yp",p)}catch(e){}cap.hidden=true;lock(false)}
+function fail(msg){$("cap-e").textContent=msg;$("cap-r").hidden=false;try{if(wid!==null)turnstile.reset(wid)}catch(e){}}
+async function onToken(token){
+  $("cap-e").textContent="";
+  try{
+    const r=await _f(API+"/verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token})});
+    const j=await r.json().catch(()=>({}));
+    if(r.ok&&j.pass)done(j.pass);else fail(r.status>=500?T.n:T.e);
+  }catch(e){fail(T.n)}
+}
+function render(){
+  if(wid!==null){try{turnstile.reset(wid)}catch(e){}return}
+  wid=turnstile.render("#cap-w",{sitekey:SITEKEY,theme:"auto",language:ru?"ru":"en",callback:onToken,"error-callback":()=>fail(T.e),"expired-callback":()=>{try{turnstile.reset(wid)}catch(e){}}});
+}
+function start(){
+  if(window.turnstile){render();return}
+  if(document.getElementById("ts-api"))return;
+  const sc=document.createElement("script");sc.id="ts-api";sc.async=true;sc.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+  sc.onload=render;sc.onerror=()=>fail(T.n);document.head.appendChild(sc);
+}
+$("cap-r").onclick=()=>{$("cap-e").textContent="";$("cap-r").hidden=true;if(window.turnstile&&wid!==null)turnstile.reset(wid);else start()};
+if(!PASS)show();
+})();
+</script>
+
 <header><div class="hw">
 <a class="logo" id="logo" href="#home">YASIK</a>
 <nav class="nv">
@@ -571,7 +639,7 @@ terms:[["1. Общие положения","Настоящее Пользова�
 ["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно и не требует регистрации."],
 ["3. Информационный характер данных","Расписание и иные сведения на Сайте носят справочный характер и не являются официальным документом образовательной организации. Актуальное расписание следует уточнять в официальных источниках университета. Данные о погоде предоставляются сторонними сервисами и могут содержать неточности."],
 ["4. Обязанности пользователя","Пользователь обязуется не нарушать работу Сайта, не предпринимать попыток несанкционированного доступа к нему и не использовать автоматизированные средства, создающие чрезмерную нагрузку."],
-["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык, выбранный город и история чата с YASIK-AI (она хранится только в вашем браузере). Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам."],
+["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык, выбранный город и история чата с YASIK-AI (она хранится только в вашем браузере). Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам. Для защиты от автоматических запросов при входе используется проверка Cloudflare Turnstile: она работает на серверах Cloudflare и может обрабатывать технические данные вашего браузера (например, IP-адрес). Результат проверки хранится в браузере только до закрытия вкладки."],
 ["6. Интеллектуальная собственность","Дизайн, оформление и программный код Сайта принадлежат владельцу Сайта. Копирование и распространение материалов без согласия владельца не допускаются, если иное не предусмотрено законодательством."],
 ["7. Ограничение ответственности","Сайт предоставляется «как есть». Владелец не гарантирует бесперебойную работу Сайта, полноту и точность размещённых данных и не несёт ответственности за убытки, возникшие в связи с использованием или невозможностью использования Сайта."],
 ["8. Внешние ссылки","Сайт содержит ссылки на сторонние ресурсы, в том числе социальные сети. Владелец не контролирует их содержание и не несёт за него ответственности."],
@@ -622,7 +690,7 @@ terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the
 ["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free and does not require registration."],
 ["3. Informational nature of data","The schedule and other information on the Site are provided for reference only and are not an official document of any educational institution. Please verify the current schedule with the official sources of the university. Weather data is supplied by third-party services and may contain inaccuracies."],
 ["4. User obligations","The user agrees not to disrupt the operation of the Site, not to attempt unauthorized access to it, and not to use automated tools that create excessive load."],
-["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language, selected city and YASIK-AI chat history are saved in your browser (only on your device). You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services."],
+["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language, selected city and YASIK-AI chat history are saved in your browser (only on your device). You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services. To protect against automated requests, the Site uses Cloudflare Turnstile at entry: it runs on Cloudflare servers and may process technical data from your browser (such as the IP address). The result of the check is kept in your browser only until the tab is closed."],
 ["6. Intellectual property","The design, layout and source code of the Site belong to its owner. Copying or distributing the materials without the owner’s consent is not permitted unless provided by law."],
 ["7. Limitation of liability","The Site is provided “as is”. The owner does not guarantee uninterrupted operation, or the completeness and accuracy of the data, and is not liable for any losses arising from the use of, or inability to use, the Site."],
 ["8. External links","The Site contains links to third-party resources, including social networks. The owner does not control their content and is not responsible for it."],
@@ -789,7 +857,7 @@ function setConsent(v){
   try{
     localStorage.setItem("consent",v);
     if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); localStorage.setItem("lang",LANG); saveChat(); }
-    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); localStorage.removeItem("chats"); localStorage.removeItem("chatCur"); }
+    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); localStorage.removeItem("chats"); localStorage.removeItem("chatCur"); localStorage.removeItem("yb"); }
   }catch(e){}
 }
 $("ck-yes").onclick=()=>setConsent("all");
@@ -1111,27 +1179,56 @@ function applyWF(){const q=norm(wq.value).split(/\s+/).filter(Boolean);
 wq.oninput=applyWF;
 
 /* ---- онлайн-счётчик ----
-   Счётчик общий для всех посетителей: каждая открытая вкладка раз в 30 секунд сообщает о себе
-   Cloudflare Worker (путь /presence, база D1), а тот возвращает число вкладок, активных за последние 2 минуты.
-   Если сервер недоступен, индикатор гаснет, а число остаётся последним известным. */
+   Считаются люди (браузеры), а не вкладки: у каждой вкладки свой id = «id браузера» (8 знаков) + «id вкладки» (6 знаков),
+   а Cloudflare Worker (путь /presence, база D1) считает разные «id браузера» за последние 2,5 минуты.
+   Вкладка считается, пока открыта, даже если вы смотрите другой сайт: сигнал раз в минуту идёт из фонового потока
+   (Web Worker), который браузер не усыпляет так, как обычные таймеры страницы.
+   Если сервер недоступен, точка становится серой, а число остаётся последним известным. */
 const PRESENCE_URL="https://yasik-ai.klown575.workers.dev/presence";
-let ONL=1,ONL_REAL=false;
+let ONL=1,ONL_REAL=false,ONL_ERR="";
 function paintOnline(){const b=$("onl");$("onn").textContent=ONL;$("onl-t").textContent=tr("onlineT");
-  b.classList.toggle("off",PRESENCE_URL?!ONL_REAL:false);b.title=PRESENCE_URL?tr("onlTip"):tr("onlTipLocal")}
-const PID=Math.random().toString(36).slice(2,10);
+  b.classList.toggle("off",PRESENCE_URL?!ONL_REAL:false);b.title=PRESENCE_URL?tr("onlTip")+(ONL_REAL||!ONL_ERR?"":" ("+ONL_ERR+")"):tr("onlTipLocal")}
+const rnd=n=>(Math.random().toString(36).slice(2)+"0000000000").slice(0,n);
+const TABID=rnd(6),BID_MEM=rnd(8);
+function browserId(){   // один и тот же во всех вкладках браузера — только если разрешены cookie/хранилище
+  if(canSave()){try{let b=localStorage.getItem("yb");if(!/^[a-z0-9]{8}$/.test(b||"")){b=BID_MEM;localStorage.setItem("yb",b)}return b}catch(e){}}
+  return BID_MEM;
+}
+const PID=()=>browserId()+TABID;
 if(PRESENCE_URL){
-  const beat=async()=>{try{
-    const r=await fetch(PRESENCE_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({id:PID})});
-    if(!r.ok)throw 0;
-    const j=await r.json();ONL=Math.max(1,j.n|0);ONL_REAL=true;paintOnline();
-  }catch(e){ONL_REAL=false;paintOnline()}};
-  beat();setInterval(beat,30000);
+  let last="",lastBeat=0;
+  const send=(o,keep)=>fetch(PRESENCE_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify(o),keepalive:!!keep});
+  const beat=async()=>{
+    lastBeat=Date.now();
+    try{
+      const id=PID();
+      if(last&&last!==id)send({id:last,bye:1}).catch(()=>{});   // id сменился (например, дали согласие на cookie) — старую запись убираем
+      last=id;
+      const r=await send({id});
+      if(!r.ok)throw new Error(r.status);
+      const j=await r.json();
+      ONL=Math.max(1,j.n|0);ONL_REAL=true;ONL_ERR="";
+    }catch(e){ONL_REAL=false;ONL_ERR=String(e&&e.message||e).slice(0,40)}
+    paintOnline();
+  };
+  beat();
+  // Таймер в фоновом потоке: в скрытой вкладке setInterval страницы замедляется до раза в минуту и может уснуть совсем
+  const tick=()=>{if(Date.now()-lastBeat>=(document.hidden?58000:28000))beat()};
+  let wk=false;
+  try{
+    const w=new Worker(URL.createObjectURL(new Blob(["setInterval(function(){postMessage(0)},10000)"],{type:"text/javascript"})));
+    w.onmessage=tick;wk=true;
+  }catch(e){}
+  if(!wk)setInterval(tick,10000);
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)beat()});
-  addEventListener("pagehide",()=>{try{fetch(PRESENCE_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({id:PID,bye:1}),keepalive:true})}catch(e){}});
+  document.addEventListener("resume",beat);
+  addEventListener("online",beat);
+  addEventListener("pageshow",e=>{if(e.persisted)beat()});
+  addEventListener("pagehide",()=>{try{send({id:last||PID(),bye:1},true)}catch(e){}});   // вкладку закрыли
 }else if("BroadcastChannel" in window){
-  const bc=new BroadcastChannel("yasik-presence"),peers={};
-  const ping=()=>{bc.postMessage({id:PID});const now=Date.now();Object.keys(peers).forEach(k=>{if(now-peers[k]>6000)delete peers[k]});ONL=1+Object.keys(peers).length;paintOnline()};
-  bc.onmessage=e=>{if(e.data&&e.data.id&&e.data.id!==PID){if(!peers[e.data.id])setTimeout(ping,50);peers[e.data.id]=Date.now()}};
+  const pid=PID(),bc=new BroadcastChannel("yasik-presence"),peers={};
+  const ping=()=>{bc.postMessage({id:pid});const now=Date.now();Object.keys(peers).forEach(k=>{if(now-peers[k]>6000)delete peers[k]});ONL=1+Object.keys(peers).length;paintOnline()};
+  bc.onmessage=e=>{if(e.data&&e.data.id&&e.data.id!==pid){if(!peers[e.data.id])setTimeout(ping,50);peers[e.data.id]=Date.now()}};
   ping();setInterval(ping,3000);
 }
 paintOnline();
