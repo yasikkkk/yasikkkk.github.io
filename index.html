@@ -270,6 +270,28 @@ a.dl,.sv{display:inline-block;margin-top:8px;padding:6px 12px;border-radius:8px;
 a.dl{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
 .sv{font-weight:500;font-family:inherit;display:block;margin-top:8px}
 .aiw.drag,.aipop.drag{outline:2px dashed var(--accent);outline-offset:-6px}
+
+/* ---- мобильная версия: шапка и cookie ---- */
+@media (max-width:600px){
+html,body{max-width:100%;overflow-x:hidden}
+header{padding:10px 16px}
+.hw{flex-wrap:wrap;row-gap:6px;column-gap:8px}
+.logo{font-size:1.45rem}
+.ctl{gap:8px;margin-left:auto}
+.nv{order:3;flex:1 0 100%;width:100%;margin:0;justify-content:space-between;gap:0}
+.nl{white-space:nowrap;font-size:.95rem;padding:8px 10px}
+.nl.on::after{left:10px;right:10px}
+.menu{flex:none}
+body{padding-bottom:var(--ckh,0px)}
+.ck{left:8px;right:8px;width:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));padding:10px 12px;border-radius:10px}
+.ck b{font-size:.92rem;margin-bottom:2px}
+.ck p{font-size:.78rem;line-height:1.35;margin:0 0 8px}
+.ckb{gap:6px;flex-wrap:nowrap}
+.ckb button{padding:7px 6px;font-size:.8rem}
+.aifab{bottom:calc(16px + var(--ckh,0px) + env(safe-area-inset-bottom,0px))}
+.aipop{bottom:calc(72px + var(--ckh,0px) + env(safe-area-inset-bottom,0px));height:min(430px,calc(100vh - 120px - var(--ckh,0px)))}
+}
+@media (max-width:360px){.logo{font-size:1.3rem}.nl{font-size:.88rem;padding:8px 6px}.nl.on::after{left:6px;right:6px}.ctl{gap:6px}}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <header><div class="hw">
 <a class="logo" id="logo" href="#home">YASIK</a>
@@ -362,7 +384,7 @@ a.dl{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
 <a href="https://vk.ru/id235586983" id="s-vk" target="_blank" rel="noopener" aria-label="VK" title="VK"><svg viewBox="0 0 24 24"><text x="12" y="16.5" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="12.5">VK</text></svg></a>
 <a href="https://www.facebook.com/share/19PTfoTcHF/?mibextid=wwXIfr" id="s-fb" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.5V11H7v4h2.5v6h4v-6H16l.5-4h-3V9c0-.6.4-1 1-1z"/></svg></a>
 </div>
-<div class="fnote"><span data-tr="contacts">Контакты:</span> <a href="mailto:yarik_2004_kulikov@mail.ru">yarik_2004_kulikov@mail.ru</a> · <button id="terms-open" type="button" data-tr="termsLink">Пользовательское соглашение</button> · <button id="ck-set" type="button" data-tr="ckSet">Настройки cookie</button></div>
+<div class="fnote"><button id="terms-open" type="button" data-tr="termsLink">Пользовательское соглашение</button> · <button id="ck-set" type="button" data-tr="ckSet">Настройки cookie</button></div>
 <div class="fnote" data-tr="rights">© 2026 YASIK. Все права защищены.</div>
 </footer>
 <div class="ck" id="ck" role="dialog" aria-label="Cookie" hidden><b data-tr="ckTitle">🍪 Мы используем cookie</b><p data-tr="ckText"></p><div class="ckb"><button class="pri" id="ck-yes" type="button" data-tr="ckYes">Принять</button><button id="ck-no" type="button" data-tr="ckNo">Только необходимые</button></div></div>
@@ -399,7 +421,7 @@ terms:[["1. Общие положения","Настоящее Пользова�
 ["7. Ограничение ответственности","Сайт предоставляется «как есть». Владелец не гарантирует бесперебойную работу Сайта, полноту и точность размещённых данных и не несёт ответственности за убытки, возникшие в связи с использованием или невозможностью использования Сайта."],
 ["8. Внешние ссылки","Сайт содержит ссылки на сторонние ресурсы, в том числе социальные сети. Владелец не контролирует их содержание и не несёт за него ответственности."],
 ["9. Изменение условий","Владелец вправе изменять Соглашение в любое время. Новая редакция вступает в силу с момента публикации на Сайте."],
-["10. Контакты","По всем вопросам: yarik_2004_kulikov@mail.ru"]],
+["10. Контакты","По всем вопросам обращайтесь к владельцу Сайта через ссылки на социальные сети в нижней части страницы."]],
 study:"Учеба ▾",sched:"Расписание",weather:"Погода",
 schedTitle:"Расписание занятий · БИ-02",uni:"🎓 МГУ им. М.В. Ломоносова (ВШГА)",
 todayBtn:"Сегодня ▾",optToday:"Сегодня",optWeek:"Текущая неделя",optNext:"Следующая неделя",optPrev:"Прошлая неделя",optPick:"Выбрать дату…",
@@ -444,7 +466,7 @@ terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the
 ["7. Limitation of liability","The Site is provided “as is”. The owner does not guarantee uninterrupted operation, or the completeness and accuracy of the data, and is not liable for any losses arising from the use of, or inability to use, the Site."],
 ["8. External links","The Site contains links to third-party resources, including social networks. The owner does not control their content and is not responsible for it."],
 ["9. Changes to the Terms","The owner may change the Terms at any time. The new version takes effect upon publication on the Site."],
-["10. Contact","For any questions: yarik_2004_kulikov@mail.ru"]],
+["10. Contact","For any questions, please contact the owner of the Site via the social network links at the bottom of the page."]],
 study:"Study ▾",sched:"Schedule",weather:"Weather",
 schedTitle:"Class schedule · BI-02",uni:"🎓 Lomonosov Moscow State University (HSPA)",
 todayBtn:"Today ▾",optToday:"Today",optWeek:"Current week",optNext:"Next week",optPrev:"Previous week",optPick:"Pick a date…",
@@ -596,6 +618,7 @@ $("ck-yes").onclick=()=>setConsent("all");
 $("ck-no").onclick=()=>setConsent("necessary");
 $("ck-set").onclick=()=>{ck.hidden=false};
 if(!CONSENT)ck.hidden=false;
+if("ResizeObserver" in window)new ResizeObserver(()=>{root.style.setProperty("--ckh",ck.hidden?"0px":(ck.offsetHeight+8)+"px")}).observe(ck);
 
 /* ---- тема ---- */
 const tbtn=$("theme");
