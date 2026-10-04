@@ -477,6 +477,39 @@ body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
 .aigb .pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent);border-radius:99px;padding:10px 22px;font-weight:600}
 .gbtn{display:flex;justify-content:center;min-height:44px;margin:6px 0 10px}
 .lerr{color:#c0392b;font-size:.85rem;min-height:1.2em;text-align:center}
+/* ---- окно входа / регистрации ---- */
+.au{position:relative;width:100%;max-width:400px;max-height:calc(100dvh - 24px);overflow:auto;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:22px;padding:28px 24px 20px;box-shadow:0 24px 60px rgba(0,0,0,.4);animation:auin .25s ease}
+@keyframes auin{from{opacity:0;transform:translateY(10px) scale(.98)}}
+@media (prefers-reduced-motion:reduce){.au{animation:none}}
+.au-x{position:absolute;top:10px;right:10px;width:34px;height:34px;padding:0;border-radius:50%;border:0;background:transparent;color:var(--muted);font-size:1.5rem;line-height:1;cursor:pointer}
+.au-x:hover{background:var(--tag)}
+.au-logo{width:46px;height:46px;margin:0 auto 12px;border-radius:14px;background:var(--accent);color:var(--badgefg);display:flex;align-items:center;justify-content:center;font-weight:800;letter-spacing:.5px}
+.au h3{margin:0 0 6px;text-align:center;font-size:1.3rem}
+.au-sub{margin:0 0 18px;text-align:center;color:var(--muted);font-size:.9rem;line-height:1.45}
+.au-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:18px;background:var(--tag);border-radius:13px}
+.au-tabs button{padding:9px 0;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:600;font-size:.92rem;cursor:pointer}
+.au-tabs button[aria-selected=true]{background:var(--card);color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.au-body{display:flex;flex-direction:column}
+.au-form{order:0;display:flex;flex-direction:column;gap:12px}
+.au-sep{order:1;display:flex;align-items:center;gap:10px;margin:16px 0 12px;color:var(--muted);font-size:.82rem}
+.au-sep:before,.au-sep:after{content:"";flex:1;height:1px;background:var(--line)}
+.au-soc{order:2;display:flex;flex-direction:column;align-items:center;gap:10px}
+#lm[data-mode=reg] .au-soc{order:-2}#lm[data-mode=reg] .au-sep{order:-1;margin-top:14px}
+#lm[data-mode=login] .reg,#lm[data-mode=login] .au-sep .up,#lm[data-mode=reg] .au-sep .in{display:none}
+.au-l{display:flex;flex-direction:column;gap:6px;font-size:.85rem;font-weight:600}
+.au-l input:not([type=checkbox]){width:100%;box-sizing:border-box;height:46px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);font:inherit;font-weight:400;font-size:16px}
+.au-l input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.au-l input.bad{border-color:#c0392b}
+.au-h{color:var(--muted);font-weight:400;font-size:.78rem}
+.au-pw{position:relative;display:block}.au-pw input{padding-right:46px!important}
+.au-eye{position:absolute;right:4px;top:3px;width:40px;height:40px;padding:0;border:0;border-radius:10px;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.au-ck{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:var(--muted);line-height:1.4}
+.au-ck input{margin-top:2px;width:17px;height:17px;accent-color:var(--accent);flex:none}
+.au-ck a{color:var(--accent);text-decoration:underline}
+.au-go{height:48px;border:0;border-radius:99px;background:var(--accent);color:var(--badgefg);font-weight:700;font-size:1rem;cursor:pointer;margin-top:2px}
+.au-go:disabled{opacity:.6;cursor:wait}
+:root[data-theme=dark] @media (prefers-color-scheme:dark){:root:not([data-theme=light]) .au .gbtn{margin:0;width:100%}
+.au .lerr{margin-top:10px}
 @media (max-width:600px){.lgin{padding:5px 10px;font-size:.82rem}}
 .onl .ot{display:none}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
@@ -654,7 +687,7 @@ if(!PASS)show();
 <div class="fnote" data-tr="rights">© 2026 YASIK. Все права защищены.</div>
 </footer>
 <div class="ck" id="ck" role="dialog" aria-label="Cookie" hidden><b data-tr="ckTitle">🍪 Мы используем cookie</b><p data-tr="ckText"></p><div class="ckb"><button class="pri" id="ck-yes" type="button" data-tr="ckYes">Принять</button><button id="ck-no" type="button" data-tr="ckNo">Только необходимые</button></div></div>
-<div class="mdl" id="lm" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="lm-h"><h3 id="lm-h" data-tr="loginT"></h3><p data-tr="loginD"></p><div id="gbtn" class="gbtn"></div><div class="lerr" id="lerr" aria-live="polite"></div><div class="acts"><button id="lm-x" type="button" data-tr="close"></button></div></div></div>
+<div class="mdl" id="lm" data-mode="login" hidden><div class="au" role="dialog" aria-modal="true" aria-labelledby="au-h"><button class="au-x" id="lm-x" type="button" aria-label="×">×</button><div class="au-logo">AI</div><h3 id="au-h" data-at="title"></h3><p class="au-sub" data-at="sub"></p><div class="au-tabs" role="tablist"><button type="button" role="tab" data-m="login" data-at="tabIn"></button><button type="button" role="tab" data-m="reg" data-at="tabUp"></button></div><div class="au-body"><form id="au-form" class="au-form" novalidate><label class="au-l"><span data-at="email"></span><input id="au-em" type="email" inputmode="email" autocomplete="email" maxlength="200" placeholder="name@example.com"></label><label class="au-l"><span data-at="pass"></span><span class="au-pw"><input id="au-pw" type="password" maxlength="100"><button type="button" class="au-eye" id="au-eye"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span><small class="au-h reg" data-at="passHint"></small></label><label class="au-l reg"><span data-at="birth"></span><input id="au-bd" type="date" autocomplete="bday" min="1900-01-01"><small class="au-h" data-at="birthHint"></small></label><label class="au-ck reg"><input id="au-ok" type="checkbox"><span data-ath="agree"></span></label><button class="au-go" id="au-go" type="submit"></button></form><div class="au-sep"><span class="in" data-at="sepIn"></span><span class="up" data-at="sepUp"></span></div><div class="au-soc"><div id="gbtn" class="gbtn"></div></div></div><div class="lerr" id="lerr" aria-live="polite"></div></div></div>
 <div class="mdl" id="xl" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="xl-h">
 <h3 id="xl-h">Leaving YASIK</h3>
 <p>You are about to open an external website: <b id="xl-t"></b></p>
@@ -2375,26 +2408,71 @@ function loadGIS(){
   return GIS=new Promise((res,rej)=>{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;
     s.onload=()=>res(window.google);s.onerror=()=>{GIS=null;rej(new Error("gis"))};document.head.appendChild(s)});
 }
+/* ---- окно входа: почта + пароль, Google ---- */
+const AT={
+ru:{title:"Добро пожаловать",sub:"Войдите, чтобы пользоваться YASIK-AI. Расписание и погода открыты для всех.",tabIn:"Вход",tabUp:"Регистрация",email:"Почта",pass:"Пароль",passHint:"Минимум 8 символов",birth:"Дата рождения",birthHint:"Нужна только для проверки возраста (13+)",agree:"Принимаю <a href=\"privacy.html\" target=\"_blank\" rel=\"noopener\">политику конфиденциальности</a>",goIn:"Войти",goUp:"Создать аккаунт",wait:"Подождите…",sepIn:"или войдите через Google",sepUp:"или по почте",
+ e_invalid:"Неверная почта или пароль.",e_exists:"Аккаунт с такой почтой уже есть. Перейдите на вкладку «Вход».",e_weak:"Пароль слишком короткий: нужно минимум 8 символов.",e_email:"Проверьте адрес почты.",e_birth:"Укажите дату рождения.",e_age:"Регистрация доступна с 13 лет.",e_agree:"Нужно принять политику конфиденциальности.",e_rate:"Слишком много попыток. Подождите несколько минут.",e_fail:"Не удалось войти. Попробуйте ещё раз.",e_net:"Нет связи с сервером. Проверьте интернет."},
+en:{title:"Welcome",sub:"Sign in to use YASIK-AI. The schedule and weather are open to everyone.",tabIn:"Sign in",tabUp:"Sign up",email:"Email",pass:"Password",passHint:"At least 8 characters",birth:"Date of birth",birthHint:"Used only to check your age (13+)",agree:"I accept the <a href=\"privacy.html\" target=\"_blank\" rel=\"noopener\">Privacy Policy</a>",goIn:"Sign in",goUp:"Create account",wait:"Please wait…",sepIn:"or sign in with Google",sepUp:"or use email",
+ e_invalid:"Wrong email or password.",e_exists:"An account with this email already exists. Use the “Sign in” tab.",e_weak:"Password is too short: at least 8 characters.",e_email:"Check the email address.",e_birth:"Enter your date of birth.",e_age:"Sign-up is available from age 13.",e_agree:"You need to accept the Privacy Policy.",e_rate:"Too many attempts. Wait a few minutes.",e_fail:"Sign-in failed. Please try again.",e_net:"No connection to the server."}};
+const at=k=>((AT[LANG]||AT.ru)[k])||k;
+let AMODE="login";
+function auPaint(){
+  const lm=$("lm");lm.dataset.mode=AMODE;const reg=AMODE==="reg";
+  lm.querySelectorAll("[data-at]").forEach(e=>{e.textContent=at(e.dataset.at)});
+  lm.querySelectorAll("[data-ath]").forEach(e=>{e.innerHTML=at(e.dataset.ath)});
+  lm.querySelectorAll(".au-tabs button").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.m===AMODE)));
+  $("au-go").textContent=at(reg?"goUp":"goIn");
+  $("au-pw").autocomplete=reg?"new-password":"current-password";
+  const d=new Date();d.setFullYear(d.getFullYear()-13);$("au-bd").max=d.toISOString().slice(0,10);
+  $("lerr").textContent="";lm.querySelectorAll("input.bad").forEach(i=>i.classList.remove("bad"));
+}
+function auErr(k,el){$("lerr").textContent=at(k);if(el){el.classList.add("bad");el.focus()}}
+function finishAuth(j){
+  SESS={t:j.session,u:j.user||{}};sessSave();paintAuth();$("lm").hidden=true;
+  if(!$("tab-ai").hidden)setTimeout(()=>aiq.focus({preventScroll:true}),50);
+}
+async function authPost(path,data){
+  let r,j;
+  try{r=await fetch(AI_PROXY+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});j=await r.json().catch(()=>({}))}
+  catch(e){throw new Error("net")}
+  if(!r.ok||!j.session)throw new Error(j.error||"fail");
+  return j;
+}
+function auFail(e){const c=e&&e.message;$("lerr").textContent=at(({invalid:"e_invalid",exists:"e_exists",weak:"e_weak",email:"e_email",birth:"e_birth",age:"e_age",rate:"e_rate",net:"e_net"})[c]||"e_fail")}
 async function openLogin(){
   if(!AUTH_ON)return;
-  $("lm").hidden=false;$("lerr").textContent="";
+  $("lm").hidden=false;auPaint();
   const box=$("gbtn");box.textContent="";
   try{
     const g=await loadGIS();
     if(!GINIT){g.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:onGoogle});GINIT=true}
-    g.accounts.id.renderButton(box,{theme:isDark()?"filled_black":"outline",size:"large",shape:"pill",text:"signin_with",locale:LANG,width:260});
-  }catch(e){$("lerr").textContent=tr("loginNet")}
+    g.accounts.id.renderButton(box,{theme:isDark()?"filled_black":"outline",size:"large",shape:"pill",text:AMODE==="reg"?"signup_with":"signin_with",locale:LANG,width:Math.max(200,Math.min(340,box.clientWidth||300))});
+  }catch(e){$("lerr").textContent=at("e_net")}
 }
 async function onGoogle(resp){
   $("lerr").textContent="";
-  try{
-    const r=await fetch(AI_PROXY+"/auth/google",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({credential:resp&&resp.credential})});
-    const j=await r.json().catch(()=>({}));
-    if(!r.ok||!j.session)throw new Error(j.error||r.status);
-    SESS={t:j.session,u:j.user||{}};sessSave();paintAuth();$("lm").hidden=true;
-    if(!$("tab-ai").hidden)setTimeout(()=>aiq.focus({preventScroll:true}),50);
-  }catch(e){$("lerr").textContent=tr("loginFail")}
+  try{finishAuth(await authPost("/auth/google",{credential:resp&&resp.credential}))}catch(e){auFail(e)}
 }
+document.querySelectorAll("#lm .au-tabs button").forEach(b=>b.onclick=()=>{AMODE=b.dataset.m;auPaint();openLogin()});
+$("au-eye").onclick=()=>{const p=$("au-pw");p.type=p.type==="password"?"text":"password"};
+$("au-form").onsubmit=async e=>{
+  e.preventDefault();const reg=AMODE==="reg",em=$("au-em"),pw=$("au-pw"),bd=$("au-bd"),btn=$("au-go");
+  $("lerr").textContent="";document.querySelectorAll("#lm input.bad").forEach(i=>i.classList.remove("bad"));
+  const mail=em.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail))return auErr("e_email",em);
+  if(!pw.value||(reg&&pw.value.length<8))return auErr(reg?"e_weak":"e_invalid",pw);
+  if(reg){
+    if(!bd.value)return auErr("e_birth",bd);
+    if(bd.value>bd.max)return auErr("e_age",bd);
+    if(!$("au-ok").checked)return auErr("e_agree");
+  }
+  btn.disabled=true;btn.textContent=at("wait");
+  try{finishAuth(await authPost(reg?"/auth/register":"/auth/login",reg?{email:mail,password:pw.value,birth:bd.value}:{email:mail,password:pw.value}));pw.value=""}
+  catch(err){auFail(err)}
+  btn.disabled=false;btn.textContent=at(reg?"goUp":"goIn");
+};
+$("lm").addEventListener("mousedown",e=>{if(e.target===$("lm"))$("lm").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("lm").hidden)$("lm").hidden=true});
 $("lgin").onclick=e=>{e.stopPropagation();if(needLogin())openLogin();else $("lpop").hidden=!$("lpop").hidden};
 $("lpout").onclick=()=>{SESS=null;sessSave();try{window.google&&google.accounts.id.disableAutoSelect()}catch(e){}$("lpop").hidden=true;paintAuth()};
 $("aigl").onclick=openLogin;$("lm-x").onclick=()=>{$("lm").hidden=true};
