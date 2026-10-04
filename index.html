@@ -385,6 +385,40 @@ body.aipage #tab-ai:not([hidden]){flex:1;min-height:0;display:flex;animation:non
 .aiapp.sb-open .aisb{transform:none}
 .aiapp.sb-open .aibd{display:block;position:absolute;inset:0;z-index:20;background:rgba(10,16,26,.5)}
 }
+
+/* ---- мягкий дизайн: скруглённые углы, поле ввода-«пилюля» ---- */
+.uacts{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;margin-top:6px;white-space:normal;opacity:0;transition:opacity .15s}
+.ms.u:hover .uacts,.ms.u:focus-within .uacts{opacity:1}
+@media (hover:none){.uacts{opacity:.9}}
+.uacts button{margin:0;padding:3px 10px;font-size:.74rem;font-weight:500;font-family:inherit;border:0;border-radius:99px;background:rgba(127,127,127,.26);color:inherit;cursor:pointer}
+.uacts button:hover{background:rgba(127,127,127,.42)}
+body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
+.aiapp{border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.aiapp .ms,.aipop .ms{border-radius:20px}
+.aiapp .ms.u,.aipop .ms.u{border-bottom-right-radius:7px}
+.aiapp .ms.a,.aipop .ms.a{border-bottom-left-radius:7px}
+.aiapp .aih button,.aipop .aih button{border-radius:12px}
+.aiapp .aisbt{border-radius:50%}
+.aiapp .aiin,.aipop .aiin{align-items:flex-end;gap:6px;box-sizing:border-box;border:1px solid var(--line);background:var(--bg);border-radius:28px;padding:6px 6px 6px 8px;transition:border-color .15s,box-shadow .15s}
+.aiapp .aiin{margin:0 max(12px,calc((100% - 820px)/2)) 8px}
+.aipop .aiin{margin:0 8px 8px;padding:4px 4px 4px 6px;border-radius:24px}
+.aiapp .aiin:focus-within,.aipop .aiin:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(127,150,200,.22)}
+.aiapp .aiin textarea,.aipop .aiin textarea{border:0;background:transparent;outline:0;border-radius:18px;padding:10px 6px;color:var(--fg)}
+.aiapp .aiin .attb,.aipop .aiin .attb{border:0;background:transparent}
+.aiapp .aiin .pri,.aipop .aiin .pri{border-radius:99px;padding-left:18px;padding-right:18px;font-weight:600;transition:transform .12s,filter .15s}
+.aiapp .aiin .pri:hover,.aipop .aiin .pri:hover{filter:brightness(1.12)}
+.aiapp .aiin .pri:active,.aipop .aiin .pri:active{transform:scale(.96)}
+.aiapp .ainote{padding-top:0;text-align:center}
+.sbn{border-radius:14px}
+.aisb input{border-radius:99px;padding:9px 14px}
+.sbi{border-radius:12px}
+.sbi.on{box-shadow:none}
+.sbx{border-radius:50%}
+.sbf button{border-radius:12px}
+.aiapp .ms.md pre.cb{border-radius:12px}
+.aisug button{border-radius:99px}
+.aipop{border-radius:20px}
+@media (max-width:760px){body.aipage main{padding:6px}.aiapp{border-radius:18px}}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <header><div class="hw">
 <a class="logo" id="logo" href="#home">YASIK</a>
@@ -508,7 +542,7 @@ const I18N={
 ru:{schPh:"Поиск: преподаватель, предмет, аудитория…",clear:"Сбросить",wPh:"Фильтр по дням: дождь, пятница, 12 октября…",noRes:"Ничего не найдено",resCnt:n=>"Найдено занятий: "+n,onlineT:"онлайн",onlTip:"Сейчас на сайте",onlTipLocal:"Демо-режим: считаются только вкладки этого браузера",
 aiPh2:"Сообщение…",aiAttT:"Прикрепить картинку",aiImgGot:(n,i)=>"Получил «"+n+"» ("+i+"). В какой формат конвертировать?",aiImgBad:"Не удалось открыть файл как картинку. Подойдут PNG, JPG, WEBP, GIF, BMP, SVG.",aiNeedImg:"Сначала прикрепите картинку кнопкой 📎 (или перетащите её в чат, или вставьте из буфера) — и я поменяю формат.",aiConvDone:(n,s,i)=>"Готово: "+n+" · "+s+" · "+i,aiDl:"Скачать",aiSaveW:"📄 Сохранить в Word",aiDocMake:"Составляю документ…",aiDocDone:n=>"Документ готов: "+n,aiDocPlan:"Составляю план…",aiDocProg:(i,n,t)=>"Пишу раздел "+i+" из "+n+": «"+t+"». Большой документ собирается несколько минут, не закрывайте страницу.",aiDocExtra:t=>"Довожу объём: дописываю «"+t+"»…",aiDocStat:(w,p)=>"≈ "+w+" слов, около "+p+" стр. основного текста",aiDocNote:"Список источников оставлен пустым: ИИ не подставляет ссылки, чтобы не выдумывать несуществующие работы. Добавьте реальные источники сами. Номера страниц в содержании обновятся в Word: ПКМ по содержанию → «Обновить поле».",aiDocQuota:"Дневной бесплатный лимит ИИ исчерпан. Попробуйте завтра.",aiDocPartial:"Документ собран частично: ИИ перестал отвечать на середине",aiDocFail:"Не получилось составить документ: облачный ИИ сейчас недоступен. Попробуйте чуть позже.",aiNoWebp:"Этот браузер не умеет сохранять в WEBP. Выберите PNG, JPG или BMP.",aiBig:"Файл слишком большой для обработки в браузере.",aiNotImg:"Это не картинка. Прикрепите файл изображения.",aiPickFmt:"Формат:",
 aiOpenFull:"Открыть полный чат",aiClose:"Закрыть",aiOpen:"Открыть YASIK-AI",aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Текстовые сообщения отправляются во внешний ИИ-сервис; не вводите личные данные. Картинки обрабатываются на вашем устройстве и никуда не отправляются.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
-aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",aiNew:"Новый чат",aiNewT:"Новый чат",aiSearch:"Поиск по чатам…",aiToday:"Сегодня",aiYest:"Вчера",aiWeek:"Последние 7 дней",aiOlder:"Ранее",aiNoChats:"Пока нет сохранённых чатов",aiRename:"Переименовать",aiDel:"Удалить",aiDelAsk:t=>"Удалить чат «"+t+"»?",aiClearAll:"Удалить всю историю",aiClearAllAsk:"Удалить все чаты? Это нельзя отменить.",aiNoSave:"История не сохраняется: выбраны только необходимые cookie. Чаты пропадут после закрытия страницы.",aiMenu:"Список чатов",aiS1:"Какие пары завтра?",aiS2:"Какая погода сейчас?",aiS3:"Объясни, как работает блокчейн, простыми словами",
+aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",aiNew:"Новый чат",aiEdit:"Изменить",aiNewT:"Новый чат",aiSearch:"Поиск по чатам…",aiToday:"Сегодня",aiYest:"Вчера",aiWeek:"Последние 7 дней",aiOlder:"Ранее",aiNoChats:"Пока нет сохранённых чатов",aiRename:"Переименовать",aiDel:"Удалить",aiDelAsk:t=>"Удалить чат «"+t+"»?",aiClearAll:"Удалить всю историю",aiClearAllAsk:"Удалить все чаты? Это нельзя отменить.",aiNoSave:"История не сохраняется: выбраны только необходимые cookie. Чаты пропадут после закрытия страницы.",aiMenu:"Список чатов",aiS1:"Какие пары завтра?",aiS2:"Какая погода сейчас?",aiS3:"Объясни, как работает блокчейн, простыми словами",
 aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?","Создай Word-файл с планом подготовки к экзамену","Конвертировать картинку в PNG"],
 aiNoUp:"Ближайших занятий не нашёл.",aiNoDay:"В этот день занятий нет 🎉",aiToday:"Сегодня",aiTomorrow:"Завтра",aiNext:"Ближайшая пара",aiW:(c,t,d,f)=>"Сейчас в городе "+c+": "+t+", "+d+". Ощущается как "+f+".",
 aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»), а также менять формат картинок (📎 → PNG, JPG, WEBP, BMP).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
@@ -559,7 +593,7 @@ aiDocStopped:"Документ собран частично: вы остано�
 en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
 aiPh2:"Message…",aiAttT:"Attach an image",aiImgGot:(n,i)=>"Got “"+n+"” ("+i+"). Which format should I convert it to?",aiImgBad:"Couldn't open this file as an image. PNG, JPG, WEBP, GIF, BMP and SVG work.",aiNeedImg:"Please attach an image first with the 📎 button (or drag it into the chat, or paste it) and I'll change the format.",aiConvDone:(n,s,i)=>"Done: "+n+" · "+s+" · "+i,aiDl:"Download",aiSaveW:"📄 Save to Word",aiDocMake:"Writing the document…",aiDocDone:n=>"Document ready: "+n,aiDocPlan:"Making an outline…",aiDocProg:(i,n,t)=>"Writing section "+i+" of "+n+": “"+t+"”. A large document takes a few minutes, please keep the page open.",aiDocExtra:t=>"Adding more text to “"+t+"”…",aiDocStat:(w,p)=>"≈ "+w+" words, about "+p+" pages of main text",aiDocNote:"The reference list is left empty: the AI does not invent sources. Add real ones yourself. Page numbers in the contents update in Word: right-click the contents → Update field.",aiDocQuota:"The daily free AI limit is used up. Please try again tomorrow.",aiDocPartial:"The document is partial: the AI stopped responding midway",aiDocFail:"Couldn't write the document: the cloud AI is unavailable right now. Please try again later.",aiNoWebp:"This browser can't save WEBP. Choose PNG, JPG or BMP.",aiBig:"The file is too large to process in the browser.",aiNotImg:"That isn't an image. Please attach an image file.",aiPickFmt:"Format:",
 aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Text messages are sent to an external AI service; do not enter personal data. Images are processed on your device and never uploaded.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
-aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",aiNew:"New chat",aiNewT:"New chat",aiSearch:"Search chats…",aiToday:"Today",aiYest:"Yesterday",aiWeek:"Previous 7 days",aiOlder:"Older",aiNoChats:"No saved chats yet",aiRename:"Rename",aiDel:"Delete",aiDelAsk:t=>"Delete chat “"+t+"”?",aiClearAll:"Delete all history",aiClearAllAsk:"Delete all chats? This can't be undone.",aiNoSave:"History is not saved: only necessary cookies are enabled. Chats disappear when you close the page.",aiMenu:"Chat list",aiS1:"What classes do I have tomorrow?",aiS2:"What's the weather now?",aiS3:"Explain how blockchain works in simple terms",
+aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",aiNew:"New chat",aiEdit:"Edit",aiNewT:"New chat",aiSearch:"Search chats…",aiToday:"Today",aiYest:"Yesterday",aiWeek:"Previous 7 days",aiOlder:"Older",aiNoChats:"No saved chats yet",aiRename:"Rename",aiDel:"Delete",aiDelAsk:t=>"Delete chat “"+t+"”?",aiClearAll:"Delete all history",aiClearAllAsk:"Delete all chats? This can't be undone.",aiNoSave:"History is not saved: only necessary cookies are enabled. Chats disappear when you close the page.",aiMenu:"Chat list",aiS1:"What classes do I have tomorrow?",aiS2:"What's the weather now?",aiS3:"Explain how blockchain works in simple terms",
 aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?","Create a Word file with an exam study plan","Convert an image to PNG"],
 aiNoUp:"No upcoming classes found.",aiNoDay:"No classes that day 🎉",aiToday:"Today",aiTomorrow:"Tomorrow",aiNext:"Next class",aiW:(c,t,d,f)=>"Right now in "+c+": "+t+", "+d+". Feels like "+f+".",
 aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, find a teacher, subject or room (e.g. “room 309” or “Divina”), and convert image formats (📎 → PNG, JPG, WEBP, BMP).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
@@ -1307,6 +1341,17 @@ function addActions(bub,ans,o){
   });
   scrollAI();
 }
+function addUserActions(bub,text){
+  bub.els.forEach(m=>{
+    const row=document.createElement("div");row.className="uacts";
+    const mk=(txt,fn)=>{const b=document.createElement("button");b.type="button";b.textContent=txt;b.onclick=e=>{e.stopPropagation();fn(b)};row.appendChild(b)};
+    mk("⧉ "+tr("aiCopy"),b=>copyText(text,b));
+    mk("↻ "+tr("aiRetry"),()=>{if(!AI_BUSY)aiSend(text)});
+    mk("✎ "+tr("aiEdit"),()=>{const t=document.getElementById(m.closest("#pm")?"pq":"aiq");t.value=text;t.dispatchEvent(new Event("input"));t.focus()});
+    m.appendChild(row);
+  });
+  return bub;
+}
 function paintSend(){["aigo","pgo"].forEach(id=>{const b=$(id);if(!b)return;b.textContent=(GEN?"■ ":"")+tr(GEN?"aiStop":"aiSend");b.classList.toggle("stop",GEN)})}
 function setGen(v){GEN=v;paintSend()}
 function stopAI(){STOPPED=true;if(CUR_CTL)CUR_CTL.abort()}
@@ -1342,6 +1387,7 @@ function openChat(c){
     if(!m||typeof m.content!=="string"||(m.role!=="user"&&m.role!=="assistant"))return;
     AIH.push({role:m.role,content:m.content});
     const b=aiAdd(m.role==="user"?"u":"a",m.role==="user"?m.content:"");
+    if(m.role==="user")addUserActions(b,m.content);
     if(m.role==="assistant"){b.md(m.content);addActions(b,m.content,{});b.els.forEach(e=>e.querySelectorAll(".rt").forEach(x=>x.remove()))}
   });
   scrollAI();persist();renderSide();closeSB();
@@ -1693,7 +1739,7 @@ async function aiSend(text){
   text=(text||"").trim();if(!text||AI_BUSY)return;
   AI_BUSY=true;STOPPED=false;aiq.value=pq.value="";aiq.style.height=pq.style.height="";
   document.querySelectorAll(".macts .rt").forEach(b=>b.remove());document.querySelectorAll(".aisug").forEach(x=>x.remove()); // «Повторить» остаётся только у последнего ответа
-  aiAdd("u",text);
+  addUserActions(aiAdd("u",text),text);
   try{
     const tool=toolIntent(text);
     if(tool==="img"){AI_BUSY=false;await imgFromText(text);return}
