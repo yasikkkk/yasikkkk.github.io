@@ -933,25 +933,23 @@ function applyWF(){const q=norm(wq.value).split(/\s+/).filter(Boolean);
 wq.oninput=applyWF;
 
 /* ---- онлайн-счётчик ----
-   Реальный счётчик нужен общий сервер. Вставьте сюда URL Firebase Realtime Database
-   (например "https://ВАШ-ПРОЕКТ-default-rtdb.firebaseio.com"). Пока пусто — демо-режим:
-   считаются только вкладки этого браузера. */
-const PRESENCE_URL="";
+   Счётчик общий для всех посетителей: каждая открытая вкладка раз в 30 секунд сообщает о себе
+   Cloudflare Worker (путь /presence, база D1), а тот возвращает число вкладок, активных за последние 2 минуты.
+   Если сервер недоступен, индикатор гаснет, а число остаётся последним известным. */
+const PRESENCE_URL="https://yasik-ai.klown575.workers.dev/presence";
 let ONL=1,ONL_REAL=false;
 function paintOnline(){const b=$("onl");$("onn").textContent=ONL;$("onl-t").textContent=tr("onlineT");
   b.classList.toggle("off",PRESENCE_URL?!ONL_REAL:false);b.title=PRESENCE_URL?tr("onlTip"):tr("onlTipLocal")}
 const PID=Math.random().toString(36).slice(2,10);
 if(PRESENCE_URL){
-  const base=PRESENCE_URL.replace(/\/$/,"")+"/presence";
   const beat=async()=>{try{
-    await fetch(base+"/"+PID+".json",{method:"PUT",body:JSON.stringify({t:Date.now()})});
-    const r=await fetch(base+".json");if(!r.ok)throw 0;
-    const all=(await r.json())||{},now=Date.now();let n=0;
-    Object.keys(all).forEach(k=>{const t=all[k]&&all[k].t||0;if(now-t<70000)n++;else if(now-t>300000)fetch(base+"/"+k+".json",{method:"DELETE"}).catch(()=>{})});
-    ONL=Math.max(1,n);ONL_REAL=true;paintOnline();
+    const r=await fetch(PRESENCE_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({id:PID})});
+    if(!r.ok)throw 0;
+    const j=await r.json();ONL=Math.max(1,j.n|0);ONL_REAL=true;paintOnline();
   }catch(e){ONL_REAL=false;paintOnline()}};
-  beat();setInterval(beat,25000);
-  addEventListener("pagehide",()=>{try{fetch(base+"/"+PID+".json",{method:"DELETE",keepalive:true})}catch(e){}});
+  beat();setInterval(beat,30000);
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)beat()});
+  addEventListener("pagehide",()=>{try{fetch(PRESENCE_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({id:PID,bye:1}),keepalive:true})}catch(e){}});
 }else if("BroadcastChannel" in window){
   const bc=new BroadcastChannel("yasik-presence"),peers={};
   const ping=()=>{bc.postMessage({id:PID});const now=Date.now();Object.keys(peers).forEach(k=>{if(now-peers[k]>6000)delete peers[k]});ONL=1+Object.keys(peers).length;paintOnline()};
