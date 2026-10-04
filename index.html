@@ -405,7 +405,7 @@ let DATA = {"2026-09-28": [{"time": "19:00–22:10", "title": "Разработ�
 /* ---- переводы ---- */
 const I18N={
 ru:{schPh:"Поиск: преподаватель, предмет, аудитория…",clear:"Сбросить",wPh:"Фильтр по дням: дождь, пятница, 12 октября…",noRes:"Ничего не найдено",resCnt:n=>"Найдено занятий: "+n,onlineT:"онлайн",onlTip:"Сейчас на сайте",onlTipLocal:"Демо-режим: считаются только вкладки этого браузера",
-aiPh2:"Сообщение…",aiAttT:"Прикрепить картинку",aiImgGot:(n,i)=>"Получил «"+n+"» ("+i+"). В какой формат конвертировать?",aiImgBad:"Не удалось открыть файл как картинку. Подойдут PNG, JPG, WEBP, GIF, BMP, SVG.",aiNeedImg:"Сначала прикрепите картинку кнопкой 📎 (или перетащите её в чат, или вставьте из буфера) — и я поменяю формат.",aiConvDone:(n,s,i)=>"Готово: "+n+" · "+s+" · "+i,aiDl:"Скачать",aiSaveW:"📄 Сохранить в Word",aiDocMake:"Составляю документ…",aiDocDone:n=>"Документ готов: "+n,aiDocFail:"Не получилось составить документ: облачный ИИ сейчас недоступен. Попробуйте чуть позже.",aiNoWebp:"Этот браузер не умеет сохранять в WEBP. Выберите PNG, JPG или BMP.",aiBig:"Файл слишком большой для обработки в браузере.",aiNotImg:"Это не картинка. Прикрепите файл изображения.",aiPickFmt:"Формат:",
+aiPh2:"Сообщение…",aiAttT:"Прикрепить картинку",aiImgGot:(n,i)=>"Получил «"+n+"» ("+i+"). В какой формат конвертировать?",aiImgBad:"Не удалось открыть файл как картинку. Подойдут PNG, JPG, WEBP, GIF, BMP, SVG.",aiNeedImg:"Сначала прикрепите картинку кнопкой 📎 (или перетащите её в чат, или вставьте из буфера) — и я поменяю формат.",aiConvDone:(n,s,i)=>"Готово: "+n+" · "+s+" · "+i,aiDl:"Скачать",aiSaveW:"📄 Сохранить в Word",aiDocMake:"Составляю документ…",aiDocDone:n=>"Документ готов: "+n,aiDocPlan:"Составляю план…",aiDocProg:(i,n,t)=>"Пишу раздел "+i+" из "+n+": «"+t+"». Большой документ собирается несколько минут, не закрывайте страницу.",aiDocExtra:t=>"Довожу объём: дописываю «"+t+"»…",aiDocStat:(w,p)=>"≈ "+w+" слов, около "+p+" стр. основного текста",aiDocNote:"Список источников оставлен пустым: ИИ не подставляет ссылки, чтобы не выдумывать несуществующие работы. Добавьте реальные источники сами. Номера страниц в содержании обновятся в Word: ПКМ по содержанию → «Обновить поле».",aiDocQuota:"Дневной бесплатный лимит ИИ исчерпан. Попробуйте завтра.",aiDocPartial:"Документ собран частично: ИИ перестал отвечать на середине",aiDocFail:"Не получилось составить документ: облачный ИИ сейчас недоступен. Попробуйте чуть позже.",aiNoWebp:"Этот браузер не умеет сохранять в WEBP. Выберите PNG, JPG или BMP.",aiBig:"Файл слишком большой для обработки в браузере.",aiNotImg:"Это не картинка. Прикрепите файл изображения.",aiPickFmt:"Формат:",
 aiOpenFull:"Открыть полный чат",aiClose:"Закрыть",aiOpen:"Открыть YASIK-AI",aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Текстовые сообщения отправляются во внешний ИИ-сервис; не вводите личные данные. Картинки обрабатываются на вашем устройстве и никуда не отправляются.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
 aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",
 aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?","Создай Word-файл с планом подготовки к экзамену","Конвертировать картинку в PNG"],
@@ -450,7 +450,7 @@ openSched:"Открыть расписание →",openWeather:"Подробн�
 todayCount:n=>n?"Пар сегодня: "+n:"Сегодня занятий нет 🎉",wcardK:"Погода сейчас",
 u_d:"д",u_h:"ч",u_m:"мин",feelsS:v=>"Ощущается как "+v},
 en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
-aiPh2:"Message…",aiAttT:"Attach an image",aiImgGot:(n,i)=>"Got “"+n+"” ("+i+"). Which format should I convert it to?",aiImgBad:"Couldn't open this file as an image. PNG, JPG, WEBP, GIF, BMP and SVG work.",aiNeedImg:"Please attach an image first with the 📎 button (or drag it into the chat, or paste it) and I'll change the format.",aiConvDone:(n,s,i)=>"Done: "+n+" · "+s+" · "+i,aiDl:"Download",aiSaveW:"📄 Save to Word",aiDocMake:"Writing the document…",aiDocDone:n=>"Document ready: "+n,aiDocFail:"Couldn't write the document: the cloud AI is unavailable right now. Please try again later.",aiNoWebp:"This browser can't save WEBP. Choose PNG, JPG or BMP.",aiBig:"The file is too large to process in the browser.",aiNotImg:"That isn't an image. Please attach an image file.",aiPickFmt:"Format:",
+aiPh2:"Message…",aiAttT:"Attach an image",aiImgGot:(n,i)=>"Got “"+n+"” ("+i+"). Which format should I convert it to?",aiImgBad:"Couldn't open this file as an image. PNG, JPG, WEBP, GIF, BMP and SVG work.",aiNeedImg:"Please attach an image first with the 📎 button (or drag it into the chat, or paste it) and I'll change the format.",aiConvDone:(n,s,i)=>"Done: "+n+" · "+s+" · "+i,aiDl:"Download",aiSaveW:"📄 Save to Word",aiDocMake:"Writing the document…",aiDocDone:n=>"Document ready: "+n,aiDocPlan:"Making an outline…",aiDocProg:(i,n,t)=>"Writing section "+i+" of "+n+": “"+t+"”. A large document takes a few minutes, please keep the page open.",aiDocExtra:t=>"Adding more text to “"+t+"”…",aiDocStat:(w,p)=>"≈ "+w+" words, about "+p+" pages of main text",aiDocNote:"The reference list is left empty: the AI does not invent sources. Add real ones yourself. Page numbers in the contents update in Word: right-click the contents → Update field.",aiDocQuota:"The daily free AI limit is used up. Please try again tomorrow.",aiDocPartial:"The document is partial: the AI stopped responding midway",aiDocFail:"Couldn't write the document: the cloud AI is unavailable right now. Please try again later.",aiNoWebp:"This browser can't save WEBP. Choose PNG, JPG or BMP.",aiBig:"The file is too large to process in the browser.",aiNotImg:"That isn't an image. Please attach an image file.",aiPickFmt:"Format:",
 aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Text messages are sent to an external AI service; do not enter personal data. Images are processed on your device and never uploaded.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
 aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",
 aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?","Create a Word file with an exam study plan","Convert an image to PNG"],
@@ -1045,7 +1045,8 @@ function toolIntent(text){
   if(!fm&&V_CONV.test(n)&&tk.some(w=>/^(картинк|изображ|фото|image|picture|photo|jpeg|png)/.test(w)))return"img";
   const wordTok=tk.some(w=>/^(word|docx?|ворд\w*|вордов\w*)$/.test(w));
   const docTok=tk.some(w=>/^(документ\w*|реферат\w*|доклад\w*|отчет\w*|конспект\w*|резюме|письм\w*|document|essay|report)$/.test(w))&&tk.some(w=>/^(файл\w*|file)$/.test(w));
-  if(V_MAKE.test(n)&&(wordTok||docTok))return"doc";
+  const sp=docSpec(text);
+  if(V_MAKE.test(n)&&(wordTok||docTok||(sp.kind&&(sp.pages||sp.minutes||sp.kind==="coursework"||sp.kind==="referat"||sp.kind==="speech"))))return"doc";
   return null;
 }
 
@@ -1118,7 +1119,7 @@ const DOC_INSTR="\n\n[Write a complete, ready-to-use document for this request, 
 const saveBtn=ans=>{const b=document.createElement("button");b.type="button";b.className="sv";b.textContent=tr("aiSaveW");
   b.onclick=()=>saveBlob(mdToDocx(ans),safeName(mdTitle(ans))+".docx");return b};
 const dlLink=(blob,name)=>{const a=document.createElement("a");a.className="dl";a.href=URL.createObjectURL(blob);a.download=name;a.textContent="⬇ "+tr("aiDl")+" "+name;return a};
-async function makeDoc(text){
+async function makeDocQuick(text){
   const bub=aiAdd("a","");bub.html('<span class="typing"><i></i><i></i><i></i></span>');
   let md;
   try{md=await cloudAnswer({instr:DOC_INSTR,maxTok:1700,timeout:70000});AI_MODE="cloud"}
@@ -1127,6 +1128,189 @@ async function makeDoc(text){
   AIH.push({role:"assistant",content:tr("aiDocDone",name)});
   bub.fill(()=>{const d=document.createElement("div"),t=document.createElement("div");t.textContent="📄 "+tr("aiDocDone",name)+" · "+fmtSize(blob.size);d.appendChild(t);d.appendChild(dlLink(blob,name));return d});
   paintAI();
+}
+/* ---- большие документы (курсовая, реферат, доклад, выступление): план → разделы по очереди → дописывание объёма ---- */
+const DOCK={
+ru:{label:{coursework:"КУРСОВАЯ РАБОТА",referat:"РЕФЕРАТ",doklad:"ДОКЛАД",speech:""},
+ name:{coursework:"курсовая работа",referat:"реферат",doklad:"доклад",speech:"текст устного выступления"},
+ intro:"Введение",sIntro:"Вступление",concl:"Заключение",src:"Список использованных источников",toc:"Содержание",on:"на тему:",
+ by:"Выполнил(а): ____________________",grp:"Группа: ______________",chk:"Проверил(а): ____________________",
+ hint:"Перечислите здесь реальные источники по теме работы (книги, статьи, нормативные акты, сайты) по требованиям вашего вуза.",
+ gen:["Теоретические основы","Современное состояние вопроса","Практические аспекты","Проблемы и перспективы"],more:"Дополнительные аспекты"},
+en:{label:{coursework:"COURSE PAPER",referat:"ABSTRACT",doklad:"REPORT",speech:""},
+ name:{coursework:"course paper",referat:"abstract",doklad:"report",speech:"text of a spoken speech"},
+ intro:"Introduction",sIntro:"Opening",concl:"Conclusion",src:"References",toc:"Contents",on:"on the topic:",
+ by:"Prepared by: ____________________",grp:"Group: ______________",chk:"Checked by: ____________________",
+ hint:"List real sources on the topic here (books, articles, laws, websites) according to your university's requirements.",
+ gen:["Theoretical background","Current state of the issue","Practical aspects","Problems and prospects"],more:"Additional aspects"}};
+const NUMW={пять:5,шесть:6,семь:7,восемь:8,девять:9,десять:10,одиннадцать:11,двенадцать:12,пятнадцать:15,двадцать:20};
+function docSpec(text){
+  const n=norm(text),en=!/[а-я]/.test(n);let kind=null,pages=0,minutes=0,m;
+  if(/выступлен|(?:^|[^а-я])реч[ьиюе](?![а-я])|спич|speech/.test(n))kind="speech";
+  else if(/курсов|coursework|course paper|term paper/.test(n))kind="coursework";
+  else if(/реферат/.test(n))kind="referat";
+  else if(/доклад|эссе|essay|(?:^|[^a-z])report(?![a-z])/.test(n))kind="doklad";
+  if(m=n.match(/(\d{1,2})\s*[-–]?\s*(?:лист|страниц|стр(?![а-я])|page|pg(?![a-z]))/))pages=+m[1];
+  else if(m=n.match(/(?:^|[^а-я])(пять|шесть|семь|восемь|девять|десять|одиннадцать|двенадцать|пятнадцать|двадцать)\s+(?:лист|страниц)/))pages=NUMW[m[1]];
+  if(m=n.match(/(\d{1,2})\s*[-–]?\s*(?:мин)/))minutes=+m[1];
+  return{kind,pages:Math.min(pages,30),minutes:Math.min(minutes,45),en};
+}
+const wc=s=>(String(s).trim().match(/\S+/g)||[]).length;
+function cleanSec(t){
+  let L=String(t).replace(/\r/g,"").split("\n").map(x=>x.trim()).filter(x=>x&&!/^#/.test(x)&&!/^[-*_=]{3,}$/.test(x)&&!/^\|/.test(x));
+  if(L.length&&/^(вот|конечно|хорошо|разумеется|ниже|here|sure|certainly|of course)(?![а-яa-z])/i.test(L[0])&&(/[:：]$/.test(L[0])||L[0].length<90))L.shift();
+  return L.join("\n");
+}
+function trimTail(s){
+  if(/[.!?…»”")]$/.test(s))return s;
+  const re=/[.!?…»”")](?=\s)/g;let m,last=-1;
+  while((m=re.exec(s)))last=m.index;
+  return last>s.length*0.5?s.slice(0,last+1):s;
+}
+async function docCall(prompt,maxTok){
+  let err;
+  for(let a=0;a<2;a++){
+    const ctl=new AbortController(),t=setTimeout(()=>ctl.abort(),110000);
+    try{
+      const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
+        body:JSON.stringify({mode:"doc",context:"",messages:[{role:"user",content:prompt}],max_tokens:maxTok})});
+      if(r.status===429)throw Object.assign(new Error("quota"),{quota:true});
+      if(!r.ok)throw new Error(r.status);
+      const j=await r.json();if(!j.text)throw new Error("empty");
+      return j.text.trim();
+    }catch(e){err=e;if(e.quota)throw e;await new Promise(z=>setTimeout(z,1500))}
+    finally{clearTimeout(t)}
+  }
+  throw err;
+}
+function docxPro(d){
+  const K=d.K,H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+    W='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"',
+    fld=(c)=>'<w:r><w:fldChar w:fldCharType="'+c+'"/></w:r>',
+    run=(t,sz,b)=>'<w:r><w:rPr>'+(b?'<w:b/>':'')+'<w:sz w:val="'+sz+'"/><w:szCs w:val="'+sz+'"/></w:rPr><w:t xml:space="preserve">'+xe(t)+'</w:t></w:r>',
+    ctr=(t,sz,b,after)=>'<w:p><w:pPr><w:spacing w:after="'+(after||0)+'"/><w:ind w:firstLine="0"/><w:jc w:val="center"/></w:pPr>'+(t?run(t,sz,b):'')+'</w:p>',
+    rgt=t=>'<w:p><w:pPr><w:spacing w:after="120"/><w:ind w:firstLine="0"/><w:jc w:val="right"/></w:pPr>'+run(t,28,false)+'</w:p>',
+    brk='<w:p><w:r><w:br w:type="page"/></w:r></w:p>',
+    h1=t=>'<w:p><w:pPr><w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t xml:space="preserve">'+xe(t)+'</w:t></w:r></w:p>',
+    body=t=>{let m;
+      if(m=t.match(/^[-*•–]\s+(.*)$/))return '<w:p><w:pPr><w:ind w:left="1069" w:hanging="360"/><w:jc w:val="both"/></w:pPr><w:r><w:t>–</w:t></w:r><w:r><w:tab/></w:r>'+mdRuns(m[1])+'</w:p>';
+      if(m=t.match(/^(\d+)[.)]\s+(.*)$/))return '<w:p><w:pPr><w:ind w:left="1069" w:hanging="360"/><w:jc w:val="both"/></w:pPr><w:r><w:t>'+m[1]+'.</w:t></w:r><w:r><w:tab/></w:r>'+mdRuns(m[2])+'</w:p>';
+      return '<w:p><w:pPr><w:pStyle w:val="Body"/></w:pPr>'+mdRuns(t)+'</w:p>'};
+  let k=0;
+  const items=d.secs.map(s=>({h:(d.written&&s.kind==="m")?(++k)+". "+s.h:s.h,text:s.text}));
+  if(d.written)items.push({h:K.src,hint:true});
+  const P=[];
+  if(d.written){
+    for(let i=0;i<4;i++)P.push(ctr("",28));
+    if(d.kind)P.push(ctr(d.kind,32,true,240));
+    P.push(ctr(K.on,28,false,120));
+    P.push(ctr("«"+d.title+"»",32,true,0));
+    for(let i=0;i<8;i++)P.push(ctr("",28));
+    P.push(rgt(K.by));P.push(rgt(K.grp));P.push(rgt(K.chk));
+    for(let i=0;i<5;i++)P.push(ctr("",28));
+    P.push(ctr(String(d.year),28));
+    P.push(brk);
+    if(d.toc){
+      P.push(ctr(K.toc,28,true,240));
+      items.forEach((it,i)=>{
+        const pre=i===0?fld("begin")+'<w:r><w:instrText xml:space="preserve"> TOC \\o "1-1" \\h \\z \\u </w:instrText></w:r>'+fld("separate"):'';
+        const post=i===items.length-1?fld("end"):'';
+        P.push('<w:p><w:pPr><w:ind w:firstLine="0"/><w:jc w:val="left"/></w:pPr>'+pre+'<w:r><w:t xml:space="preserve">'+xe(it.h)+'</w:t></w:r>'+post+'</w:p>');
+      });
+      P.push(brk);
+    }
+  }else{
+    P.push(ctr(d.title,32,true,240));
+  }
+  items.forEach(it=>{
+    P.push(h1(it.h));
+    if(it.hint)P.push('<w:p><w:pPr><w:pStyle w:val="Body"/></w:pPr><w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">'+xe(K.hint)+'</w:t></w:r></w:p>');
+    else it.text.split("\n").forEach(l=>{l=l.trim();if(l)P.push(body(l))});
+  });
+  const tnr='<w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman" w:eastAsia="Times New Roman" w:cs="Times New Roman"/>';
+  const styles=H+'<w:styles '+W+'><w:docDefaults><w:rPrDefault><w:rPr>'+tnr+'<w:sz w:val="28"/><w:szCs w:val="28"/><w:lang w:val="'+(d.en?'en-US':'ru-RU')+'"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="360" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>'+
+    '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>'+
+    '<w:style w:type="paragraph" w:styleId="Body"><w:name w:val="Body Text"/><w:basedOn w:val="Normal"/><w:qFormat/><w:pPr><w:ind w:firstLine="709"/><w:jc w:val="both"/></w:pPr></w:style>'+
+    '<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Body"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="240" w:after="240"/><w:jc w:val="center"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:caps/><w:sz w:val="28"/><w:szCs w:val="28"/></w:rPr></w:style></w:styles>';
+  const footer=H+'<w:ftr '+W+'><w:p><w:pPr><w:jc w:val="center"/></w:pPr>'+fld("begin")+'<w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r>'+fld("separate")+'<w:r><w:t>2</w:t></w:r>'+fld("end")+'</w:p></w:ftr>';
+  const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+  return zipBlob([
+    {name:"[Content_Types].xml",text:H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>'},
+    {name:"_rels/.rels",text:H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/officeDocument" Target="word/document.xml"/></Relationships>'},
+    {name:"word/_rels/document.xml.rels",text:H+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/styles" Target="styles.xml"/><Relationship Id="rId2" Type="'+R+'/footer" Target="footer1.xml"/></Relationships>'},
+    {name:"word/styles.xml",text:styles},
+    {name:"word/footer1.xml",text:footer},
+    {name:"word/document.xml",text:H+'<w:document '+W+'><w:body>'+P.join("")+'<w:sectPr><w:footerReference w:type="default" r:id="rId2"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="850" w:bottom="1134" w:left="1701" w:header="708" w:footer="708" w:gutter="0"/>'+(d.written?'<w:titlePg/>':'')+'</w:sectPr></w:body></w:document>'}
+  ],"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+}
+async function makeDocLong(text,sp){
+  const K=sp.en?DOCK.en:DOCK.ru,kind=sp.kind||"doklad",speech=kind==="speech",lang=sp.en?"English":"русский",req=text.slice(0,500);
+  let pages=sp.pages,minutes=sp.minutes;
+  if(!pages&&!minutes){if(speech)minutes=7;else pages={coursework:12,referat:10,doklad:6}[kind]}
+  const totalW=minutes?minutes*120:pages*250;
+  const nMain=speech?Math.max(2,Math.min(6,Math.round(totalW/230))):Math.max(2,Math.min(10,Math.round(totalW/500)));
+  const bub=aiAdd("a","");bub.set(tr("aiDocPlan"));
+  let title="",mains=[],qerr=false;
+  try{
+    const pl=await docCall("Запрос пользователя: «"+req+"»\n\nСоставь план для работы типа «"+K.name[kind]+"». Выведи строго в таком формате, без пояснений и markdown:\nНазвание: <точное название темы>\nзатем ровно "+nMain+" строк основных "+(speech?"смысловых блоков":"разделов")+" (без введения и заключения), каждая строка в виде: Название раздела | о чём писать (до 12 слов)\nБез нумерации. Язык: "+lang+".",500);
+    pl.split("\n").forEach(l=>{
+      l=l.trim().replace(/^[-*•]\s*/,"").replace(/^\d+[.)]\s+/,"");
+      const m=l.match(/^\**(?:название|title|тема)\**\s*:\s*(.+)$/i);
+      if(m){if(!title)title=m[1].replace(/[«»"*]/g,"").trim();return}
+      if(l.includes("|")){const p=l.split("|"),h=p[0].replace(/[*«»"#]/g,"").trim();if(h)mains.push({h:h.slice(0,120),d:(p[1]||"").trim()})}
+    });
+  }catch(e){if(e.quota)qerr=true}
+  if(qerr){bub.set(tr("aiDocQuota"));bub.cls("err");AIH.pop();paintAI();return}
+  mains=mains.slice(0,nMain);
+  if(mains.length<2){mains=[];for(let i=0;i<nMain;i++)mains.push({h:K.gen[i]||(K.more+" "+(i-K.gen.length+1)),d:""})}
+  if(!title)title=req.replace(/\s+/g," ").slice(0,100);
+  const wI=speech?0.6:0.7,wC=speech?0.5:0.6,per=totalW/(wI+mains.length+wC);
+  const secs=[{h:speech?K.sIntro:K.intro,kind:"i",t:Math.round(per*wI),d:speech?"приветствие слушателей, тема и почему она важна, план выступления":(kind==="coursework"?"актуальность темы, цель и задачи работы, объект и предмет исследования, структура работы":"актуальность и постановка вопроса, краткий обзор содержания")}]
+    .concat(mains.map(m=>({h:m.h,kind:"m",t:Math.round(per),d:m.d})))
+    .concat([{h:K.concl,kind:"c",t:Math.round(per*wC),d:speech?"главные мысли, итог, благодарность слушателям за внимание":"основные выводы по каждому разделу и общий итог, без новых фактов"}]);
+  const style=speech?"живой устный стиль, от первого лица, с обращением к слушателям, короткие фразы":"научно-академический стиль",outline=secs.map(s=>s.h).join(" → ");
+  let prevTail="",partial=false;
+  try{
+    for(let i=0;i<secs.length;i++){
+      const s=secs[i];
+      bub.set(tr("aiDocProg",i+1,secs.length,s.h));
+      const p="Ты пишешь «"+K.name[kind]+"» на тему «"+title+"».\nПожелания пользователя: «"+req.slice(0,300)+"»\nПлан: "+outline+".\nСейчас пиши ТОЛЬКО раздел «"+s.h+"»"+(s.d?" ("+s.d+")":"")+".\nОбъём: около "+s.t+" слов. Язык: "+lang+". Стиль: "+style+".\nТребования: связный текст абзацами, без заголовков, списков и таблиц; не повторяй содержание других разделов; не выдумывай цитаты, ссылки на источники, точные статистические данные и имена; не пиши вступлений вроде «Вот текст»"+(s.kind==="c"?"":"; не подводи итог всей работы")+"."+(prevTail?"\nПредыдущий раздел заканчивался так: «"+prevTail+"». Не повторяй это, продолжай логику.":"")+"\nНачни сразу с текста раздела.";
+      const out=await docCall(p,Math.min(3000,Math.round(s.t*3.6)+150));
+      s.text=trimTail(cleanSec(out));s.w=wc(s.text);prevTail=s.text.slice(-260);
+    }
+  }catch(e){if(e.quota)qerr=true;partial=true}
+  if(!partial){
+    try{
+      for(let g=0;g<6;g++){
+        const tot=secs.reduce((a,s)=>a+s.w,0);
+        if(tot>=totalW*0.92)break;
+        const c=secs.filter(s=>s.kind==="m"&&s.t>0).sort((a,b)=>a.w/a.t-b.w/b.t)[0];
+        if(!c||c.w>=c.t*1.1)break;
+        const add=Math.max(120,Math.min(600,Math.round(Math.min(c.t-c.w+60,totalW-tot))));
+        bub.set(tr("aiDocExtra",c.h));
+        const o=await docCall("Продолжи текст раздела «"+c.h+"» работы на тему «"+title+"», добавив около "+add+" слов: новые аспекты, примеры, пояснения и аргументы. Не повторяй уже написанное, не подводи итог, без заголовков, списков и таблиц. Язык: "+lang+".\nТекст заканчивается так: «"+c.text.slice(-500)+"»\nНачни сразу с продолжения.",Math.min(3000,Math.round(add*3.6)+150));
+        const ext=trimTail(cleanSec(o));if(!ext)break;
+        c.text+="\n"+ext;c.w=wc(c.text);
+      }
+    }catch(e){if(e.quota)qerr=true}
+  }
+  const done=secs.filter(s=>s.text);
+  if(!done.length){bub.set(tr(qerr?"aiDocQuota":"aiDocFail"));bub.cls("err");AI_MODE="local";AIH.pop();paintAI();return}
+  AI_MODE="cloud";
+  const written=!speech,words=done.reduce((a,s)=>a+s.w,0),pg=Math.max(1,Math.round(words/250));
+  const blob=docxPro({title,K,kind:K.label[kind],written,toc:written&&(kind==="coursework"||kind==="referat"||totalW>=2000),secs:done,year:new Date().getFullYear(),en:sp.en}),name=safeName(title)+".docx";
+  AIH.push({role:"assistant",content:tr("aiDocDone",name)});
+  bub.fill(()=>{const d=document.createElement("div"),t=document.createElement("div"),s2=document.createElement("div");
+    t.textContent="📄 "+tr("aiDocDone",name)+" · "+fmtSize(blob.size);
+    s2.textContent=tr("aiDocStat",words,pg)+(partial?". "+tr("aiDocPartial"):"")+(written?". "+tr("aiDocNote"):"");
+    s2.style.cssText="margin-top:6px;font-size:.85em;opacity:.8";
+    d.appendChild(t);d.appendChild(s2);d.appendChild(dlLink(blob,name));return d});
+  paintAI();
+}
+async function makeDoc(text){
+  const sp=docSpec(text);
+  if(sp.pages||sp.minutes||sp.kind)return makeDocLong(text,sp);
+  return makeDocQuick(text);
 }
 async function imgFromText(text){
   const fm=fmtOf(text);
