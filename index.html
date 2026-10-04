@@ -459,6 +459,25 @@ body.aipage main{padding:10px clamp(8px,2vw,28px) 10px}
 .ach .ax:hover{background:rgba(192,57,43,.8);color:#fff}
 .ms img.th.gen{max-height:min(420px,60vh);cursor:zoom-in}
 .fchip{display:inline-block;margin:0 0 6px;padding:5px 10px;border-radius:10px;background:rgba(127,127,127,.22);font-size:.85em;word-break:break-all}
+
+/* ---- вход через Google ---- */
+.lgin{flex:none;padding:5px 14px;border-radius:99px;font-weight:600;font-size:.88rem;white-space:nowrap}
+.lgin.av{width:32px;height:32px;padding:0;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
+.lgin.av img{width:100%;height:100%;object-fit:cover;display:block}
+.lpop{min-width:210px}
+.lpi{padding:10px 12px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.lpi b{display:block;overflow:hidden;text-overflow:ellipsis}
+.lpi span{display:block;color:var(--muted);font-size:.82rem;word-break:break-all}
+.aigate{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(10,16,26,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.aigate[hidden]{display:none}
+.aigb{max-width:340px;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 12px 36px rgba(0,0,0,.35)}
+.aigb .aiav{margin:0 auto 12px}
+.aigb h3{margin:0 0 8px;font-size:1.1rem}
+.aigb p{margin:0 0 16px;color:var(--muted);font-size:.9rem;line-height:1.45}
+.aigb .pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent);border-radius:99px;padding:10px 22px;font-weight:600}
+.gbtn{display:flex;justify-content:center;min-height:44px;margin:6px 0 10px}
+.lerr{color:#c0392b;font-size:.85rem;min-height:1.2em;text-align:center}
+@media (max-width:600px){.lgin{padding:5px 10px;font-size:.82rem}}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <div id="cap" hidden><div class="cb" role="dialog" aria-modal="true" aria-labelledby="cap-t">
 <div class="cl">YASIK</div><h2 id="cap-t"></h2><p id="cap-d"></p>
@@ -485,9 +504,9 @@ try{const p=sessionStorage.getItem("yp");if(valid(p))PASS=p}catch(e){}
 // ко всем запросам к ИИ добавляем пропуск; если сервер ответил 401 — пропуск устарел, показываем проверку снова
 const _f=window.fetch.bind(window);
 window.fetch=function(u,o){
-  if(u===API&&PASS){o=Object.assign({},o);o.headers=Object.assign({},o.headers,{"X-Pass":PASS})}
+  if(u===API){const h={},ss=window.YS&&window.YS.token();if(PASS)h["X-Pass"]=PASS;if(ss)h["X-Session"]=ss;o=Object.assign({},o);o.headers=Object.assign({},o.headers,h)}
   const r=_f(u,o);
-  return u===API?r.then(x=>{if(x.status===401){PASS="";try{sessionStorage.removeItem("yp")}catch(e){}show()}return x}):r;
+  return u===API?r.then(x=>{if(x.status===401){PASS="";try{sessionStorage.removeItem("yp")}catch(e){}show()}else if(x.status===403&&window.YS){x.clone().json().then(j=>{if(j&&j.error==="login")window.YS.expired()}).catch(()=>{})}return x}):r;
 };
 const post=(path,body)=>_f(API+path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body||{})});
 function lock(v){document.documentElement.style.overflow=v?"hidden":""}
@@ -536,6 +555,7 @@ if(!PASS)show();
 <button class="nl ainav" id="ainav" type="button">YASIK-AI</button>
 </nav>
 <div class="ctl">
+<div class="menu" id="lmenu"><button class="lgin" id="lgin" type="button"></button><div class="pop lpop" id="lpop" hidden><div class="lpi"><b id="lpn"></b><span id="lpe"></span></div><button id="lpout" type="button" data-tr="logout"></button></div></div>
 <div class="onl off" id="onl" title="Online"><i></i><b id="onn">…</b><span class="ot" id="onl-t">онлайн</span></div>
 <button class="lg" id="lang" data-lang="ru" type="button" aria-label="Язык сайта / Site language" title="RU / EN"><span><svg class="fl" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="2" fill="#fff"/><rect y=".667" width="3" height=".667" fill="#0039a6"/><rect y="1.333" width="3" height=".667" fill="#d52b1e"/></svg>RU</span><span><svg class="fl" viewBox="0 0 60 30" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0 0L60 30M60 0L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0L60 30M60 0L0 30" stroke="#c8102e" stroke-width="2.5"/><path d="M30 0V30M0 15H60" stroke="#fff" stroke-width="10"/><path d="M30 0V30M0 15H60" stroke="#c8102e" stroke-width="6"/></svg>EN</span></button>
 <button class="sw" id="theme" role="switch" aria-checked="false" aria-label="Тёмная тема"><i id="knob">☀️</i></button>
@@ -602,6 +622,7 @@ if(!PASS)show();
 <div class="sbf"><p id="aisn" data-tr="aiNoSave" hidden></p><button id="aiclrall" type="button" data-tr="aiClearAll">Удалить всю историю</button></div>
 </aside>
 <div class="aibd" id="aibd"></div>
+<div class="aigate" id="aigate" hidden><div class="aigb"><div class="aiav">AI</div><h3 data-tr="aiGateT"></h3><p data-tr="aiGateD"></p><button class="pri" id="aigl" type="button" data-tr="login"></button></div></div>
 <div class="aiw">
 <div class="aih"><button class="aisbt" id="aisbt" type="button" aria-label="Чаты"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="aiav">AI</div><div><b>YASIK-AI</b><div class="m" id="ai-st"></div></div><div class="sp1"></div><button id="ai-clr" type="button" data-tr="aiClear">Очистить</button></div>
 <div class="aimsgs" id="aim" aria-live="polite"></div>
@@ -628,10 +649,11 @@ if(!PASS)show();
 <a href="https://vk.ru/id235586983" id="s-vk" target="_blank" rel="noopener" aria-label="VK" title="VK"><svg viewBox="0 0 24 24"><text x="12" y="16.5" text-anchor="middle" font-family="Arial,sans-serif" font-weight="800" font-size="12.5">VK</text></svg></a>
 <a href="https://www.facebook.com/share/19PTfoTcHF/?mibextid=wwXIfr" id="s-fb" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.5V11H7v4h2.5v6h4v-6H16l.5-4h-3V9c0-.6.4-1 1-1z"/></svg></a>
 </div>
-<div class="fnote"><button id="terms-open" type="button" data-tr="termsLink">Пользовательское соглашение</button> · <button id="ck-set" type="button" data-tr="ckSet">Настройки cookie</button></div>
+<div class="fnote"><button id="terms-open" type="button" data-tr="termsLink">Пользовательское соглашение</button> · <a href="privacy.html" data-tr="privLink">Политика конфиденциальности</a> · <button id="ck-set" type="button" data-tr="ckSet">Настройки cookie</button></div>
 <div class="fnote" data-tr="rights">© 2026 YASIK. Все права защищены.</div>
 </footer>
 <div class="ck" id="ck" role="dialog" aria-label="Cookie" hidden><b data-tr="ckTitle">🍪 Мы используем cookie</b><p data-tr="ckText"></p><div class="ckb"><button class="pri" id="ck-yes" type="button" data-tr="ckYes">Принять</button><button id="ck-no" type="button" data-tr="ckNo">Только необходимые</button></div></div>
+<div class="mdl" id="lm" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="lm-h"><h3 id="lm-h" data-tr="loginT"></h3><p data-tr="loginD"></p><div id="gbtn" class="gbtn"></div><div class="lerr" id="lerr" aria-live="polite"></div><div class="acts"><button id="lm-x" type="button" data-tr="close"></button></div></div></div>
 <div class="mdl" id="xl" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="xl-h">
 <h3 id="xl-h">Leaving YASIK</h3>
 <p>You are about to open an external website: <b id="xl-t"></b></p>
@@ -657,15 +679,16 @@ aiNoUp:"Ближайших занятий не нашёл.",aiNoDay:"В этот
 aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»), а также менять размер, формат и цвет картинок (📎 → «в PNG», «уменьши до 800 px», «сделай чёрно-белой»).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
 termsLink:"Пользовательское соглашение",termsTitle:"Пользовательское соглашение",close:"Закрыть",rights:"© 2026 YASIK. Все права защищены.",termsDate:"Редакция от 4 октября 2026г.",
 terms:[["1. Общие положения","Настоящее Пользовательское соглашение (далее — «Соглашение») определяет условия использования сайта YASIK (далее — «Сайт»). Используя Сайт, вы подтверждаете, что ознакомились с условиями Соглашения и принимаете их. Если вы не согласны с условиями, прекратите использование Сайта."],
-["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно и не требует регистрации."],
+["2. Предмет соглашения","Сайт является некоммерческим информационным сервисом, предоставляющим расписание занятий, текущее время и данные о погоде. Использование Сайта бесплатно; для YASIK-AI требуется вход через Google."],
 ["3. Информационный характер данных","Расписание и иные сведения на Сайте носят справочный характер и не являются официальным документом образовательной организации. Актуальное расписание следует уточнять в официальных источниках университета. Данные о погоде предоставляются сторонними сервисами и могут содержать неточности."],
 ["4. Обязанности пользователя","Пользователь обязуется не нарушать работу Сайта, не предпринимать попыток несанкционированного доступа к нему и не использовать автоматизированные средства, создающие чрезмерную нагрузку."],
-["5. Cookie и данные","Сайт не запрашивает персональные данные и не ведёт учётных записей. С вашего согласия в браузере сохраняются тема оформления, язык, выбранный город и история чата с YASIK-AI (она хранится только в вашем браузере). Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам. Для защиты от автоматических запросов при входе предлагается простая задача (выбрать лишнюю из четырёх картинок). Результат проверки хранится в браузере только до закрытия вкладки; на сервере кратковременно сохраняется обезличенный отпечаток попытки (не IP-адрес) для ограничения числа попыток."],
+["5. Cookie и данные","Сайт не запрашивает персональные данные, кроме входа для YASIK-AI: при входе через Google сайт получает и хранит на сервере имя, адрес электронной почты и фото профиля из вашего аккаунта Google и использует их только для входа. Остальные разделы доступны без входа. С вашего согласия в браузере сохраняются тема оформления, язык, выбранный город и история чата с YASIK-AI (она хранится только в вашем браузере). Решение можно изменить в любой момент через «Настройки cookie» внизу страницы. Для работы погоды и поиска города запросы направляются сторонним сервисам. Для защиты от автоматических запросов при входе предлагается простая задача (выбрать лишнюю из четырёх картинок). Результат проверки хранится в браузере только до закрытия вкладки; на сервере кратковременно сохраняется обезличенный отпечаток попытки (не IP-адрес) для ограничения числа попыток."],
 ["6. Интеллектуальная собственность","Дизайн, оформление и программный код Сайта принадлежат владельцу Сайта. Копирование и распространение материалов без согласия владельца не допускаются, если иное не предусмотрено законодательством."],
 ["7. Ограничение ответственности","Сайт предоставляется «как есть». Владелец не гарантирует бесперебойную работу Сайта, полноту и точность размещённых данных и не несёт ответственности за убытки, возникшие в связи с использованием или невозможностью использования Сайта."],
 ["8. Внешние ссылки","Сайт содержит ссылки на сторонние ресурсы, в том числе социальные сети. Владелец не контролирует их содержание и не несёт за него ответственности."],
 ["9. Изменение условий","Владелец вправе изменять Соглашение в любое время. Новая редакция вступает в силу с момента публикации на Сайте."],
 ["10. Контакты","По всем вопросам обращайтесь к владельцу Сайта через ссылки на социальные сети в нижней части страницы."]],
+privLink:"Политика конфиденциальности",login:"Войти",logout:"Выйти",loginT:"Вход через Google",loginD:"YASIK-AI доступен только после входа, остальной сайт открыт для всех. Мы получим имя, почту и фото профиля из аккаунта Google, только для входа.",loginFail:"Не удалось войти. Попробуйте ещё раз.",loginNet:"Не удалось загрузить вход через Google. Проверьте интернет и отключите блокировщик рекламы.",aiGateT:"Войдите, чтобы пользоваться YASIK-AI",aiGateD:"Расписание и погода доступны без входа, а чат с ИИ только для вошедших пользователей.",
 study:"Учеба ▾",sched:"Расписание",weather:"Погода",
 schedTitle:"Расписание занятий · БИ-02",uni:"🎓 МГУ им. М.В. Ломоносова (ВШГА)",
 todayBtn:"Сегодня ▾",optTmr:"Завтра",optYst:"Вчера",optToday:"Сегодня",optWeek:"Текущая неделя",optNext:"Следующая неделя",optPrev:"Прошлая неделя",optPick:"Выбрать дату…",
@@ -708,15 +731,16 @@ aiNoUp:"No upcoming classes found.",aiNoDay:"No classes that day 🎉",aiToday:"
 aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, find a teacher, subject or room (e.g. “room 309” or “Divina”), and resize, convert and recolour images (📎 → “to PNG”, “shrink to 800 px”, “make it black and white”).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
 termsLink:"Terms of Use",termsTitle:"Terms of Use",close:"Close",rights:"© 2026 YASIK. All rights reserved.",termsDate:"Last updated: October 4, 2026",
 terms:[["1. General provisions","These Terms of Use (the “Terms”) govern the use of the YASIK website (the “Site”). By using the Site, you confirm that you have read and accepted the Terms. If you do not agree, please stop using the Site."],
-["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free and does not require registration."],
+["2. Subject","The Site is a non-commercial information service providing a class schedule, the current time and weather data. Use of the Site is free; YASIK-AI requires signing in with Google."],
 ["3. Informational nature of data","The schedule and other information on the Site are provided for reference only and are not an official document of any educational institution. Please verify the current schedule with the official sources of the university. Weather data is supplied by third-party services and may contain inaccuracies."],
 ["4. User obligations","The user agrees not to disrupt the operation of the Site, not to attempt unauthorized access to it, and not to use automated tools that create excessive load."],
-["5. Cookies and data","The Site does not request personal data and has no user accounts. With your consent, your theme, language, selected city and YASIK-AI chat history are saved in your browser (only on your device). You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services. To protect against automated requests, a simple task (picking the odd one out of four pictures) is offered at entry. The result of the check is kept in your browser only until the tab is closed; the server briefly stores an anonymised fingerprint of the attempt (not the IP address) to limit the number of attempts."],
+["5. Cookies and data","The Site does not request personal data except for signing in to YASIK-AI: when you sign in with Google, the Site receives and stores on the server the name, email address and profile photo from your Google account and uses them only for signing in. Other sections are available without signing in. With your consent, your theme, language, selected city and YASIK-AI chat history are saved in your browser (only on your device). You can change your choice at any time via “Cookie settings” at the bottom of the page. To provide weather and city search, requests are sent to third-party services. To protect against automated requests, a simple task (picking the odd one out of four pictures) is offered at entry. The result of the check is kept in your browser only until the tab is closed; the server briefly stores an anonymised fingerprint of the attempt (not the IP address) to limit the number of attempts."],
 ["6. Intellectual property","The design, layout and source code of the Site belong to its owner. Copying or distributing the materials without the owner’s consent is not permitted unless provided by law."],
 ["7. Limitation of liability","The Site is provided “as is”. The owner does not guarantee uninterrupted operation, or the completeness and accuracy of the data, and is not liable for any losses arising from the use of, or inability to use, the Site."],
 ["8. External links","The Site contains links to third-party resources, including social networks. The owner does not control their content and is not responsible for it."],
 ["9. Changes to the Terms","The owner may change the Terms at any time. The new version takes effect upon publication on the Site."],
 ["10. Contact","For any questions, please contact the owner of the Site via the social network links at the bottom of the page."]],
+privLink:"Privacy Policy",login:"Sign in",logout:"Sign out",loginT:"Sign in with Google",loginD:"YASIK-AI is available after signing in; the rest of the site is open to everyone. We receive your name, email and profile photo from your Google account, only for signing in.",loginFail:"Sign-in failed. Please try again.",loginNet:"Could not load Google sign-in. Check your connection and disable ad blockers.",aiGateT:"Sign in to use YASIK-AI",aiGateD:"The schedule and weather are available without signing in; the AI chat is for signed-in users only.",
 study:"Study ▾",sched:"Schedule",weather:"Weather",
 schedTitle:"Class schedule · BI-02",uni:"🎓 Lomonosov Moscow State University (HSPA)",
 todayBtn:"Today ▾",optTmr:"Tomorrow",optYst:"Yesterday",optToday:"Today",optWeek:"Current week",optNext:"Next week",optPrev:"Previous week",optPick:"Pick a date…",
@@ -877,8 +901,8 @@ function setConsent(v){
   CONSENT=v; ck.hidden=true;
   try{
     localStorage.setItem("consent",v);
-    if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); localStorage.setItem("lang",LANG); saveChat(); }
-    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); localStorage.removeItem("chats"); localStorage.removeItem("chatCur"); localStorage.removeItem("yb"); }
+    if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); localStorage.setItem("lang",LANG); saveChat(); sessSave(); }
+    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); localStorage.removeItem("chats"); localStorage.removeItem("chatCur"); localStorage.removeItem("yb"); sessSave(); }
   }catch(e){}
 }
 $("ck-yes").onclick=()=>setConsent("all");
@@ -2255,6 +2279,7 @@ function userAttView(atts,text){
 async function aiSend(text,noAtt){
   text=(text||"").trim();
   if((!text&&!(!noAtt&&PEND.length))||AI_BUSY)return;
+  if(needLogin()){openLogin();return}
   AI_BUSY=true;STOPPED=false;aiq.value=pq.value="";aiq.style.height=pq.style.height="";
   document.querySelectorAll(".macts .rt").forEach(b=>b.remove());document.querySelectorAll(".aisug").forEach(x=>x.remove()); // «Повторить» остаётся только у последнего ответа
   try{
@@ -2296,7 +2321,7 @@ pq.oninput=()=>{pq.style.height="auto";pq.style.height=Math.min(80,pq.scrollHeig
 $("pgo").onclick=()=>GEN?stopAI():aiSend(pq.value);
 const aFab=$("aifab"),aPop=$("aipop");
 function togglePop(v){aPop.hidden=!v;aFab.textContent=v?"✕":"AI";if(v){pm.scrollTop=pm.scrollHeight;setTimeout(()=>pq.focus({preventScroll:true}),50)}}
-aFab.onclick=()=>togglePop(aPop.hidden);
+aFab.onclick=()=>{if(aPop.hidden&&needLogin()){openLogin();return}togglePop(aPop.hidden)};
 $("pcls").onclick=()=>togglePop(false);
 $("pfull").onclick=()=>{togglePop(false);closeStudy();showTab("ai")};
 addEventListener("keydown",e=>{if(e.key==="Escape"&&!aPop.hidden)togglePop(false)});
@@ -2313,6 +2338,70 @@ $("aisq").oninput=e=>{SBQ=e.target.value;renderSide()};
 addEventListener("keydown",e=>{if(e.key==="Escape")closeSB()});
 aiRestore();
 
+/* ---- вход через Google (Google Identity Services) ----
+   ВАЖНО: вставьте сюда свой Client ID из Google Cloud Console (см. инструкцию). Пока там заглушка, вход отключён и сайт работает как раньше. */
+const GOOGLE_CLIENT_ID="455220454205-rn3n0gi2cvm14tts17utbmhl2c5ggns3.apps.googleusercontent.com";
+const AUTH_ON=!/^ВСТАВЬТЕ/.test(GOOGLE_CLIENT_ID);
+let SESS=null; // {t:"сессия", u:{name,email,picture}}
+function sessOk(x){const m=x&&/^(\d{13})\./.exec(x.t||"");return !!m&&+m[1]>Date.now()+60000}
+function sessLoad(){
+  SESS=null;
+  try{for(const st of [localStorage,sessionStorage]){let x=null;try{x=JSON.parse(st.getItem("sess")||"null")}catch(e){}if(sessOk(x)){SESS=x;return}}}catch(e){}
+}
+function sessSave(){
+  try{sessionStorage.removeItem("sess");localStorage.removeItem("sess")}catch(e){}
+  if(!SESS)return;
+  try{(canSave()?localStorage:sessionStorage).setItem("sess",JSON.stringify(SESS))}catch(e){}
+}
+function needLogin(){return AUTH_ON&&!(SESS&&sessOk(SESS))}
+window.YS={token:()=>(SESS&&sessOk(SESS))?SESS.t:"",expired(){SESS=null;sessSave();paintAuth();openLogin()}};
+function paintAuth(){
+  $("lmenu").hidden=!AUTH_ON;
+  const on=AUTH_ON&&!needLogin(),b=$("lgin");
+  b.classList.toggle("av",on);
+  if(on){
+    const u=SESS.u||{};b.textContent="";
+    if(u.picture){const i=document.createElement("img");i.alt="";i.referrerPolicy="no-referrer";i.src=u.picture;b.appendChild(i)}
+    else b.textContent=(u.name||u.email||"?").trim().charAt(0).toUpperCase();
+    b.title=u.email||"";$("lpn").textContent=u.name||"";$("lpe").textContent=u.email||"";
+  }else{b.textContent=tr("login");b.title="";$("lpop").hidden=true}
+  $("aigate").hidden=!needLogin();
+}
+let GIS=null,GINIT=false;
+function loadGIS(){
+  if(window.google&&window.google.accounts)return Promise.resolve(window.google);
+  if(GIS)return GIS;
+  return GIS=new Promise((res,rej)=>{const s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;
+    s.onload=()=>res(window.google);s.onerror=()=>{GIS=null;rej(new Error("gis"))};document.head.appendChild(s)});
+}
+async function openLogin(){
+  if(!AUTH_ON)return;
+  $("lm").hidden=false;$("lerr").textContent="";
+  const box=$("gbtn");box.textContent="";
+  try{
+    const g=await loadGIS();
+    if(!GINIT){g.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:onGoogle});GINIT=true}
+    g.accounts.id.renderButton(box,{theme:isDark()?"filled_black":"outline",size:"large",shape:"pill",text:"signin_with",locale:LANG,width:260});
+  }catch(e){$("lerr").textContent=tr("loginNet")}
+}
+async function onGoogle(resp){
+  $("lerr").textContent="";
+  try{
+    const r=await fetch(AI_PROXY+"/auth/google",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({credential:resp&&resp.credential})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.session)throw new Error(j.error||r.status);
+    SESS={t:j.session,u:j.user||{}};sessSave();paintAuth();$("lm").hidden=true;
+    if(!$("tab-ai").hidden)setTimeout(()=>aiq.focus({preventScroll:true}),50);
+  }catch(e){$("lerr").textContent=tr("loginFail")}
+}
+$("lgin").onclick=e=>{e.stopPropagation();if(needLogin())openLogin();else $("lpop").hidden=!$("lpop").hidden};
+$("lpout").onclick=()=>{SESS=null;sessSave();try{window.google&&google.accounts.id.disableAutoSelect()}catch(e){}$("lpop").hidden=true;paintAuth()};
+$("aigl").onclick=openLogin;$("lm-x").onclick=()=>{$("lm").hidden=true};
+$("lm").addEventListener("click",e=>{if(e.target===$("lm"))$("lm").hidden=true});
+document.addEventListener("click",e=>{if(!e.target.closest("#lmenu"))$("lpop").hidden=true});
+addEventListener("keydown",e=>{if(e.key==="Escape"){$("lm").hidden=true;$("lpop").hidden=true}});
+sessLoad();
+
 /* ---- язык ---- */
 function applyLang(){
   root.lang=LANG;
@@ -2321,7 +2410,7 @@ function applyLang(){
   $("lang").dataset.lang=LANG;
   document.title="YASIK";
   paintTheme();renderChips();render();renderWeather();renderHomeWeather();
-  $("tc-n").dataset.l="";tickHome();paintOnline();paintAI();applyWF();
+  $("tc-n").dataset.l="";tickHome();paintOnline();paintAI();applyWF();paintAuth();
 }
 $("lang").onclick=()=>{
   LANG=LANG==="ru"?"en":"ru";
