@@ -137,6 +137,32 @@ button:hover{border-color:var(--accent)}
 .mb .acts{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
 .mb .acts button{min-width:110px}
 .mb .acts .pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
+.mem-l{overflow:auto;display:grid;gap:8px;margin:6px 0 12px;padding-right:4px}
+.mem-i{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;border:1px solid var(--line);background:var(--tag);border-radius:8px;padding:9px 12px;font-size:.92rem;line-height:1.4}
+.mem-i span{flex:1;word-break:break-word}
+.mem-i button{flex:none;padding:3px 9px;font-size:.82rem;color:var(--muted)}
+.mem-e{color:var(--muted);font-size:.92rem;padding:8px 0}
+.mem-c{color:var(--muted);font-size:.78rem;margin:0 0 8px}
+.tk-i{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:var(--tag);border-radius:8px;padding:9px 12px;font-size:.92rem;line-height:1.4}
+.tk-i.dn .tk-t{text-decoration:line-through;color:var(--muted)}
+.tk-i input{flex:none;margin-top:3px;width:16px;height:16px;cursor:pointer}
+.tk-i .tk-b{flex:1;min-width:0}
+.tk-t{word-break:break-word}
+.tk-m{color:var(--muted);font-size:.78rem;margin-top:2px}
+.tk-i.od .tk-m{color:#d33}
+.tk-i button{flex:none;padding:3px 9px;font-size:.82rem;color:var(--muted)}
+.tk-tg{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0 0 10px;font-size:.88rem;line-height:1.4;display:grid;gap:8px}
+.tk-tg[hidden]{display:none}
+.tk-tg .r{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tk-tg button,.tk-tg a.btn{padding:5px 12px;font-size:.85rem;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--fg);text-decoration:none;cursor:pointer}
+.tk-tg a.btn.pri{background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
+.tk-tg code{font-size:.95rem;letter-spacing:.08em;font-weight:700}
+.tk-h{margin:8px 0 2px;font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+#tkt{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:300;display:grid;gap:8px;max-width:min(360px,calc(100vw - 32px))}
+#tkt .tt{display:flex;gap:10px;align-items:flex-start;background:var(--card);color:var(--fg);border:1px solid var(--accent);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:11px 14px;font-size:.92rem;line-height:1.4;animation:fadein .2s}
+#tkt .tt b{display:block}
+#tkt .tt span{flex:1;word-break:break-word}
+#tkt .tt button{flex:none;border:0;background:transparent;font-size:1.1rem;padding:0 4px;color:var(--muted)}
 .tbody{overflow:auto;margin:6px -8px 14px 0;padding-right:12px;border-top:1px solid var(--line);padding-top:14px}
 .tbody h4{margin:14px 0 4px;font-size:.95rem}
 .tbody h4:first-child{margin-top:0}
@@ -656,7 +682,7 @@ ensure().catch(()=>{});                              // проверка ста�
 <button class="sbn" id="ainew" type="button"><span>＋</span><span data-tr="aiNew">Новый чат</span></button>
 <input id="aisq" type="search" data-ph="aiSearch" placeholder="Поиск по чатам…" autocomplete="off">
 <div class="aisl" id="aisl"></div>
-<div class="sbf"><p id="aisn" data-tr="aiNoSave" hidden></p><button id="aiclrall" type="button" data-tr="aiClearAll">Удалить всю историю</button></div>
+<div class="sbf"><button id="aitk" type="button" data-tr="tkBtn">✅ Задачи</button><button id="aimem" type="button" data-tr="memBtn">🧠 Моя память</button><p id="aisn" data-tr="aiNoSave" hidden></p><button id="aiclrall" type="button" data-tr="aiClearAll">Удалить всю историю</button></div>
 </aside>
 <div class="aibd" id="aibd"></div>
 <div class="aigate" id="aigate" hidden><div class="aigb"><div class="aiav">AI</div><h3 data-tr="aiGateT"></h3><p data-tr="aiGateD"></p><button class="pri" id="aigl" type="button" data-tr="login"></button></div></div>
@@ -691,6 +717,17 @@ ensure().catch(()=>{});                              // проверка ста�
 </footer>
 <div class="ck" id="ck" role="dialog" aria-label="Cookie" hidden><b data-tr="ckTitle">🍪 Мы используем cookie</b><p data-tr="ckText"></p><div class="ckb"><button class="pri" id="ck-yes" type="button" data-tr="ckYes">Принять</button><button id="ck-no" type="button" data-tr="ckNo">Только необходимые</button></div></div>
 <div class="mdl" id="lm" data-mode="login" hidden><div class="au" role="dialog" aria-modal="true" aria-labelledby="au-h"><button class="au-x" id="lm-x" type="button" aria-label="×">×</button><div class="au-logo">AI</div><h3 id="au-h" data-at="title"></h3><p class="au-sub" data-at="sub"></p><div class="au-tabs" role="tablist"><button type="button" role="tab" data-m="login" data-at="tabIn"></button><button type="button" role="tab" data-m="reg" data-at="tabUp"></button></div><div class="au-body"><form id="au-form" class="au-form" novalidate><label class="au-l"><span data-at="email"></span><input id="au-em" type="email" inputmode="email" autocomplete="email" maxlength="200" placeholder="name@example.com"></label><label class="au-l"><span data-at="pass"></span><span class="au-pw"><input id="au-pw" type="password" maxlength="100"><button type="button" class="au-eye" id="au-eye"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span><small class="au-h reg" data-at="passHint"></small></label><label class="au-l reg"><span data-at="birth"></span><input id="au-bd" type="date" autocomplete="bday" min="1900-01-01"><small class="au-h" data-at="birthHint"></small></label><label class="au-ck reg"><input id="au-ok" type="checkbox"><span data-ath="agree"></span></label><button class="au-go" id="au-go" type="submit"></button></form><div class="au-sep"><span class="in" data-at="sepIn"></span><span class="up" data-at="sepUp"></span></div><div class="au-soc"><div id="gbtn" class="gbtn"></div></div></div><div class="lerr" id="lerr" aria-live="polite"></div></div></div>
+<div class="mdl" id="tk" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="tk-h">
+<h3 id="tk-h">Задачи</h3><p id="tk-d"></p><div class="mem-c" id="tk-c"></div>
+<div class="tk-tg" id="tk-tg" hidden></div>
+<div class="mem-l" id="tk-l"></div>
+<div class="acts"><button id="tk-nt" type="button" hidden></button><button id="tk-cd" type="button" hidden></button><button class="pri" id="tk-x" type="button"></button></div>
+</div></div>
+<div class="mdl" id="mem" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="mem-h">
+<h3 id="mem-h">Моя память</h3><p id="mem-d"></p><div class="mem-c" id="mem-c"></div>
+<div class="mem-l" id="mem-l"></div>
+<div class="acts"><button id="mem-clr" type="button" hidden></button><button class="pri" id="mem-x" type="button"></button></div>
+</div></div>
 <div class="mdl" id="xl" hidden><div class="mb" role="dialog" aria-modal="true" aria-labelledby="xl-h">
 <h3 id="xl-h">Leaving YASIK</h3>
 <p>You are about to open an external website: <b id="xl-t"></b></p>
@@ -710,7 +747,7 @@ const I18N={
 ru:{schPh:"Поиск: преподаватель, предмет, аудитория…",clear:"Сбросить",wPh:"Фильтр по дням: дождь, пятница, 12 октября…",noRes:"Ничего не найдено",resCnt:n=>"Найдено занятий: "+n,onlineT:"онлайн",onlTip:"Сейчас на сайте",onlTipLocal:"Демо-режим: считаются только вкладки этого браузера",
 aiPh2:"Сообщение…",aiRead:"Читаю…",aiChars:"зн.",aiRemove:"Убрать",aiFileBad:n=>"Не удалось прочитать файл «"+n+"». Возможно, он повреждён или защищён паролем.",aiPdfScan:n=>"В «"+n+"» нет текста — похоже, это скан или картинка. Сканы я пока не распознаю; пришлите PDF с текстовым слоем или DOCX.",aiFileType:n=>"Файл «"+n+"» такого типа я пока не читаю. Подойдут: PDF, DOCX, PPTX, XLSX, ODT, TXT, MD, CSV, JSON, HTML и файлы с кодом.",aiFileOld:n=>"«"+n+"» в старом формате (.doc/.xls/.ppt). Сохраните его как .docx/.xlsx/.pptx или PDF и прикрепите снова.",aiFileEmpty:n=>"В файле «"+n+"» не нашлось текста.",aiTooMany:"Можно прикрепить не больше 3 документов за раз.",aiFileTrunc:"Файл большой: ИИ видит ~13 000 знаков — самые подходящие под ваш вопрос фрагменты. Если нужно другое место, назовите раздел или ключевые слова.",aiImgOnly:"Получил картинку 👍 Напишите, что с ней сделать: задать вопрос по ней, изменить размер, формат или цвет, повернуть — или попросить нарисовать что-то похожее.",aiDefDoc:"Кратко перескажи содержание прикреплённого файла и выдели главное.",aiColorAsk:"В какой цвет перекрасить?",aiGenDone:"Готово! Могу изменить размер, формат или цвет — просто напишите.",aiGenCtx:q=>"[Я нарисовал картинку по запросу: «"+String(q).slice(0,200)+"»]",aiGenRefused:"Такую картинку я создать не могу. Попробуйте другое описание.",aiGenFail:"Не получилось создать картинку: ИИ сейчас недоступен или перегружен. Попробуйте чуть позже.",aiVisFail:"Не получилось разобрать картинку: облачный ИИ сейчас недоступен. Попробуйте чуть позже.",aiBadFmt:"Сохранять умею в PNG, JPG, WEBP и BMP.",aiStretch:"пропорции изменены; чтобы сохранить их, укажите только ширину, например «ширина 800»",opn:{gray:"чёрно-белое",sepia:"сепия",invert:"негатив",bright:"ярче",dark:"темнее",contrast:"контраст",sat:"насыщенность",tint:"цвет",rot:"поворот",flip:"отзеркаливание",size:"размер",fmt:"формат",comp:"сжатие"},aiAttT:"Прикрепить файл или картинку",aiImgGot:(n,i)=>"Получил «"+n+"» ("+i+"). В какой формат конвертировать?",aiImgBad:"Не удалось открыть файл как картинку. Подойдут PNG, JPG, WEBP, GIF, BMP, SVG.",aiNeedImg:"Сначала прикрепите картинку кнопкой 📎 (или перетащите её в чат, или вставьте из буфера) — и я поменяю формат.",aiConvDone:(n,s,i)=>"Готово: "+n+" · "+s+" · "+i,aiDl:"Скачать",aiSaveW:"📄 Сохранить в Word",aiDocMake:"Составляю документ…",aiDocDone:n=>"Документ готов: "+n,aiDocPlan:"Составляю план…",aiDocProg:(i,n,t)=>"Пишу раздел "+i+" из "+n+": «"+t+"». Большой документ собирается несколько минут, не закрывайте страницу.",aiDocExtra:t=>"Довожу объём: дописываю «"+t+"»…",aiDocStat:(w,p)=>"≈ "+w+" слов, около "+p+" стр. основного текста",aiDocNote:"Список источников оставлен пустым: ИИ не подставляет ссылки, чтобы не выдумывать несуществующие работы. Добавьте реальные источники сами. Номера страниц в содержании обновятся в Word: ПКМ по содержанию → «Обновить поле».",aiDocQuota:"Дневной бесплатный лимит ИИ исчерпан. Попробуйте завтра.",aiDocPartial:"Документ собран частично: ИИ перестал отвечать на середине",aiDocFail:"Не получилось составить документ: облачный ИИ сейчас недоступен. Попробуйте чуть позже.",aiNoWebp:"Этот браузер не умеет сохранять в WEBP. Выберите PNG, JPG или BMP.",aiBig:"Файл слишком большой для обработки в браузере.",aiNotImg:"Это не картинка. Прикрепите файл изображения.",aiPickFmt:"Формат:",
 aiOpenFull:"Открыть полный чат",aiClose:"Закрыть",aiOpen:"Открыть YASIK-AI",aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Сообщения, прикреплённые документы и картинки, о которых вы спрашиваете ИИ (или просите нарисовать «по мотивам»), отправляются во внешний ИИ-сервис; не загружайте личные данные. Изменение размера, формата и цвета картинок выполняется на вашем устройстве.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
-aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",aiNew:"Новый чат",aiEdit:"Изменить",aiNewT:"Новый чат",aiSearch:"Поиск по чатам…",aiToday:"Сегодня",aiYest:"Вчера",aiWeek:"Последние 7 дней",aiOlder:"Ранее",aiNoChats:"Пока нет сохранённых чатов",aiRename:"Переименовать",aiDel:"Удалить",aiDelAsk:t=>"Удалить чат «"+t+"»?",aiClearAll:"Удалить всю историю",aiClearAllAsk:"Удалить все чаты? Это нельзя отменить.",aiNoSave:"История не сохраняется: выбраны только необходимые cookie. Чаты пропадут после закрытия страницы.",aiMenu:"Список чатов",aiS1:"Какие пары завтра?",aiS2:"Какая погода сейчас?",aiS3:"Объясни, как работает блокчейн, простыми словами",
+aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",tgOn:"Telegram подключён: напоминания придут туда, даже если сайт закрыт.",tgOff0:"Получайте напоминания в Telegram, даже когда сайт закрыт.",tgConn:"Подключить Telegram",tgWait:"Откройте бота и нажмите Start. Код действует 10 минут.",tgOpen:"Открыть бота",tgTest:"Отправить тест",tgDisc:"Отключить",tgSent:"Отправлено ✓",tgFail:"Не удалось отправить",tgErr:"Не удалось связаться с сервером. Попробуйте позже.",tkBtn:"✅ Задачи",tkT:"Задачи и напоминания",tkD:"Здесь дедлайны и напоминания, которые вы добавили через чат (например: «напомни завтра в 9:00 сдать эссе»). Напоминания срабатывают, пока сайт открыт.",tkEmpty:"Задач пока нет. Напишите в чате: «добавь задачу …».",tkDel:"Удалить",tkClose:"Закрыть",tkClrDone:"Убрать выполненные",tkNotif:"Включить уведомления",tkCnt:(a,b)=>"Открыто: "+a+(b?", выполнено: "+b:""),tkDue:"срок",tkRem:"напомнить",tkOpen:"Открытые",tkDoneH:"Выполненные",tkAlert:"Напоминание",tkErr:"Не удалось загрузить задачи. Попробуйте позже.",tkNoDb:"Задачи пока недоступны.",stTasks:"Смотрю задачи…",stTaskAdd:"Добавляю задачу…",stTaskDo:"Обновляю задачу…",memBtn:"🧠 Моя память",memT:"Моя память",memD:"Факты о вас, которые YASIK-AI запомнил из разговоров, чтобы отвечать точнее. Любой можно удалить. Чтобы добавить факт, напишите в чате: «запомни, что …».",memEmpty:"Пока ничего не запомнено.",memDel:"Удалить",memClr:"Удалить всё",memClose:"Закрыть",memLoad:"Загрузка…",memClrAsk:"Удалить всю память о вас?",memErr:"Не удалось загрузить память. Попробуйте позже.",memNoDb:"Память пока недоступна.",memLogin:"Войдите в аккаунт, чтобы пользоваться памятью.",memCnt:(n,m)=>"Фактов: "+n+" из "+m,stSearch:q=>"Ищу в интернете: «"+q+"»",stRead:h=>"Читаю страницу: "+h,stCalc:e=>"Считаю: "+e,stSched:"Смотрю расписание…",stMemSave:"Запоминаю…",stMemForget:"Обновляю память…",stMemOk:f=>"Запомнил: "+f,stForgot:"Удалил из памяти",aiNew:"Новый чат",aiEdit:"Изменить",aiNewT:"Новый чат",aiSearch:"Поиск по чатам…",aiToday:"Сегодня",aiYest:"Вчера",aiWeek:"Последние 7 дней",aiOlder:"Ранее",aiNoChats:"Пока нет сохранённых чатов",aiRename:"Переименовать",aiDel:"Удалить",aiDelAsk:t=>"Удалить чат «"+t+"»?",aiClearAll:"Удалить всю историю",aiClearAllAsk:"Удалить все чаты? Это нельзя отменить.",aiNoSave:"История не сохраняется: выбраны только необходимые cookie. Чаты пропадут после закрытия страницы.",aiMenu:"Список чатов",aiS1:"Какие пары завтра?",aiS2:"Какая погода сейчас?",aiS3:"Объясни, как работает блокчейн, простыми словами",
 aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?","Создай Word-файл с планом подготовки к экзамену","Конвертировать картинку в PNG"],
 aiNoUp:"Ближайших занятий не нашёл.",aiNoDay:"В этот день занятий нет 🎉",aiToday:"Сегодня",aiTomorrow:"Завтра",aiNext:"Ближайшая пара",aiW:(c,t,d,f)=>"Сейчас в городе "+c+": "+t+", "+d+". Ощущается как "+f+".",
 aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»), а также менять размер, формат и цвет картинок (📎 → «в PNG», «уменьши до 800 px», «сделай чёрно-белой»).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
@@ -762,7 +799,7 @@ aiDocStopped:"Документ собран частично: вы остано�
 en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
 aiPh2:"Message…",aiRead:"Reading…",aiChars:"chars",aiRemove:"Remove",aiFileBad:n=>"Couldn't read “"+n+"”. It may be damaged or password-protected.",aiPdfScan:n=>"“"+n+"” has no text — it looks like a scan. I can't recognise scans yet; send a PDF with a text layer or a DOCX.",aiFileType:n=>"I can't read “"+n+"” yet. Supported: PDF, DOCX, PPTX, XLSX, ODT, TXT, MD, CSV, JSON, HTML and code files.",aiFileOld:n=>"“"+n+"” is in an old format (.doc/.xls/.ppt). Save it as .docx/.xlsx/.pptx or PDF and attach it again.",aiFileEmpty:n=>"No text found in “"+n+"”.",aiTooMany:"You can attach up to 3 documents at a time.",aiFileTrunc:"The file is large: the AI sees ~13,000 characters — the fragments that best match your question. Name a section or keywords if you need another part.",aiImgOnly:"Got the picture 👍 Tell me what to do with it: ask a question about it, change its size, format or colour, rotate it — or ask me to draw something similar.",aiDefDoc:"Briefly summarise the attached file and highlight the main points.",aiColorAsk:"Which colour?",aiGenDone:"Done! I can resize it or change its format or colour — just ask.",aiGenCtx:q=>"[I drew a picture for the request: “"+String(q).slice(0,200)+"”]",aiGenRefused:"I can't create that picture. Try a different description.",aiGenFail:"Couldn't create the picture: the AI is unavailable or overloaded. Please try again later.",aiVisFail:"Couldn't analyse the picture: the cloud AI is unavailable right now. Please try again later.",aiBadFmt:"I can save to PNG, JPG, WEBP and BMP.",aiStretch:"proportions were changed; to keep them, give only the width, e.g. “width 800”",opn:{gray:"black & white",sepia:"sepia",invert:"negative",bright:"brighter",dark:"darker",contrast:"contrast",sat:"saturation",tint:"colour",rot:"rotation",flip:"flip",size:"size",fmt:"format",comp:"compression"},aiAttT:"Attach a file or an image",aiImgGot:(n,i)=>"Got “"+n+"” ("+i+"). Which format should I convert it to?",aiImgBad:"Couldn't open this file as an image. PNG, JPG, WEBP, GIF, BMP and SVG work.",aiNeedImg:"Please attach an image first with the 📎 button (or drag it into the chat, or paste it) and I'll change the format.",aiConvDone:(n,s,i)=>"Done: "+n+" · "+s+" · "+i,aiDl:"Download",aiSaveW:"📄 Save to Word",aiDocMake:"Writing the document…",aiDocDone:n=>"Document ready: "+n,aiDocPlan:"Making an outline…",aiDocProg:(i,n,t)=>"Writing section "+i+" of "+n+": “"+t+"”. A large document takes a few minutes, please keep the page open.",aiDocExtra:t=>"Adding more text to “"+t+"”…",aiDocStat:(w,p)=>"≈ "+w+" words, about "+p+" pages of main text",aiDocNote:"The reference list is left empty: the AI does not invent sources. Add real ones yourself. Page numbers in the contents update in Word: right-click the contents → Update field.",aiDocQuota:"The daily free AI limit is used up. Please try again tomorrow.",aiDocPartial:"The document is partial: the AI stopped responding midway",aiDocFail:"Couldn't write the document: the cloud AI is unavailable right now. Please try again later.",aiNoWebp:"This browser can't save WEBP. Choose PNG, JPG or BMP.",aiBig:"The file is too large to process in the browser.",aiNotImg:"That isn't an image. Please attach an image file.",aiPickFmt:"Format:",
 aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Messages, attached documents and images you ask the AI about (or ask it to redraw) are sent to an external AI service; do not upload personal data. Resizing, format and colour changes happen on your device.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
-aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",aiNew:"New chat",aiEdit:"Edit",aiNewT:"New chat",aiSearch:"Search chats…",aiToday:"Today",aiYest:"Yesterday",aiWeek:"Previous 7 days",aiOlder:"Older",aiNoChats:"No saved chats yet",aiRename:"Rename",aiDel:"Delete",aiDelAsk:t=>"Delete chat “"+t+"”?",aiClearAll:"Delete all history",aiClearAllAsk:"Delete all chats? This can't be undone.",aiNoSave:"History is not saved: only necessary cookies are enabled. Chats disappear when you close the page.",aiMenu:"Chat list",aiS1:"What classes do I have tomorrow?",aiS2:"What's the weather now?",aiS3:"Explain how blockchain works in simple terms",
+aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",tgOn:"Telegram connected: reminders will arrive there even when the site is closed.",tgOff0:"Get reminders in Telegram even when the site is closed.",tgConn:"Connect Telegram",tgWait:"Open the bot and press Start. The code is valid for 10 minutes.",tgOpen:"Open the bot",tgTest:"Send a test",tgDisc:"Disconnect",tgSent:"Sent ✓",tgFail:"Could not send",tgErr:"Could not reach the server. Please try again later.",tkBtn:"✅ Tasks",tkT:"Tasks and reminders",tkD:"Deadlines and reminders you added via chat (for example: “remind me tomorrow at 9:00 to submit the essay”). Reminders fire while the site is open.",tkEmpty:"No tasks yet. Write in the chat: “add a task …”.",tkDel:"Delete",tkClose:"Close",tkClrDone:"Clear completed",tkNotif:"Enable notifications",tkCnt:(a,b)=>"Open: "+a+(b?", done: "+b:""),tkDue:"due",tkRem:"remind",tkOpen:"Open",tkDoneH:"Completed",tkAlert:"Reminder",tkErr:"Could not load tasks. Please try again later.",tkNoDb:"Tasks are not available yet.",stTasks:"Checking tasks…",stTaskAdd:"Adding a task…",stTaskDo:"Updating a task…",memBtn:"🧠 My memory",memT:"My memory",memD:"Facts about you that YASIK-AI remembered from conversations to answer more accurately. You can delete any of them. To add one, write in the chat: “remember that …”.",memEmpty:"Nothing remembered yet.",memDel:"Delete",memClr:"Delete all",memClose:"Close",memLoad:"Loading…",memClrAsk:"Delete all memory about you?",memErr:"Could not load memory. Please try again later.",memNoDb:"Memory is not available yet.",memLogin:"Sign in to use memory.",memCnt:(n,m)=>"Facts: "+n+" of "+m,stSearch:q=>"Searching the web: “"+q+"”",stRead:h=>"Reading page: "+h,stCalc:e=>"Calculating: "+e,stSched:"Checking the schedule…",stMemSave:"Saving to memory…",stMemForget:"Updating memory…",stMemOk:f=>"Remembered: "+f,stForgot:"Removed from memory",aiNew:"New chat",aiEdit:"Edit",aiNewT:"New chat",aiSearch:"Search chats…",aiToday:"Today",aiYest:"Yesterday",aiWeek:"Previous 7 days",aiOlder:"Older",aiNoChats:"No saved chats yet",aiRename:"Rename",aiDel:"Delete",aiDelAsk:t=>"Delete chat “"+t+"”?",aiClearAll:"Delete all history",aiClearAllAsk:"Delete all chats? This can't be undone.",aiNoSave:"History is not saved: only necessary cookies are enabled. Chats disappear when you close the page.",aiMenu:"Chat list",aiS1:"What classes do I have tomorrow?",aiS2:"What's the weather now?",aiS3:"Explain how blockchain works in simple terms",
 aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?","Create a Word file with an exam study plan","Convert an image to PNG"],
 aiNoUp:"No upcoming classes found.",aiNoDay:"No classes that day 🎉",aiToday:"Today",aiTomorrow:"Tomorrow",aiNext:"Next class",aiW:(c,t,d,f)=>"Right now in "+c+": "+t+", "+d+". Feels like "+f+".",
 aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, find a teacher, subject or room (e.g. “room 309” or “Divina”), and resize, convert and recolour images (📎 → “to PNG”, “shrink to 800 px”, “make it black and white”).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
@@ -1408,7 +1445,8 @@ function toolIntent(text){
 /* ---- YASIK-AI ----
    По умолчанию — бесплатный сервис Pollinations (без ключа). Свой прокси/ключ: поменяйте AI_ENDPOINT.
    Если облако недоступно, включается локальный помощник, который знает расписание и погоду. */
-const AI_PROXY="https://yasik-ai.klown575.workers.dev";   // ← сюда URL вашего Cloudflare Worker (см. worker.js), например "https://yasik-ai.ИМЯ.workers.dev"
+const AI_PROXY="https://yasik-ai.klown575.workers.dev";
+const AI_AGENT=true;   // true: чат работает как агент (сам ищет, читает страницы, считает); false: обычный чат   // ← сюда URL вашего Cloudflare Worker (см. worker.js), например "https://yasik-ai.ИМЯ.workers.dev"
 const AI_ENDPOINT="https://text.pollinations.ai/openai", AI_MODEL="openai"; // запасной бесплатный вариант
 let AIH=[],AI_MODE="cloud",AI_BUSY=false,ATT=null,DOCS=[],PEND=[];   // DOCS — документы этого чата, PEND — вложения, ещё не отправленные
 let STOPPED=false,CUR_CTL=null,GEN=false,EPOCH=0; // STOPPED — нажали «Стоп»; GEN — идёт генерация; EPOCH — меняется при очистке чата
@@ -1466,11 +1504,11 @@ async function cloudAnswer(o){
   try{
     if(AI_PROXY){
       const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
-        body:JSON.stringify({context:aiContext().slice(0,4000),messages:hist,max_tokens:o.maxTok||600,stream:!!o.onDelta,files:docFiles(((hist[hist.length-1])||{}).content||"")})});
+        body:JSON.stringify({context:aiContext().slice(0,4000),tz:-new Date().getTimezoneOffset(),messages:hist,max_tokens:o.maxTok||600,stream:!!o.onDelta,mode:(AI_AGENT&&o.onDelta)?"agent":undefined,files:docFiles(((hist[hist.length-1])||{}).content||"")})});
       if(r.status===429)throw Object.assign(new Error("quota"),{quota:true}); // дневной лимит Workers AI
       if(!r.ok)throw new Error(r.status);
       if(o.onDelta&&r.body&&(r.headers.get("content-type")||"").includes("text/event-stream")){
-        const rd=r.body.getReader(),dec=new TextDecoder();let buf="",acc="";
+        const rd=r.body.getReader(),dec=new TextDecoder();let buf="",acc="",aerr=null;
         try{
           for(;;){
             const x=await rd.read();if(x.done)break;bump();
@@ -1480,11 +1518,12 @@ async function cloudAnswer(o){
               const line=buf.slice(0,i).trim();buf=buf.slice(i+1);
               if(!line.startsWith("data:"))continue;
               const d=line.slice(5).trim();if(!d||d==="[DONE]")continue;
-              try{const j=JSON.parse(d),p=typeof j.response==="string"?j.response:((j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content)||"");
+              try{const j=JSON.parse(d);if(j.agent){if(j.agent==="step"){if(o.onStep)o.onStep(j)}else if(j.agent==="final"){acc=String(j.text||"")}else if(j.agent==="error"){aerr=Object.assign(new Error(j.error||"ai"),{quota:j.error==="quota"})}continue}const p=typeof j.response==="string"?j.response:((j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content)||"");
                 if(p){acc+=p;o.onDelta(acc)}}catch(e){}
             }
           }
         }catch(e){if(acc.trim())return acc.trim();throw e} // оборвали или связь пропала — оставляем то, что успело прийти
+        if(aerr)throw aerr;
         if(!acc.trim())throw new Error("empty");
         return acc.trim();
       }
@@ -1618,6 +1657,154 @@ function delChat(c){
   if(c===CUR){if(GEN)stopAI();CUR=null;newChat()}else{persist();renderSide()}
 }
 function renChat(c){const t=prompt(tr("aiRename"),chatTitle(c));if(t==null)return;const v=t.trim().slice(0,60);if(!v)return;c.title=v;c.auto=false;persist();renderSide()}
+/* ---- задачи и напоминания (Worker, mode:"tasks"). Напоминание показывается, пока сайт открыт ---- */
+let TK=[];const TKSHOWN=new Set();
+const tkLogged=()=>!!(window.YS&&window.YS.token());
+async function tkCall(body){
+  const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({mode:"tasks"},body))});
+  if(!r.ok){const e=new Error(String(r.status));e.status=r.status;throw e}
+  return r.json();
+}
+const tkFmt=ms=>new Date(ms).toLocaleString(LOC(),{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+async function tkRefresh(){
+  if(!tkLogged())return null;
+  try{const j=await tkCall({action:"list"});TK=j.items||[];tkCheck();return j}catch(e){return null}
+}
+function tkToast(list){
+  let box=$("tkt");if(!box){box=document.createElement("div");box.id="tkt";box.setAttribute("role","status");box.setAttribute("aria-live","polite");document.body.appendChild(box)}
+  list.forEach(t=>{
+    const d=document.createElement("div");d.className="tt";
+    const sp=document.createElement("span"),b=document.createElement("b");b.textContent="🔔 "+tr("tkAlert");
+    sp.appendChild(b);sp.appendChild(document.createTextNode(t.title+(t.due?" ("+tr("tkDue")+": "+tkFmt(t.due)+")":"")));
+    const x=document.createElement("button");x.type="button";x.textContent="×";x.setAttribute("aria-label",tr("tkClose"));x.onclick=()=>d.remove();
+    d.append(sp,x);box.appendChild(d);
+    try{if("Notification" in window&&Notification.permission==="granted")new Notification("YASIK: "+t.title,{body:t.due?tr("tkDue")+": "+tkFmt(t.due):""})}catch(e){}
+  });
+}
+function tkCheck(){
+  const now=Date.now();
+  const due=TK.filter(t=>!t.done&&!t.notified&&t.remind&&t.remind<=now&&!TKSHOWN.has(t.id));
+  if(!due.length)return;
+  due.forEach(t=>{TKSHOWN.add(t.id);t.notified=1});
+  tkToast(due);
+  tkCall({action:"ack",ids:due.map(t=>t.id)}).catch(()=>{});
+}
+function tkMsg(t){const l=$("tk-l");l.innerHTML="";const e=document.createElement("div");e.className="mem-e";e.textContent=t;l.appendChild(e)}
+function tkPaint(j){
+  if(j&&j.items){TK=j.items}
+  const open=TK.filter(t=>!t.done),done=TK.filter(t=>t.done),l=$("tk-l");
+  $("tk-c").textContent=tr("tkCnt",open.length,done.length);
+  $("tk-cd").hidden=!done.length;
+  $("tk-nt").hidden=!("Notification" in window)||Notification.permission!=="default";
+  if(!TK.length){tkMsg(tr("tkEmpty"));return}
+  l.innerHTML="";
+  const row=t=>{
+    const d=document.createElement("div");d.className="tk-i"+(t.done?" dn":"")+(!t.done&&t.due&&t.due<Date.now()?" od":"");
+    const c=document.createElement("input");c.type="checkbox";c.checked=!!t.done;c.setAttribute("aria-label",t.title);
+    c.onchange=async()=>{c.disabled=true;try{tkPaint(await tkCall({action:"done",id:t.id,value:c.checked}))}catch(e){c.disabled=false;tkErr(e)}};
+    const b=document.createElement("div");b.className="tk-b";
+    const ti=document.createElement("div");ti.className="tk-t";ti.textContent=t.title;b.appendChild(ti);
+    const meta=[t.due?tr("tkDue")+": "+tkFmt(t.due):"",t.remind&&!t.done?"🔔 "+tkFmt(t.remind):""].filter(Boolean).join(" · ");
+    if(meta){const m=document.createElement("div");m.className="tk-m";m.textContent=meta;b.appendChild(m)}
+    const x=document.createElement("button");x.type="button";x.textContent=tr("tkDel");x.setAttribute("aria-label",tr("tkDel")+": "+t.title);
+    x.onclick=async()=>{x.disabled=true;try{tkPaint(await tkCall({action:"delete",id:t.id}))}catch(e){x.disabled=false;tkErr(e)}};
+    d.append(c,b,x);return d;
+  };
+  if(open.length){const h=document.createElement("div");h.className="tk-h";h.textContent=tr("tkOpen");l.appendChild(h);open.forEach(t=>l.appendChild(row(t)))}
+  if(done.length){const h=document.createElement("div");h.className="tk-h";h.textContent=tr("tkDoneH");l.appendChild(h);done.forEach(t=>l.appendChild(row(t)))}
+}
+function tkErr(e){
+  $("tk-cd").hidden=true;$("tk-c").textContent="";
+  if(e&&e.status===403){$("tk").hidden=true;return}
+  tkMsg(tr(e&&e.status===501?"tkNoDb":"tkErr"));
+}
+/* ---- подключение Telegram (Worker, mode:"tg") ---- */
+let TGPOLL=0;
+async function tgCall(b){
+  const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({mode:"tg",tz:-new Date().getTimezoneOffset()},b))});
+  if(!r.ok){const e=new Error(String(r.status));e.status=r.status;throw e}
+  return r.json();
+}
+function tgStop(){if(TGPOLL){clearInterval(TGPOLL);TGPOLL=0}}
+function tgRender(st){
+  const box=$("tk-tg");box.innerHTML="";
+  if(!st){tgStop();box.hidden=true;return}
+  box.hidden=false;
+  const line=document.createElement("div"),row=document.createElement("div");row.className="r";
+  const btn=(t,fn)=>{const x=document.createElement("button");x.type="button";x.textContent=t;x.onclick=fn;return x};
+  if(st.linked){
+    tgStop();line.textContent="✅ "+tr("tgOn");
+    const t=btn(tr("tgTest"),async()=>{t.disabled=true;try{const j=await tgCall({action:"test"});t.textContent=tr(j.sent?"tgSent":"tgFail")}catch(e){t.textContent=tr("tgFail")}setTimeout(()=>{t.textContent=tr("tgTest");t.disabled=false},2500)});
+    row.append(t,btn(tr("tgDisc"),async()=>{try{tgRender(await tgCall({action:"unlink"}))}catch(e){}}));
+  }else if(st.code){
+    line.textContent=tr("tgWait");
+    const a=document.createElement("a");a.className="btn pri";a.href=st.link;a.target="_blank";a.rel="noopener";a.textContent=tr("tgOpen");
+    const c=document.createElement("code");c.textContent=st.code;
+    row.append(a,c);
+    tgStop();
+    TGPOLL=setInterval(async()=>{
+      if($("tk").hidden){tgStop();return}
+      try{const j=await tgCall({action:"status"});if(j.linked)tgRender(j)}catch(e){}
+    },3000);
+  }else{
+    tgStop();line.textContent=tr("tgOff0");
+    const b=btn(tr("tgConn"),async()=>{b.disabled=true;try{tgRender(await tgCall({action:"link"}))}catch(e){b.disabled=false;line.textContent=tr("tgErr")}});
+    row.append(b);
+  }
+  box.append(line,row);
+}
+async function openTk(){
+  $("tk-h").textContent=tr("tkT");$("tk-d").textContent=tr("tkD");$("tk-cd").textContent=tr("tkClrDone");$("tk-nt").textContent=tr("tkNotif");$("tk-x").textContent=tr("tkClose");
+  $("tk-c").textContent="";$("tk-cd").hidden=true;$("tk-nt").hidden=true;tkMsg(tr("memLoad"));$("tk").hidden=false;
+  if(typeof closeSB==="function")closeSB();
+  tgRender(null);tgCall({action:"status"}).then(tgRender).catch(()=>tgRender(null));   // если Telegram на сервере не настроен, блок скрыт
+  try{tkPaint(await tkCall({action:"list"}))}catch(e){tkErr(e)}
+}
+$("aitk").onclick=openTk;
+$("tk-x").onclick=()=>{$("tk").hidden=true;tgStop()};
+$("tk").addEventListener("click",e=>{if(e.target===$("tk"))$("tk").hidden=true});
+$("tk-cd").onclick=async()=>{try{tkPaint(await tkCall({action:"clear_done"}))}catch(e){tkErr(e)}};
+$("tk-nt").onclick=()=>{try{Notification.requestPermission().then(()=>tkPaint())}catch(e){}};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("tk").hidden=true});
+setInterval(tkCheck,30000);setInterval(tkRefresh,300000);setTimeout(tkRefresh,3000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)tkRefresh()});
+/* ---- «Моя память»: факты, которые агент сохранил в D1 (Worker, mode:"memory") ---- */
+async function memCall(body){
+  const r=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({mode:"memory"},body))});
+  if(!r.ok){const e=new Error(String(r.status));e.status=r.status;throw e}
+  return r.json();
+}
+function memMsg(t){const l=$("mem-l");l.innerHTML="";const e=document.createElement("div");e.className="mem-e";e.textContent=t;l.appendChild(e)}
+function memErr(e){
+  $("mem-clr").hidden=true;$("mem-c").textContent="";
+  if(e&&e.status===403){$("mem").hidden=true;return}   // сессия истекла: сайт сам откроет окно входа
+  memMsg(tr(e&&e.status===501?"memNoDb":"memErr"));
+}
+function memPaint(j){
+  const l=$("mem-l"),items=(j&&j.items)||[];
+  $("mem-c").textContent=tr("memCnt",items.length,(j&&j.max)||50);
+  $("mem-clr").hidden=!items.length;
+  if(!items.length){memMsg(tr("memEmpty"));return}
+  l.innerHTML="";
+  items.forEach(it=>{
+    const d=document.createElement("div");d.className="mem-i";
+    const s=document.createElement("span");s.textContent=it.fact;
+    const b=document.createElement("button");b.type="button";b.textContent=tr("memDel");b.setAttribute("aria-label",tr("memDel")+": "+it.fact);
+    b.onclick=async()=>{b.disabled=true;try{memPaint(await memCall({action:"delete",id:it.id}))}catch(e){b.disabled=false;memErr(e)}};
+    d.append(s,b);l.appendChild(d);
+  });
+}
+async function openMem(){
+  $("mem-h").textContent=tr("memT");$("mem-d").textContent=tr("memD");$("mem-clr").textContent=tr("memClr");$("mem-x").textContent=tr("memClose");
+  $("mem-c").textContent="";$("mem-clr").hidden=true;memMsg(tr("memLoad"));$("mem").hidden=false;
+  if(typeof closeSB==="function")closeSB();
+  try{memPaint(await memCall({action:"list"}))}catch(e){memErr(e)}
+}
+$("aimem").onclick=openMem;
+$("mem-x").onclick=()=>{$("mem").hidden=true};
+$("mem").addEventListener("click",e=>{if(e.target===$("mem"))$("mem").hidden=true});
+$("mem-clr").onclick=async()=>{if(!confirm(tr("memClrAsk")))return;try{memPaint(await memCall({action:"clear"}))}catch(e){memErr(e)}};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("mem").hidden=true});
 function clearAll(){
   if(!CHATS.length||!confirm(tr("aiClearAllAsk")))return;
   CHATS=[];if(GEN)stopAI();CUR=null;try{localStorage.removeItem("chats");localStorage.removeItem("chatCur")}catch(e){}newChat();
@@ -1655,12 +1842,38 @@ function aiRestore(){
   CUR=null;if(cur)openChat(cur);else newChat();
 }
 // один ответ обычного чата: потоком, с остановкой, с честным сообщением про лимит
+function agentLabel(j){
+  const a=j.args||{};
+  if(j.phase==="start"){
+    switch(j.tool){
+      case"web_search":return"🔎 "+tr("stSearch",String(a.query||"").slice(0,80));
+      case"read_page":{let h="";try{h=new URL(String(a.url)).hostname.replace(/^www\./,"")}catch(e){h=String(a.url||"").slice(0,60)}return"📄 "+tr("stRead",h)}
+      case"calculator":return"🧮 "+tr("stCalc",String(a.expression||"").slice(0,60));
+      case"get_schedule":return"📅 "+tr("stSched");
+      case"list_tasks":return"📋 "+tr("stTasks");
+      case"add_task":return"📝 "+tr("stTaskAdd");
+      case"complete_task":case"delete_task":return"📝 "+tr("stTaskDo");
+      case"remember":return"💾 "+tr("stMemSave");
+      case"forget":return"🗑 "+tr("stMemForget");
+    }
+    return"⚙ "+j.tool;
+  }
+  const n=String(j.note||"");   // итог шага: только для памяти
+  if(/^(add_task|complete_task|delete_task)$/.test(j.tool))return n?"📝 "+n:"";
+  if(j.tool==="remember")return n.startsWith("Сохранено: ")?"💾 "+tr("stMemOk",n.slice(11)):(n?"💾 "+n:"");
+  if(j.tool==="forget")return n?"🗑 "+(/^(Удалено|Вся память)/.test(n)?tr("stForgot"):n):"";
+  return"";
+}
 async function chatReply(){
-  const ep=EPOCH,bub=aiAdd("a",""),t0=bub.think("chat");
+  const ep=EPOCH,bub=aiAdd("a",""),t0=bub.think("chat"),steps=[];
+  const onStep=j=>{
+    if(j.phase==="done"&&/^(add_task|complete_task|delete_task)$/.test(j.tool))tkRefresh();
+    const lb=agentLabel(j);if(!lb)return;bub.status(lb);
+    if(j.phase==="done"||!/^(remember|forget|add_task|complete_task|delete_task)$/.test(j.tool))steps.push(lb)};
   const q=([...AIH].reverse().find(m=>m.role==="user")||{}).content||"";
   let first=0,ans="",failed=false;
   try{
-    ans=await cloudAnswer({onDelta:t=>{if(!first)first=Date.now();bub.stream(t)}});
+    ans=await cloudAnswer({onDelta:t=>{if(!first)first=Date.now();bub.stream(t)},onStep});
     AI_MODE="cloud";
   }catch(e){
     if(ep!==EPOCH)return;
@@ -1671,6 +1884,7 @@ async function chatReply(){
   }
   if(ep!==EPOCH)return;
   bub.md(ans);if(failed)bub.cls("err");
+  if(!failed)steps.forEach(x=>bub.note(x));
   if(!failed&&DOCS.some(d=>d.text.length>docBudget()))bub.note("ℹ "+tr("aiFileTrunc"));
   AIH.push({role:"assistant",content:ans});paintAI();
   if(!failed&&STOPPED)bub.note("⏹ "+tr("aiStopped"));
