@@ -903,7 +903,7 @@ paintOnline();
 /* ---- YASIK-AI ----
    По умолчанию — бесплатный сервис Pollinations (без ключа). Свой прокси/ключ: поменяйте AI_ENDPOINT.
    Если облако недоступно, включается локальный помощник, который знает расписание и погоду. */
-const AI_PROXY="";   // ← сюда URL вашего Cloudflare Worker (см. worker.js), например "https://yasik-ai.ИМЯ.workers.dev"
+const AI_PROXY="https://yasik-ai.klown575.workers.dev";   // ← сюда URL вашего Cloudflare Worker (см. worker.js), например "https://yasik-ai.ИМЯ.workers.dev"
 const AI_ENDPOINT="https://text.pollinations.ai/openai", AI_MODEL="openai"; // запасной бесплатный вариант
 let AIH=[],AI_MODE="cloud",AI_BUSY=false;
 const aim=$("aim"),aiq=$("aiq");
