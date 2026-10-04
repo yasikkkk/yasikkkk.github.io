@@ -488,12 +488,12 @@ async function onToken(token){
   try{
     const r=await _f(API+"/verify",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({token})});
     const j=await r.json().catch(()=>({}));
-    if(r.ok&&j.pass)done(j.pass);else fail(r.status>=500?T.n:T.e);
+    if(r.ok&&j.pass)done(j.pass);else fail((r.status>=500?T.n:T.e)+" [verify "+r.status+(j.error?" "+j.error:"")+(j.codes&&j.codes.length?" "+j.codes.join(","):"")+"]");
   }catch(e){fail(T.n)}
 }
 function render(){
   if(wid!==null){try{turnstile.reset(wid)}catch(e){}return}
-  wid=turnstile.render("#cap-w",{sitekey:SITEKEY,theme:"auto",language:ru?"ru":"en",callback:onToken,"error-callback":()=>fail(T.e),"expired-callback":()=>{try{turnstile.reset(wid)}catch(e){}}});
+  wid=turnstile.render("#cap-w",{sitekey:SITEKEY,theme:"auto",language:ru?"ru":"en",callback:onToken,"error-callback":(c)=>{$("cap-e").textContent=T.e+" ["+c+"] "+location.hostname;$("cap-r").hidden=false;return true},"expired-callback":()=>{try{turnstile.reset(wid)}catch(e){}}});
 }
 function start(){
   if(window.turnstile){render();return}
