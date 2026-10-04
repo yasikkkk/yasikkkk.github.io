@@ -346,6 +346,45 @@ body{padding-bottom:var(--ckh,0px)}
 .aipop{bottom:calc(72px + var(--ckh,0px) + env(safe-area-inset-bottom,0px));height:min(430px,calc(100vh - 120px - var(--ckh,0px)))}
 }
 @media (max-width:360px){.logo{font-size:1.3rem}.nl{font-size:.88rem;padding:8px 6px}.nl.on::after{left:6px;right:6px}.ctl{gap:6px}}
+
+/* ---- YASIK-AI: полноэкранная страница с историей чатов ---- */
+body.aipage{height:100vh;height:100dvh;min-height:0;overflow:hidden}
+body.aipage main{padding:0;min-height:0;display:flex;flex-direction:column}
+body.aipage footer{display:none}
+body.aipage #tab-ai:not([hidden]){flex:1;min-height:0;display:flex;animation:none}
+.aiapp{position:relative;flex:1;min-width:0;min-height:0;display:flex;background:var(--card)}
+.aiapp .aiw{flex:1;min-width:0;height:auto;min-height:0;max-width:none;border:0;border-radius:0}
+.aiapp .aimsgs{padding:20px max(16px,calc((100% - 820px)/2))}
+.aiapp .aiin{padding:12px max(14px,calc((100% - 820px)/2))}
+.aiapp .ainote{padding:0 max(16px,calc((100% - 820px)/2)) 10px}
+.aisb{width:288px;flex:none;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;min-height:0;padding:12px 10px;background:var(--bg);border-right:1px solid var(--line);transition:transform .22s ease}
+.aiapp.sb-closed .aisb{display:none}
+.aibd{display:none}
+.sbn{display:flex;align-items:center;justify-content:flex-start;gap:8px;width:100%;padding:10px 12px;font-weight:600;border-radius:10px;background:var(--accent);color:var(--badgefg);border-color:var(--accent)}
+.sbn span:first-child{font-size:1.2rem;line-height:1}
+.aisb input{box-sizing:border-box;width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);font:inherit;font-size:.92rem}
+.aisl{flex:1;min-height:0;overflow-y:auto;margin:0 -4px;padding:0 4px}
+.sbg{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:12px 8px 4px}
+.sbi{display:flex;align-items:center;gap:2px;padding:8px 6px 8px 10px;border-radius:8px;cursor:pointer;font-size:.92rem}
+.sbi:hover,.sbi:focus-visible{background:var(--tag);outline:0}
+.sbi.on{background:var(--tag);font-weight:600;box-shadow:inset 3px 0 0 var(--accent)}
+.sbt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbx{flex:none;border:0;background:transparent;padding:2px 5px;font-size:.8rem;opacity:0;border-radius:6px;color:var(--muted)}
+.sbi:hover .sbx,.sbi:focus-within .sbx,.sbi.on .sbx{opacity:.85}
+.sbx:hover{opacity:1;background:var(--card)}
+@media (hover:none){.sbx{opacity:.75}}
+.sbe{font-size:.85rem;color:var(--muted);padding:14px 8px}
+.sbf{display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:8px}
+.sbf button{font-size:.82rem;color:var(--muted)}
+.sbf p{margin:0;font-size:.74rem;line-height:1.35;color:var(--muted)}
+.aisbt{flex:none;width:36px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.aisug{align-self:flex-start;padding:0}
+@media (max-width:760px){
+.aisb{position:absolute;z-index:30;left:0;top:0;bottom:0;width:min(310px,86vw);transform:translateX(-102%);box-shadow:0 0 30px rgba(0,0,0,.35)}
+.aiapp.sb-closed .aisb{display:flex}
+.aiapp.sb-open .aisb{transform:none}
+.aiapp.sb-open .aibd{display:block;position:absolute;inset:0;z-index:20;background:rgba(10,16,26,.5)}
+}
 </style><script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script></head><body>
 <header><div class="hw">
 <a class="logo" id="logo" href="#home">YASIK</a>
@@ -414,11 +453,20 @@ body{padding-bottom:var(--ckh,0px)}
 <p class="src"><span data-tr="dataBy">Данные:</span> <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a></p>
 </div>
 <div id="tab-ai" class="tab" hidden>
+<div class="aiapp" id="aiapp">
+<aside class="aisb" id="aisb">
+<button class="sbn" id="ainew" type="button"><span>＋</span><span data-tr="aiNew">Новый чат</span></button>
+<input id="aisq" type="search" data-ph="aiSearch" placeholder="Поиск по чатам…" autocomplete="off">
+<div class="aisl" id="aisl"></div>
+<div class="sbf"><p id="aisn" data-tr="aiNoSave" hidden></p><button id="aiclrall" type="button" data-tr="aiClearAll">Удалить всю историю</button></div>
+</aside>
+<div class="aibd" id="aibd"></div>
 <div class="aiw">
-<div class="aih"><div class="aiav">AI</div><div><b>YASIK-AI</b><div class="m" id="ai-st"></div></div><div class="sp1"></div><button id="ai-clr" type="button" data-tr="aiClear">Очистить</button></div>
+<div class="aih"><button class="aisbt" id="aisbt" type="button" aria-label="Чаты"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><div class="aiav">AI</div><div><b>YASIK-AI</b><div class="m" id="ai-st"></div></div><div class="sp1"></div><button id="ai-clr" type="button" data-tr="aiClear">Очистить</button></div>
 <div class="aimsgs" id="aim" aria-live="polite"></div>
 <div class="aiin"><button class="attb" type="button" data-t="aiAttT" aria-label="Прикрепить картинку" title="Прикрепить картинку"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button><textarea id="aiq" rows="1" data-ph="aiPh" placeholder="Спросите что угодно…" enterkeyhint="send"></textarea><button class="pri" id="aigo" type="button" data-tr="aiSend">Отправить</button></div>
 <div class="ainote" data-tr="aiNote"></div>
+</div>
 </div>
 </div>
 </main>
@@ -460,7 +508,7 @@ const I18N={
 ru:{schPh:"Поиск: преподаватель, предмет, аудитория…",clear:"Сбросить",wPh:"Фильтр по дням: дождь, пятница, 12 октября…",noRes:"Ничего не найдено",resCnt:n=>"Найдено занятий: "+n,onlineT:"онлайн",onlTip:"Сейчас на сайте",onlTipLocal:"Демо-режим: считаются только вкладки этого браузера",
 aiPh2:"Сообщение…",aiAttT:"Прикрепить картинку",aiImgGot:(n,i)=>"Получил «"+n+"» ("+i+"). В какой формат конвертировать?",aiImgBad:"Не удалось открыть файл как картинку. Подойдут PNG, JPG, WEBP, GIF, BMP, SVG.",aiNeedImg:"Сначала прикрепите картинку кнопкой 📎 (или перетащите её в чат, или вставьте из буфера) — и я поменяю формат.",aiConvDone:(n,s,i)=>"Готово: "+n+" · "+s+" · "+i,aiDl:"Скачать",aiSaveW:"📄 Сохранить в Word",aiDocMake:"Составляю документ…",aiDocDone:n=>"Документ готов: "+n,aiDocPlan:"Составляю план…",aiDocProg:(i,n,t)=>"Пишу раздел "+i+" из "+n+": «"+t+"». Большой документ собирается несколько минут, не закрывайте страницу.",aiDocExtra:t=>"Довожу объём: дописываю «"+t+"»…",aiDocStat:(w,p)=>"≈ "+w+" слов, около "+p+" стр. основного текста",aiDocNote:"Список источников оставлен пустым: ИИ не подставляет ссылки, чтобы не выдумывать несуществующие работы. Добавьте реальные источники сами. Номера страниц в содержании обновятся в Word: ПКМ по содержанию → «Обновить поле».",aiDocQuota:"Дневной бесплатный лимит ИИ исчерпан. Попробуйте завтра.",aiDocPartial:"Документ собран частично: ИИ перестал отвечать на середине",aiDocFail:"Не получилось составить документ: облачный ИИ сейчас недоступен. Попробуйте чуть позже.",aiNoWebp:"Этот браузер не умеет сохранять в WEBP. Выберите PNG, JPG или BMP.",aiBig:"Файл слишком большой для обработки в браузере.",aiNotImg:"Это не картинка. Прикрепите файл изображения.",aiPickFmt:"Формат:",
 aiOpenFull:"Открыть полный чат",aiClose:"Закрыть",aiOpen:"Открыть YASIK-AI",aiClear:"Очистить",aiSend:"Отправить",aiPh:"Спросите что угодно…",aiNote:"YASIK-AI может ошибаться. Текстовые сообщения отправляются во внешний ИИ-сервис; не вводите личные данные. Картинки обрабатываются на вашем устройстве и никуда не отправляются.",aiCloud:"облачный ИИ",aiLocal:"локальный помощник",aiThink:"Думаю…",
-aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",
+aiHello:"Привет! Я YASIK-AI 🤖 Чем могу помочь?",aiNew:"Новый чат",aiNewT:"Новый чат",aiSearch:"Поиск по чатам…",aiToday:"Сегодня",aiYest:"Вчера",aiWeek:"Последние 7 дней",aiOlder:"Ранее",aiNoChats:"Пока нет сохранённых чатов",aiRename:"Переименовать",aiDel:"Удалить",aiDelAsk:t=>"Удалить чат «"+t+"»?",aiClearAll:"Удалить всю историю",aiClearAllAsk:"Удалить все чаты? Это нельзя отменить.",aiNoSave:"История не сохраняется: выбраны только необходимые cookie. Чаты пропадут после закрытия страницы.",aiMenu:"Список чатов",aiS1:"Какие пары завтра?",aiS2:"Какая погода сейчас?",aiS3:"Объясни, как работает блокчейн, простыми словами",
 aiSug:["Какая у меня следующая пара?","Что завтра по расписанию?","Какая сейчас погода?","Где проходит пара у Дивиной?","Создай Word-файл с планом подготовки к экзамену","Конвертировать картинку в PNG"],
 aiNoUp:"Ближайших занятий не нашёл.",aiNoDay:"В этот день занятий нет 🎉",aiToday:"Сегодня",aiTomorrow:"Завтра",aiNext:"Ближайшая пара",aiW:(c,t,d,f)=>"Сейчас в городе "+c+": "+t+", "+d+". Ощущается как "+f+".",
 aiHelp:"Облачный ИИ сейчас недоступен, поэтому отвечаю как локальный помощник. Я умею: показать ближайшую пару, расписание на сегодня/завтра, погоду, найти преподавателя, предмет или аудиторию (например: «ауд. 309» или «Дивина»), а также менять формат картинок (📎 → PNG, JPG, WEBP, BMP).",aiFound:"Нашёл в расписании:",aiErr:"Не удалось связаться с ИИ-сервисом.",
@@ -511,7 +559,7 @@ aiDocStopped:"Документ собран частично: вы остано�
 en:{schPh:"Search: teacher, subject, room…",clear:"Clear",wPh:"Filter days: rain, Friday, October 12…",noRes:"Nothing found",resCnt:n=>"Classes found: "+n,onlineT:"online",onlTip:"Currently on the site",onlTipLocal:"Demo mode: only tabs of this browser are counted",
 aiPh2:"Message…",aiAttT:"Attach an image",aiImgGot:(n,i)=>"Got “"+n+"” ("+i+"). Which format should I convert it to?",aiImgBad:"Couldn't open this file as an image. PNG, JPG, WEBP, GIF, BMP and SVG work.",aiNeedImg:"Please attach an image first with the 📎 button (or drag it into the chat, or paste it) and I'll change the format.",aiConvDone:(n,s,i)=>"Done: "+n+" · "+s+" · "+i,aiDl:"Download",aiSaveW:"📄 Save to Word",aiDocMake:"Writing the document…",aiDocDone:n=>"Document ready: "+n,aiDocPlan:"Making an outline…",aiDocProg:(i,n,t)=>"Writing section "+i+" of "+n+": “"+t+"”. A large document takes a few minutes, please keep the page open.",aiDocExtra:t=>"Adding more text to “"+t+"”…",aiDocStat:(w,p)=>"≈ "+w+" words, about "+p+" pages of main text",aiDocNote:"The reference list is left empty: the AI does not invent sources. Add real ones yourself. Page numbers in the contents update in Word: right-click the contents → Update field.",aiDocQuota:"The daily free AI limit is used up. Please try again tomorrow.",aiDocPartial:"The document is partial: the AI stopped responding midway",aiDocFail:"Couldn't write the document: the cloud AI is unavailable right now. Please try again later.",aiNoWebp:"This browser can't save WEBP. Choose PNG, JPG or BMP.",aiBig:"The file is too large to process in the browser.",aiNotImg:"That isn't an image. Please attach an image file.",aiPickFmt:"Format:",
 aiOpenFull:"Open full chat",aiClose:"Close",aiOpen:"Open YASIK-AI",aiClear:"Clear",aiSend:"Send",aiPh:"Ask me anything…",aiNote:"YASIK-AI can make mistakes. Text messages are sent to an external AI service; do not enter personal data. Images are processed on your device and never uploaded.",aiCloud:"cloud AI",aiLocal:"local assistant",aiThink:"Thinking…",
-aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",
+aiHello:"Hi! I'm YASIK-AI 🤖 How can I help?",aiNew:"New chat",aiNewT:"New chat",aiSearch:"Search chats…",aiToday:"Today",aiYest:"Yesterday",aiWeek:"Previous 7 days",aiOlder:"Older",aiNoChats:"No saved chats yet",aiRename:"Rename",aiDel:"Delete",aiDelAsk:t=>"Delete chat “"+t+"”?",aiClearAll:"Delete all history",aiClearAllAsk:"Delete all chats? This can't be undone.",aiNoSave:"History is not saved: only necessary cookies are enabled. Chats disappear when you close the page.",aiMenu:"Chat list",aiS1:"What classes do I have tomorrow?",aiS2:"What's the weather now?",aiS3:"Explain how blockchain works in simple terms",
 aiSug:["What is my next class?","What's on tomorrow?","What's the weather now?","Where is Divina's class?","Create a Word file with an exam study plan","Convert an image to PNG"],
 aiNoUp:"No upcoming classes found.",aiNoDay:"No classes that day 🎉",aiToday:"Today",aiTomorrow:"Tomorrow",aiNext:"Next class",aiW:(c,t,d,f)=>"Right now in "+c+": "+t+", "+d+". Feels like "+f+".",
 aiHelp:"The cloud AI is unavailable right now, so I'm answering as a local assistant. I can show your next class, today's/tomorrow's schedule, the weather, find a teacher, subject or room (e.g. “room 309” or “Divina”), and convert image formats (📎 → PNG, JPG, WEBP, BMP).",aiFound:"Found in the schedule:",aiErr:"Could not reach the AI service.",
@@ -676,7 +724,7 @@ function setConsent(v){
   try{
     localStorage.setItem("consent",v);
     if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); localStorage.setItem("lang",LANG); saveChat(); }
-    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); }
+    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); localStorage.removeItem("chats"); localStorage.removeItem("chatCur"); }
   }catch(e){}
 }
 $("ck-yes").onclick=()=>setConsent("all");
@@ -698,7 +746,7 @@ let wTime=0;
 const study=$("study"),wnav=$("wnav"),spop=$("spop");
 function showTab(x){
   ["home","schedule","weather","ai"].forEach(n=>{$("tab-"+n).hidden=x!==n});
-  $("ainav").classList.toggle("on",x==="ai");
+  $("ainav").classList.toggle("on",x==="ai");document.body.classList.toggle("aipage",x==="ai");
   $("aifab").hidden=x!=="home";if(x!=="home"){$("aipop").hidden=true;$("aifab").textContent="AI"}
   if(x==="ai")setTimeout(()=>$("aiq").focus({preventScroll:true}),50);
   study.classList.toggle("on",x==="schedule");
@@ -1124,7 +1172,7 @@ const aim=$("aim"),aiq=$("aiq"),pm=$("pm"),pq=$("pq"),CONT=[aim,pm];
 function paintAI(){paintSend();
   $("ai-st").textContent=tr(AI_MODE==="cloud"?"aiCloud":"aiLocal");
   document.querySelectorAll(".ms.hello").forEach(f=>{f.textContent=tr("aiHello")});
-  document.querySelectorAll(".attb").forEach(b=>{b.title=b.ariaLabel=tr("aiAttT")});$("pfull").title=$("pfull").ariaLabel=tr("aiOpenFull");$("pcls").ariaLabel=tr("aiClose");$("aifab").ariaLabel=tr("aiOpen");
+  document.querySelectorAll(".attb").forEach(b=>{b.title=b.ariaLabel=tr("aiAttT")});$("pfull").title=$("pfull").ariaLabel=tr("aiOpenFull");$("pcls").ariaLabel=tr("aiClose");$("aifab").ariaLabel=tr("aiOpen");$("aisbt").title=$("aisbt").ariaLabel=tr("aiMenu");renderSide();
 }
 function aiAdd(role,text,cls){ // добавляет сообщение сразу в оба окна (полный чат и всплывающее)
   const els=CONT.map(c=>{const m=document.createElement("div");m.className="ms "+role+(cls?" "+cls:"");m.textContent=text;c.appendChild(m);c.scrollTop=c.scrollHeight;return m});
@@ -1138,7 +1186,7 @@ function aiAdd(role,text,cls){ // добавляет сообщение сраз
     note(t){els.forEach(m=>{const d=document.createElement("div");d.className="tkd";d.textContent=t;m.appendChild(d)})},
     // анимированный индикатор «думает» + секундомер; kind: chat | doc | img
     think(kind){const t0=Date.now();
-      els.forEach(m=>{m.classList.add("rich");m.innerHTML='<div class="thk" data-k="'+kind+'" data-t0="'+t0+'"><div class="thk-r"><span class="orb"></span><span class="wv"><i></i><i></i><i></i><i></i><i></i></span><span class="thk-t"></span><span class="thk-m">0.0 '+tr("u_s")+'</span></div><div class="thk-d" hidden></div><div class="pbar" hidden><b></b></div></div>'});
+      els.forEach(m=>{m.classList.add("rich");m.innerHTML='<div class="thk" data-k="'+kind+'" data-t0="'+t0+'"><div class="thk-r"><span class="orb"></span><span class="wv"><i></i><i></i><i></i><i></i><i></i></span><span class="thk-t"></span><span class="thk-m">0 '+tr("u_s")+'</span></div><div class="thk-d" hidden></div><div class="pbar" hidden><b></b></div></div>'});
       tickThink();scrollAI();return t0},
     // подпись под индикатором и (необязательно) полоса прогресса 0..1
     status(d,f){els.forEach(m=>{const x=m.querySelector(".thk");if(!x)return;
@@ -1147,7 +1195,7 @@ function aiAdd(role,text,cls){ // добавляет сообщение сраз
     // небольшая пометка «Думал N с» под готовым ответом
     took(sec){this.note("⏱ "+tr("tookS",fmtEl(sec)))}}}
 const scrollAI=()=>CONT.forEach(c=>{c.scrollTop=c.scrollHeight})
-function fmtEl(s){return s<60?s.toFixed(1)+" "+tr("u_s"):Math.floor(s/60)+":"+pad(Math.floor(s%60))}
+function fmtEl(s){s=Math.floor(s);return s<60?s+" "+tr("u_s"):Math.floor(s/60)+" "+tr("u_m")+" "+(s%60)+" "+tr("u_s")}
 function tickThink(){
   document.querySelectorAll(".thk").forEach(x=>{
     const s=(Date.now()-(+x.dataset.t0))/1000,ph=tr("thk_"+x.dataset.k)||[],tx=x.querySelector(".thk-t"),i=ph.length?Math.floor(s/2.6)%ph.length:0;
@@ -1155,8 +1203,8 @@ function tickThink(){
     if(tx.dataset.i!==String(i)+LANG){tx.dataset.i=String(i)+LANG;tx.textContent=ph[i]||""}
   });
 }
-setInterval(tickThink,100);
-function aiReset(){EPOCH++;CONT.forEach(c=>{c.innerHTML=""});AIH=[];try{localStorage.removeItem("chat")}catch(e){}aiAdd("a",tr("aiHello")).cls("hello")}
+setInterval(tickThink,250);
+function aiReset(){if(CUR&&CUR.msgs.length)delChat(CUR);else newChat()} // «Очистить» = удалить текущий чат
 const lessonLine=it=>it.time+" — "+it.title+" ("+[it.teacher,it.place].filter(Boolean).join(", ")+")";
 const dayText=d=>{const its=itemsFor(d)||[];return its.length?its.map(lessonLine).join("\n"):tr("aiNoDay")};
 function aiContext(){
@@ -1262,25 +1310,87 @@ function addActions(bub,ans,o){
 function paintSend(){["aigo","pgo"].forEach(id=>{const b=$(id);if(!b)return;b.textContent=(GEN?"■ ":"")+tr(GEN?"aiStop":"aiSend");b.classList.toggle("stop",GEN)})}
 function setGen(v){GEN=v;paintSend()}
 function stopAI(){STOPPED=true;if(CUR_CTL)CUR_CTL.abort()}
-function saveChat(){
-  try{
-    if(!canSave())return;
-    const m=AIH.filter(x=>!x.doc).slice(-30).map(x=>({role:x.role,content:String(x.content).slice(0,8000)}));
-    if(m.length)localStorage.setItem("chat",JSON.stringify(m));else localStorage.removeItem("chat");
-  }catch(e){}
+/* ---- история чатов ---- */
+let CHATS=[],CUR=null,SBQ="";
+const uid=()=>Math.random().toString(36).slice(2,10);
+const chatTitle=c=>c.title||tr("aiNewT");
+const autoTitle=m=>{const t=(((m||[]).find(x=>x.role==="user")||{}).content||"").replace(/\s+/g," ").trim();return t.length>44?t.slice(0,42)+"…":t};
+function persist(){
+  if(!canSave())return;
+  const keep=CHATS.filter(c=>c.msgs.length).sort((a,b)=>b.ts-a.ts).slice(0,50);
+  for(let i=0;i<20;i++){
+    try{localStorage.setItem("chats",JSON.stringify(keep));if(CUR)localStorage.setItem("chatCur",CUR.id);return}
+    catch(e){if(keep.length<2)return;keep.pop()}
+  }
 }
-function aiRestore(){
-  let s=null;
-  try{if(canSave())s=JSON.parse(localStorage.getItem("chat")||"null")}catch(e){}
-  if(!Array.isArray(s)||!s.length){aiReset();return}
-  CONT.forEach(c=>{c.innerHTML=""});AIH=[];
-  s.forEach(m=>{
+function saveChat(){
+  if(!CUR)return;
+  const m=AIH.filter(x=>!x.doc).slice(-60).map(x=>({role:x.role,content:String(x.content).slice(0,8000)}));
+  const ch=JSON.stringify(m)!==JSON.stringify(CUR.msgs);CUR.msgs=m;
+  if(m.length){if(ch)CUR.ts=Date.now();if(CUR.auto)CUR.title=autoTitle(m);if(!CHATS.includes(CUR))CHATS.unshift(CUR)}
+  else{const i=CHATS.indexOf(CUR);if(i>=0)CHATS.splice(i,1)}
+  persist();renderSide();
+}
+function suggest(){const d=document.createElement("div");d.className="aisug";
+  ["aiS1","aiS2","aiS3"].forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=tr(k);b.onclick=()=>aiSend(tr(k));d.appendChild(b)});aim.appendChild(d)}
+function openChat(c){
+  if(c===CUR){closeSB();return}
+  saveChat();if(GEN)stopAI();EPOCH++;CUR=c;
+  CONT.forEach(x=>{x.innerHTML=""});AIH=[];
+  if(!c.msgs.length){aiAdd("a",tr("aiHello")).cls("hello");suggest()}
+  else c.msgs.forEach(m=>{
     if(!m||typeof m.content!=="string"||(m.role!=="user"&&m.role!=="assistant"))return;
     AIH.push({role:m.role,content:m.content});
     const b=aiAdd(m.role==="user"?"u":"a",m.role==="user"?m.content:"");
     if(m.role==="assistant"){b.md(m.content);addActions(b,m.content,{});b.els.forEach(e=>e.querySelectorAll(".rt").forEach(x=>x.remove()))}
   });
-  scrollAI();
+  scrollAI();persist();renderSide();closeSB();
+}
+function newChat(){
+  if(CUR&&!CUR.msgs.length&&!AIH.length){closeSB();aiq.focus();return}
+  openChat({id:uid(),title:"",auto:true,ts:Date.now(),msgs:[]});
+}
+function delChat(c){
+  if(!confirm(tr("aiDelAsk",chatTitle(c))))return;
+  const i=CHATS.indexOf(c);if(i>=0)CHATS.splice(i,1);
+  if(c===CUR){if(GEN)stopAI();CUR=null;newChat()}else{persist();renderSide()}
+}
+function renChat(c){const t=prompt(tr("aiRename"),chatTitle(c));if(t==null)return;const v=t.trim().slice(0,60);if(!v)return;c.title=v;c.auto=false;persist();renderSide()}
+function clearAll(){
+  if(!CHATS.length||!confirm(tr("aiClearAllAsk")))return;
+  CHATS=[];if(GEN)stopAI();CUR=null;try{localStorage.removeItem("chats");localStorage.removeItem("chatCur")}catch(e){}newChat();
+}
+function renderSide(){
+  const box=$("aisl");if(!box)return;box.innerHTML="";
+  const q=SBQ.trim().toLowerCase();
+  const list=CHATS.filter(c=>c.msgs.length&&(!q||chatTitle(c).toLowerCase().includes(q)||c.msgs.some(m=>m.content.toLowerCase().includes(q)))).sort((a,b)=>b.ts-a.ts);
+  if(!list.length){const e=document.createElement("div");e.className="sbe";e.textContent=tr(q?"noRes":"aiNoChats");box.appendChild(e)}
+  const d0=new Date();d0.setHours(0,0,0,0);const D=864e5;let last="";
+  list.forEach(c=>{
+    const g=c.ts>=d0?"aiToday":c.ts>=d0-D?"aiYest":c.ts>=d0-6*D?"aiWeek":"aiOlder";
+    if(g!==last){last=g;const h=document.createElement("div");h.className="sbg";h.textContent=tr(g);box.appendChild(h)}
+    const r=document.createElement("div");r.className="sbi"+(c===CUR?" on":"");r.tabIndex=0;r.setAttribute("role","button");
+    const t=document.createElement("span");t.className="sbt";t.textContent=chatTitle(c);r.appendChild(t);
+    const mk=(ic,l,f)=>{const b=document.createElement("button");b.type="button";b.className="sbx";b.textContent=ic;b.title=b.ariaLabel=tr(l);b.onclick=e=>{e.stopPropagation();f(c)};r.appendChild(b)};
+    mk("✎","aiRename",renChat);mk("🗑","aiDel",delChat);
+    r.onclick=()=>openChat(c);r.onkeydown=e=>{if(e.target===r&&e.key==="Enter")openChat(c)};
+    box.appendChild(r)});
+  $("aisn").hidden=canSave();
+}
+const sbMobile=()=>matchMedia("(max-width:760px)").matches;
+function toggleSB(){const a=$("aiapp");a.classList.toggle(sbMobile()?"sb-open":"sb-closed")}
+function closeSB(){const a=$("aiapp");if(a)a.classList.remove("sb-open")}
+function aiRestore(){
+  CHATS=[];
+  try{if(canSave()){
+    CHATS=(JSON.parse(localStorage.getItem("chats")||"[]")||[]).filter(c=>c&&c.id&&Array.isArray(c.msgs)&&c.msgs.length);
+    const o=JSON.parse(localStorage.getItem("chat")||"null"); // старый формат: одна переписка
+    if(Array.isArray(o)){const m=o.filter(x=>x&&typeof x.content==="string"&&(x.role==="user"||x.role==="assistant"));if(m.length)CHATS.push({id:uid(),title:autoTitle(m),auto:true,ts:Date.now(),msgs:m})}
+    localStorage.removeItem("chat");
+  }}catch(e){}
+  let cur=null;try{const id=localStorage.getItem("chatCur");cur=CHATS.find(c=>c.id===id)}catch(e){}
+  cur=cur||CHATS.slice().sort((a,b)=>b.ts-a.ts)[0];
+  CUR=null;if(cur)openChat(cur);else newChat();
 }
 // один ответ обычного чата: потоком, с остановкой, с честным сообщением про лимит
 async function chatReply(){
@@ -1302,7 +1412,7 @@ async function chatReply(){
   AIH.push({role:"assistant",content:ans});paintAI();
   if(!failed&&STOPPED)bub.note("⏹ "+tr("aiStopped"));
   const el=((first||Date.now())-t0)/1000;
-  if(!failed&&el>=1.5)bub.took(el);
+  if(!failed&&el>=2)bub.took(el);
   addActions(bub,ans,{word:!failed});
 }
 // «Повторить»: убирает последний ответ и просит нейросеть ответить заново
@@ -1582,12 +1692,12 @@ async function onFile(f){
 async function aiSend(text){
   text=(text||"").trim();if(!text||AI_BUSY)return;
   AI_BUSY=true;STOPPED=false;aiq.value=pq.value="";aiq.style.height=pq.style.height="";
-  document.querySelectorAll(".macts .rt").forEach(b=>b.remove()); // «Повторить» остаётся только у последнего ответа
+  document.querySelectorAll(".macts .rt").forEach(b=>b.remove());document.querySelectorAll(".aisug").forEach(x=>x.remove()); // «Повторить» остаётся только у последнего ответа
   aiAdd("u",text);
   try{
     const tool=toolIntent(text);
     if(tool==="img"){AI_BUSY=false;await imgFromText(text);return}
-    AIH.push({role:"user",content:text});
+    AIH.push({role:"user",content:text});saveChat();
     setGen(true);
     if(tool==="doc"){AIH[AIH.length-1].doc=true;await makeDoc(text);return}
     await chatReply();
@@ -1615,6 +1725,9 @@ aif.onchange=()=>{const f=aif.files[0];aif.value="";if(f)onFile(f)};
   z.addEventListener("dragover",e=>{e.preventDefault();z.classList.add("drag")});
   z.addEventListener("dragleave",()=>z.classList.remove("drag"));
   z.addEventListener("drop",e=>{e.preventDefault();z.classList.remove("drag");const f=e.dataTransfer.files[0];if(f)onFile(f)})});
+$("aisbt").onclick=toggleSB;$("aibd").onclick=closeSB;$("ainew").onclick=()=>newChat();$("aiclrall").onclick=clearAll;
+$("aisq").oninput=e=>{SBQ=e.target.value;renderSide()};
+addEventListener("keydown",e=>{if(e.key==="Escape")closeSB()});
 aiRestore();
 
 /* ---- язык ---- */
