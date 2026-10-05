@@ -58,6 +58,7 @@ const MODELS = [
 
 // Агент (без потока): к запасным добавлена glm-4.7-flash, она умеет вызывать инструменты
 const AGENT_MODELS = [
+  "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
   ...MODELS,
   "@cf/zai-org/glm-4.7-flash",
 ];
