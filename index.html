@@ -1495,6 +1495,18 @@ function aiContext(){
   const w=HWD?"Weather in "+CITY.name+": "+tt(HWD.temperature_2m)+", "+wmo(HWD.weather_code)[1]+".":"";
   return "You are YASIK-AI, a friendly assistant built into the YASIK website for students of group BI-02 (Lomonosov MSU, HSPA). Answer concisely in the language the user writes in. Current date/time: "+n.toLocaleString("ru-RU")+". "+w+"\nSchedule for the next 14 days:\n"+(lines.join("\n")||"(none)")+"\nUse the schedule only when relevant; never invent lessons."
 }
+// запасной бесплатный ИИ: используется, когда дневной лимит Workers AI исчерпан (без задач и памяти)
+async function backupAnswer(){
+  const hist=AIH.slice(-10).map(m=>({role:m.role,content:m.content}));
+  const ctl=new AbortController();CUR_CTL=ctl;const t=setTimeout(()=>ctl.abort(),30000);
+  try{
+    const r=await fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},signal:ctl.signal,
+      body:JSON.stringify({model:AI_MODEL,messages:[{role:"system",content:aiContext()}].concat(hist)})});
+    if(!r.ok)throw new Error(r.status);
+    const j=await r.json(),txt=j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content;
+    if(!txt)throw new Error("empty");return txt.trim();
+  }finally{clearTimeout(t)}
+}
 async function cloudAnswer(o){
   o=o||{};
   const hist=AIH.slice(-12).map(m=>({role:m.role,content:m.content}));
@@ -1878,9 +1890,14 @@ async function chatReply(){
   }catch(e){
     if(ep!==EPOCH)return;
     if(e.stop){bub.set(tr("aiStopped"));bub.cls("err");addActions(bub,"");paintAI();return}
+    let fb="";
+    if(e.quota){try{fb=await backupAnswer()}catch(x){}}   // лимит Workers AI исчерпан: пробуем запасной сервис
+    if(fb){ans=fb;AI_MODE="local"}
+    else{
     failed=true;AI_MODE="local";
     const loc=await localAnswer(q);
     ans=e.quota?tr("aiQuota")+(loc!==tr("aiHelp")&&loc!==tr("aiHello")?"\n\n"+loc:""):loc;
+    }
   }
   if(ep!==EPOCH)return;
   bub.md(ans);if(failed)bub.cls("err");
