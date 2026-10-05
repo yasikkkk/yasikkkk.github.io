@@ -1,0 +1,20 @@
+# Деплой воркера yasik-ai командой `wrangler deploy` (её запускает GitHub Actions).
+# ВАЖНО: wrangler заменяет привязки (AI, DB) и cron на те, что описаны здесь, поэтому они должны совпадать с панелью.
+name = "yasik-ai"
+main = "worker/index.js"
+compatibility_date = "2025-10-01"
+
+# Не стирать переменные, добавленные вручную в панели Cloudflare (GOOGLE_CLIENT_ID, ALLOWED_ORIGIN и др.).
+# Секреты (TAVILY_API_KEY, TG_BOT_TOKEN и т.д.) wrangler не трогает.
+keep_vars = true
+
+[ai]
+binding = "AI"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "yasik-presence"
+database_id = "059a727c-37d7-41ce-9c7a-677419a9beea"
+
+[triggers]
+crons = ["* * * * *"]

@@ -1,0 +1,72 @@
+name: Deploy worker and run agent tests
+
+on:
+  push:
+    branches: [main]
+    paths: ["worker/**", "wrangler.toml", ".github/workflows/deploy.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-worker
+  cancel-in-progress: false
+
+jobs:
+  deploy-and-test:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      MIN_PASS: "0.8"          # минимальная доля пройденных тестов
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Syntax check
+        run: |
+          cp worker/index.js /tmp/worker-check.mjs
+          node --check /tmp/worker-check.mjs
+
+      - name: Dry run (сборка без выкладки)
+        run: npx --yes wrangler@4 deploy --dry-run
+
+      - name: Deploy
+        run: npx --yes wrangler@4 deploy
+
+      # Тесты идут по живому воркеру (им нужны Workers AI и D1), поэтому после выкладки.
+      # Они тратят бесплатный лимит нейронов (порядка нескольких тысяч). Пропуск: в сообщении коммита напишите [skip eval].
+      - name: Agent tests (22 сценария)
+        if: ${{ !contains(github.event.head_commit.message, '[skip eval]') }}
+        env:
+          WORKER_URL: ${{ secrets.WORKER_URL }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          for b in 1 2; do
+            curl -sS --max-time 900 -X POST "$WORKER_URL/admin" \
+              -H "X-Admin: $ADMIN_KEY" -H "Content-Type: application/json" \
+              -d "{\"action\":\"eval\",\"batch\":$b}" -o eval$b.json
+            jq -e '.total' eval$b.json > /dev/null || { echo "Нет корректного ответа на пачке $b:"; head -c 500 eval$b.json; exit 1; }
+          done
+          passed=$(jq -s '[.[].passed] | add' eval1.json eval2.json)
+          total=$(jq -s '[.[].total] | add' eval1.json eval2.json)
+          stopped=$(jq -r -s '[.[].stopped] | map(select(. != "")) | join(",")' eval1.json eval2.json)
+          rate=$(awk -v p="$passed" -v t="$total" 'BEGIN { if (t > 0) printf "%.0f", 100 * p / t; else print 0 }')
+          {
+            echo "## Тесты агента: $passed из $total ($rate%)"
+            if [ -n "$stopped" ]; then echo "⚠️ Прогон остановлен: $stopped (исчерпан дневной лимит ИИ), результат неполный."; fi
+            echo ""
+            jq -r -s '.[].results[] | select(.pass | not) | "- ❌ #\(.id) \(.q): \(.why)"' eval1.json eval2.json
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "RATE=$rate" >> "$GITHUB_ENV"
+          if [ -n "$stopped" ]; then echo "Лимит ИИ исчерпан: результат не засчитываем."; exit 0; fi
+          awk -v p="$passed" -v t="$total" -v m="$MIN_PASS" 'BEGIN { exit !(t > 0 && p / t >= m) }'
+
+      - name: Save results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-test-results
+          path: eval*.json
+          if-no-files-found: ignore
