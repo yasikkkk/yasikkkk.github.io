@@ -4,6 +4,7 @@
 
 **Демо:** https://yasikkkk.github.io
 <img width="1919" height="932" alt="Чат с агентом" src="https://github.com/user-attachments/assets/7b983162-1435-4b85-8c54-098e39749b17" />
+<img width="1919" height="928" alt="Агент сохраняет факт в память" src="https://github.com/user-attachments/assets/c483352e-2eef-4121-929c-53b84bbf2a25" />
 
 
 
