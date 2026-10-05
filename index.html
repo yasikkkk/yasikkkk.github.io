@@ -976,7 +976,7 @@ function setConsent(v){
   try{
     localStorage.setItem("consent",v);
     if(v==="all"){ if(root.dataset.theme)localStorage.setItem("theme",root.dataset.theme); localStorage.setItem("city",JSON.stringify(CITY)); localStorage.setItem("lang",LANG); saveChat(); sessSave(); }
-    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); localStorage.removeItem("chats"); localStorage.removeItem("chatCur"); localStorage.removeItem("yb"); sessSave(); }
+    else{ localStorage.removeItem("theme"); localStorage.removeItem("city"); localStorage.removeItem("lang"); localStorage.removeItem("chat"); localStorage.removeItem("chats"); localStorage.removeItem("chatCur"); localStorage.removeItem(uKey("chats")); localStorage.removeItem(uKey("chatCur")); localStorage.removeItem("yb"); sessSave(); }
   }catch(e){}
 }
 $("ck-yes").onclick=()=>setConsent("all");
@@ -1627,11 +1627,30 @@ let CHATS=[],CUR=null,SBQ="";
 const uid=()=>Math.random().toString(36).slice(2,10);
 const chatTitle=c=>c.title||tr("aiNewT");
 const autoTitle=m=>{const t=(((m||[]).find(x=>x.role==="user")||{}).content||"").replace(/\s+/g," ").trim();return t.length>44?t.slice(0,42)+"…":t};
+// История чатов хранится отдельно для каждого аккаунта: ключ "chats:<id пользователя>"
+function uKey(k){
+  let s="guest";
+  try{if(SESS&&SESS.t){const p=String(SESS.t).split(".");if(/^[a-z0-9]{5,40}$/.test(p[1]||""))s=p[1]}}catch(e){}   // SESS ещё не создана: «гость»
+  return k+":"+s;
+}
+// старая общая история (до разделения по аккаунтам) переходит к первому вошедшему аккаунту, общий ключ удаляется
+function migrateChats(){
+  try{
+    if(uKey("chats")==="chats:guest")return;
+    const old=localStorage.getItem("chats");
+    if(old===null)return;
+    if(localStorage.getItem(uKey("chats"))===null){
+      localStorage.setItem(uKey("chats"),old);
+      const c=localStorage.getItem("chatCur");if(c)localStorage.setItem(uKey("chatCur"),c);
+    }
+    localStorage.removeItem("chats");localStorage.removeItem("chatCur");
+  }catch(e){}
+}
 function persist(){
   if(!canSave())return;
   const keep=CHATS.filter(c=>c.msgs.length).sort((a,b)=>b.ts-a.ts).slice(0,50);
   for(let i=0;i<20;i++){
-    try{localStorage.setItem("chats",JSON.stringify(keep));if(CUR)localStorage.setItem("chatCur",CUR.id);return}
+    try{localStorage.setItem(uKey("chats"),JSON.stringify(keep));if(CUR)localStorage.setItem(uKey("chatCur"),CUR.id);return}
     catch(e){if(keep.length<2)return;keep.pop()}
   }
 }
@@ -1819,7 +1838,7 @@ $("mem-clr").onclick=async()=>{if(!confirm(tr("memClrAsk")))return;try{memPaint(
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("mem").hidden=true});
 function clearAll(){
   if(!CHATS.length||!confirm(tr("aiClearAllAsk")))return;
-  CHATS=[];if(GEN)stopAI();CUR=null;try{localStorage.removeItem("chats");localStorage.removeItem("chatCur")}catch(e){}newChat();
+  CHATS=[];if(GEN)stopAI();CUR=null;try{localStorage.removeItem(uKey("chats"));localStorage.removeItem(uKey("chatCur"))}catch(e){}newChat();
 }
 function renderSide(){
   const box=$("aisl");if(!box)return;box.innerHTML="";
@@ -1842,14 +1861,16 @@ const sbMobile=()=>matchMedia("(max-width:760px)").matches;
 function toggleSB(){const a=$("aiapp");a.classList.toggle(sbMobile()?"sb-open":"sb-closed")}
 function closeSB(){const a=$("aiapp");if(a)a.classList.remove("sb-open")}
 function aiRestore(){
+  try{if(GEN)stopAI()}catch(e){}
   CHATS=[];
   try{if(canSave()){
-    CHATS=(JSON.parse(localStorage.getItem("chats")||"[]")||[]).filter(c=>c&&c.id&&Array.isArray(c.msgs)&&c.msgs.length);
+    migrateChats();
+    CHATS=(JSON.parse(localStorage.getItem(uKey("chats"))||"[]")||[]).filter(c=>c&&c.id&&Array.isArray(c.msgs)&&c.msgs.length);
     const o=JSON.parse(localStorage.getItem("chat")||"null"); // старый формат: одна переписка
     if(Array.isArray(o)){const m=o.filter(x=>x&&typeof x.content==="string"&&(x.role==="user"||x.role==="assistant"));if(m.length)CHATS.push({id:uid(),title:autoTitle(m),auto:true,ts:Date.now(),msgs:m})}
     localStorage.removeItem("chat");
   }}catch(e){}
-  let cur=null;try{const id=localStorage.getItem("chatCur");cur=CHATS.find(c=>c.id===id)}catch(e){}
+  let cur=null;try{const id=localStorage.getItem(uKey("chatCur"));cur=CHATS.find(c=>c.id===id)}catch(e){}
   cur=cur||CHATS.slice().sort((a,b)=>b.ts-a.ts)[0];
   CUR=null;if(cur)openChat(cur);else newChat();
 }
@@ -2663,7 +2684,7 @@ function auPaint(){
 }
 function auErr(k,el){$("lerr").textContent=at(k);if(el){el.classList.add("bad");el.focus()}}
 function finishAuth(j){
-  SESS={t:j.session,u:j.user||{}};sessSave();paintAuth();$("lm").hidden=true;
+  SESS={t:j.session,u:j.user||{}};sessSave();aiRestore();paintAuth();$("lm").hidden=true;
   if(!$("tab-ai").hidden)setTimeout(()=>aiq.focus({preventScroll:true}),50);
 }
 async function authPost(path,data){
@@ -2709,12 +2730,12 @@ $("au-form").onsubmit=async e=>{
 $("lm").addEventListener("mousedown",e=>{if(e.target===$("lm"))$("lm").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("lm").hidden)$("lm").hidden=true});
 $("lgin").onclick=e=>{e.stopPropagation();if(needLogin())openLogin();else $("lpop").hidden=!$("lpop").hidden};
-$("lpout").onclick=()=>{SESS=null;sessSave();try{window.google&&google.accounts.id.disableAutoSelect()}catch(e){}$("lpop").hidden=true;paintAuth()};
+$("lpout").onclick=()=>{SESS=null;sessSave();aiRestore();try{window.google&&google.accounts.id.disableAutoSelect()}catch(e){}$("lpop").hidden=true;paintAuth()};
 $("aigl").onclick=openLogin;$("lm-x").onclick=()=>{$("lm").hidden=true};
 $("lm").addEventListener("click",e=>{if(e.target===$("lm"))$("lm").hidden=true});
 document.addEventListener("click",e=>{if(!e.target.closest("#lmenu"))$("lpop").hidden=true});
 addEventListener("keydown",e=>{if(e.key==="Escape"){$("lm").hidden=true;$("lpop").hidden=true}});
-sessLoad();
+sessLoad();aiRestore();
 
 /* ---- язык ---- */
 function applyLang(){
