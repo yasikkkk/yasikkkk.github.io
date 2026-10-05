@@ -1903,13 +1903,16 @@ async function fxLocal(q){
   const t=norm(q);
   if(!/курс|доллар|евро|юан|фунт|usd|eur|cny|gbp|exchange|dollar|euro|yuan|pound/.test(t))return"";
   try{
-    const r=await fetch("https://www.cbr-xml-daily.ru/daily_json.js");if(!r.ok)return"";
-    const j=await r.json(),V=j.Valute||{},w=[];
+    const w=[];
     if(/доллар|usd|dollar/.test(t))w.push("USD");
     if(/евро|eur/.test(t))w.push("EUR");
     if(/юан|cny|yuan/.test(t))w.push("CNY");
     if(/фунт|gbp|pound/.test(t))w.push("GBP");
     if(!w.length)w.push("USD","EUR","CNY");
+    try{const wr=await fetch(AI_PROXY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mode:"fx",currency:w.join(",")})});
+      if(wr.ok){const wj=await wr.json();if(wj.text&&!/^Не удалось/.test(wj.text))return wj.text}}catch(e){}
+    const r=await fetch("https://www.cbr-xml-daily.ru/daily_json.js");if(!r.ok)return"";
+    const j=await r.json(),V=j.Valute||{};
     const f=n=>n.toFixed(2).replace(".",LANG==="ru"?",":".");
     const L=w.map(c=>{const v=V[c];if(!v)return"";const n=v.Value/(v.Nominal||1),d=n-v.Previous/(v.Nominal||1);
       return"1 "+c+" = "+f(n)+" ₽"+(Math.abs(d)>=.005?" ("+(d>0?"+":"−")+f(Math.abs(d))+")":"")}).filter(Boolean);
@@ -1917,6 +1920,8 @@ async function fxLocal(q){
     return(LANG==="ru"?"Официальные курсы ЦБ РФ на ":"Official CBR rates for ")+String(j.Date||"").slice(0,10)+":\n"+L.join("\n");
   }catch(e){return""}
 }
+// вопросы про погоду и расписание, на которые сайт отвечает сам, без нейросети
+const localQ=q=>{const t=norm(q);return /погод|температур|дожд|weather|temperature/.test(t)||/расписан|schedule|аудитор|(?:^|[^а-я])пар[аыуе]?(?![а-я])|заняти|class|lesson/.test(t)};
 async function chatReply(){
   const ep=EPOCH,bub=aiAdd("a",""),t0=bub.think("chat"),steps=[];
   const onStep=j=>{
@@ -1933,6 +1938,7 @@ async function chatReply(){
     if(e.stop){bub.set(tr("aiStopped"));bub.cls("err");addActions(bub,"");paintAI();return}
     let fb="";
     if(e.quota){fb=await fxLocal(q);}                                   // курсы валют: точные данные ЦБ вместо выдумок запасного ИИ
+    if(!fb&&e.quota&&localQ(q)){const lo=await localAnswer(q);if(lo!==tr("aiHelp")&&lo!==tr("aiHello"))fb=lo}   // погода и расписание: точные данные сайта, запасной ИИ их не знает
     if(!fb&&e.quota){try{fb=await backupAnswer()}catch(x){}}   // лимит Workers AI исчерпан: пробуем запасной сервис
     if(fb){ans=fb;AI_MODE="local"}
     else{
