@@ -1530,7 +1530,7 @@ async function cloudAnswer(o){
               const line=buf.slice(0,i).trim();buf=buf.slice(i+1);
               if(!line.startsWith("data:"))continue;
               const d=line.slice(5).trim();if(!d||d==="[DONE]")continue;
-              try{const j=JSON.parse(d);if(j.agent){if(j.agent==="step"){if(o.onStep)o.onStep(j)}else if(j.agent==="final"){acc=String(j.text||"")}else if(j.agent==="error"){aerr=Object.assign(new Error(j.error||"ai"),{quota:j.error==="quota"})}continue}const p=typeof j.response==="string"?j.response:((j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content)||"");
+              try{const j=JSON.parse(d);if(j.agent){if(j.agent==="step"){if(o.onStep)o.onStep(j)}else if(j.agent==="final"){acc=String(j.text||"")}else if(j.agent==="error"){aerr=Object.assign(new Error(j.error||"ai"),{quota:j.error==="quota",detail:j.detail||""})}continue}const p=typeof j.response==="string"?j.response:((j.choices&&j.choices[0]&&j.choices[0].delta&&j.choices[0].delta.content)||"");
                 if(p){acc+=p;o.onDelta(acc)}}catch(e){}
             }
           }
@@ -1918,7 +1918,8 @@ async function chatReply(){
     else{
     failed=true;AI_MODE="local";
     const loc=await localAnswer(q);
-    ans=e.quota?tr("aiQuota")+(loc!==tr("aiHelp")&&loc!==tr("aiHello")?"\n\n"+loc:""):loc;
+    try{console.warn("YASIK-AI:",e.message,e.detail||"")}catch(x){}
+    ans=e.quota?tr("aiQuota")+(e.detail?"\n\n(Cloudflare: "+String(e.detail).slice(0,260)+")":"")+(loc!==tr("aiHelp")&&loc!==tr("aiHello")?"\n\n"+loc:""):loc;
     }
   }
   if(ep!==EPOCH)return;
